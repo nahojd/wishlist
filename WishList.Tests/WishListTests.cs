@@ -22,12 +22,6 @@ namespace WishList.Tests
             set;
         }
 
-        public WishListTests()
-        {
-            IWishListRepository rep = new TestWishListRepository();
-            Service = new WishService(rep, new TestMailService());
-        }
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -71,7 +65,8 @@ namespace WishList.Tests
         [TestInitialize]
         public void Setup()
         {
-
+			IWishListRepository rep = new TestWishListRepository();
+			Service = new WishService( rep, new TestMailService() );
         }
 
 
