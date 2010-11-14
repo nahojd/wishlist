@@ -1,0 +1,111 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test projects", "Test projects", "{AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B26C4C5-554E-46CF-BA4E-F004F6CFA19D}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		WishList22.vsmdi = WishList22.vsmdi
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deps", "Deps", "{F3149088-1786-4AEE-B29A-A1D34E384605}"
+	ProjectSection(SolutionItems) = preProject
+		Deps\Elmah.dll = Deps\Elmah.dll
+		Deps\Microsoft.Web.Mvc.dll = Deps\Microsoft.Web.Mvc.dll
+		Deps\Moq.dll = Deps\Moq.dll
+		Deps\MvcContrib.dll = Deps\MvcContrib.dll
+		Deps\MvcContrib.FluentHtml.dll = Deps\MvcContrib.FluentHtml.dll
+		Deps\MvcContrib.FluentHtml.xml = Deps\MvcContrib.FluentHtml.xml
+		Deps\MvcContrib.StructureMap.dll = Deps\MvcContrib.StructureMap.dll
+		Deps\MvcContrib.StructureMap.xml = Deps\MvcContrib.StructureMap.xml
+		Deps\MvcContrib.TestHelper.dll = Deps\MvcContrib.TestHelper.dll
+		Deps\MvcContrib.TestHelper.xml = Deps\MvcContrib.TestHelper.xml
+		Deps\MvcContrib.xml = Deps\MvcContrib.xml
+		Deps\StructureMap.dll = Deps\StructureMap.dll
+		Deps\System.Web.Abstractions.dll = Deps\System.Web.Abstractions.dll
+		Deps\System.Web.Mvc.dll = Deps\System.Web.Mvc.dll
+		Deps\System.Web.Routing.dll = Deps\System.Web.Routing.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{B0C342E2-FA62-4EDF-9E88-011519CC9459}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{C9AE5A75-05BE-4DC9-89EA-7C8EE4932261}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other files", "Other files", "{B2AA34B6-A7A1-44CB-94FE-4217EB9BBE2B}"
+	ProjectSection(SolutionItems) = preProject
+		Drift.Web.config = Drift.Web.config
+		WishList.bak = WishList.bak
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.Tests", "WishList.Tests\WishList.Tests.csproj", "{A15AC291-6B57-4860-A3B3-8507193D0920}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.Data", "WishList.Model\WishList.Data.csproj", "{04B593B9-B7AA-4848-98BB-C32B709C000C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.Services", "WishList.Services\WishList.Services.csproj", "{048DA3E0-43E7-4059-A5AB-65F7E021F493}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.IntegrationTests", "WishList.IntegrationTests\WishList.IntegrationTests.csproj", "{C5962727-C3C6-4B0C-82E7-9BE911032CC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.WebUI", "WishList.WebUI\WishList.WebUI.csproj", "{99E34800-8855-439A-9158-3942EB15369F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.PerfTests", "WishList.PerfTests\WishList.PerfTests.csproj", "{D44C3A5B-5693-4BFE-A635-5E744EA133EA}"
+EndProject
+Project("{C8D11400-126E-41CD-887F-60BD40844F9E}") = "WishList.Database", "WishList.Database\WishList.Database.dbproj", "{02E52ADF-298E-4932-B936-CF962212B5E8}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = WishList22.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A15AC291-6B57-4860-A3B3-8507193D0920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A15AC291-6B57-4860-A3B3-8507193D0920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A15AC291-6B57-4860-A3B3-8507193D0920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A15AC291-6B57-4860-A3B3-8507193D0920}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04B593B9-B7AA-4848-98BB-C32B709C000C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04B593B9-B7AA-4848-98BB-C32B709C000C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04B593B9-B7AA-4848-98BB-C32B709C000C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04B593B9-B7AA-4848-98BB-C32B709C000C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99E34800-8855-439A-9158-3942EB15369F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99E34800-8855-439A-9158-3942EB15369F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99E34800-8855-439A-9158-3942EB15369F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99E34800-8855-439A-9158-3942EB15369F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D44C3A5B-5693-4BFE-A635-5E744EA133EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D44C3A5B-5693-4BFE-A635-5E744EA133EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D44C3A5B-5693-4BFE-A635-5E744EA133EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D44C3A5B-5693-4BFE-A635-5E744EA133EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E52ADF-298E-4932-B936-CF962212B5E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02E52ADF-298E-4932-B936-CF962212B5E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02E52ADF-298E-4932-B936-CF962212B5E8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{02E52ADF-298E-4932-B936-CF962212B5E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02E52ADF-298E-4932-B936-CF962212B5E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E52ADF-298E-4932-B936-CF962212B5E8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B26C4C5-554E-46CF-BA4E-F004F6CFA19D} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
+		{A15AC291-6B57-4860-A3B3-8507193D0920} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
+		{C5962727-C3C6-4B0C-82E7-9BE911032CC8} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
+		{D44C3A5B-5693-4BFE-A635-5E744EA133EA} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
+		{04B593B9-B7AA-4848-98BB-C32B709C000C} = {B0C342E2-FA62-4EDF-9E88-011519CC9459}
+		{048DA3E0-43E7-4059-A5AB-65F7E021F493} = {B0C342E2-FA62-4EDF-9E88-011519CC9459}
+		{99E34800-8855-439A-9158-3942EB15369F} = {C9AE5A75-05BE-4DC9-89EA-7C8EE4932261}
+	EndGlobalSection
+EndGlobal

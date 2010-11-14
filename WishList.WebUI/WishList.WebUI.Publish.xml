@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="D:\Temp\wishlist" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="False" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True" useFpForLocalhost="0">
+    <file relUrl="bin/WishList.Services.pdb" publishTime="11/12/2009 21:14:45" />
+    <file relUrl="Scripts/utils.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Scripts/jquery.validate.min-vsdoc.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Scripts/MicrosoftAjax.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Content/logo.png" publishTime="10/21/2009 19:22:43" />
+    <file relUrl="Global.asax" publishTime="10/21/2009 19:22:43" />
+    <file relUrl="bin/MvcContrib.StructureMap.dll" publishTime="11/09/2009 10:25:28" />
+    <file relUrl="Views/Users/List.ascx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Scripts/jquery-1.3.2.min-vsdoc.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="bin/MvcContrib.xml" publishTime="11/09/2009 10:25:24" />
+    <file relUrl="Views/Home/Index.aspx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="bin/WishList.Data.pdb" publishTime="11/12/2009 21:14:43" />
+    <file relUrl="bin/WishList.Data.dll" publishTime="11/12/2009 21:14:43" />
+    <file relUrl="bin/MvcContrib.FluentHtml.xml" publishTime="11/09/2009 10:25:22" />
+    <file relUrl="Scripts/jquery-1.3.2-vsdoc.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Views/Home/About.aspx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Scripts/jquery-1.3.2.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="bin/System.Web.Abstractions.dll" publishTime="10/07/2009 11:13:44" />
+    <file relUrl="Views/Wish/New.aspx" publishTime="10/27/2009 23:40:45" />
+    <file relUrl="Content/present.png" publishTime="10/21/2009 19:22:43" />
+    <file relUrl="Scripts/jquery.validate.min.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Views/Account/Edit.aspx" publishTime="10/27/2009 22:26:02" />
+    <file relUrl="bin/Elmah.dll" publishTime="10/21/2009 19:22:46" />
+    <file relUrl="Web.sitemap" publishTime="10/21/2009 19:22:43" />
+    <file relUrl="Views/Shared/UserPanel.ascx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="bin/System.Web.Mvc.dll" publishTime="09/23/2009 09:53:26" />
+    <file relUrl="Views/List/Show.aspx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Views/List/ShowShoppingList.ascx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Scripts/jquery.validate.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Components/UserSession/Views/Summary.aspx" publishTime="10/21/2009 19:22:41" />
+    <file relUrl="bin/System.Web.Mvc.xml" publishTime="09/16/2009 12:45:56" />
+    <file relUrl="Views/List/CurrentUser.aspx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Views/Account/ApproveOrDeclineStatus.aspx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Default.aspx" publishTime="10/21/2009 19:22:43" />
+    <file relUrl="Scripts/MicrosoftMvcAjax.debug.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Scripts/MicrosoftMvcAjax.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Views/Account/Create.aspx" publishTime="10/27/2009 22:17:41" />
+    <file relUrl="Views/Wish/Edit.aspx" publishTime="11/04/2009 00:08:38" />
+    <file relUrl="Views/Shared/Site.Master" publishTime="10/27/2009 23:47:14" />
+    <file relUrl="bin/Microsoft.Web.Mvc.dll" publishTime="10/01/2009 11:27:40" />
+    <file relUrl="Scripts/jquery-1.3.2.min.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="bin/MvcContrib.StructureMap.xml" publishTime="11/09/2009 10:25:28" />
+    <file relUrl="Content/Themes/Xmas/red-christmas-tree.jpg" publishTime="10/21/2009 19:22:43" />
+    <file relUrl="bin/WishList.WebUI.dll" publishTime="11/12/2009 21:17:08" />
+    <file relUrl="Content/bg_gradient.gif" publishTime="10/21/2009 19:22:43" />
+    <file relUrl="bin/MvcContrib.FluentHtml.dll" publishTime="11/09/2009 10:25:22" />
+    <file relUrl="Views/Web.config" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Web.config" publishTime="11/09/2009 23:20:19" />
+    <file relUrl="Views/Shared/UserTabs.ascx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="Content/Site.css" publishTime="10/21/2009 19:22:43" />
+    <file relUrl="Scripts/MicrosoftAjax.debug.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="bin/MvcContrib.dll" publishTime="11/09/2009 10:25:24" />
+    <file relUrl="bin/WishList.Services.dll" publishTime="11/12/2009 21:14:45" />
+    <file relUrl="Views/List/LatestActivityList.aspx" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="bin/WishList.WebUI.pdb" publishTime="11/12/2009 21:17:08" />
+    <file relUrl="Scripts/MicrosoftMvcJQueryValidation.js" publishTime="10/21/2009 19:22:42" />
+    <file relUrl="bin/StructureMap.dll" publishTime="02/01/2009 14:01:00" />
+    <file relUrl="Scripts/jquery.validate-vsdoc.js" publishTime="10/21/2009 19:22:42" />
+  </publishProfile>
+</publishData>

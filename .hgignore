@@ -1,0 +1,20 @@
+#.hgignore
+syntax: glob
+*.suo
+*.user
+*.dat
+*.vsmdi
+
+WishList.WebUI/bin
+WishList.WebUI/obj
+WishList.IntegrationTests/bin
+WishList.IntegrationTests/obj
+WishList.Model/bin
+WishList.Model/obj
+WishList.Services/bin
+WishList.Services/obj
+WishList.Tests/bin
+WishList.Tests/obj
+WishList.Database/bin
+WishList.Database/obj
+TestResults/

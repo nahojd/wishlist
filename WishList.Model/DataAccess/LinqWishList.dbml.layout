@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="LinqWishList">
+  <DataContextMoniker Name="/LinqWishListDataContext" />
+  <nestedChildShapes>
+    <classShape Id="a365a197-c2ec-4a4a-b037-5a688017db04" absoluteBounds="4, 0.75, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/LinqWishListDataContext/Wish" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0ab2fa29-685b-43e5-b228-d8dee3a73357" absoluteBounds="4.015, 1.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="845115d7-2e8d-43cd-8680-413380e7963e" absoluteBounds="1.125, 1.25, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/LinqWishListDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="69aa509a-ad0a-4bf3-9a8f-188b6a3bd289" absoluteBounds="1.1400000000000001, 1.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3.125 : 2.13544840494792); (4 : 2.13544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/LinqWishListDataContext/User/User_Wish" />
+      <nodes>
+        <classShapeMoniker Id="845115d7-2e8d-43cd-8680-413380e7963e" />
+        <classShapeMoniker Id="a365a197-c2ec-4a4a-b037-5a688017db04" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(3.125 : 1.63022420247396); (4 : 1.63022420247396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/LinqWishListDataContext/User/User_Wish1" />
+      <nodes>
+        <classShapeMoniker Id="845115d7-2e8d-43cd-8680-413380e7963e" />
+        <classShapeMoniker Id="a365a197-c2ec-4a4a-b037-5a688017db04" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

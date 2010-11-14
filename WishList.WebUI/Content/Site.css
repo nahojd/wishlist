@@ -1,0 +1,364 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+body
+{
+	background-color: #5EBEFF; /*background-image: url(/Content/Themes/Xmas/red-christmas-tree.jpg);     background-position: center top;     background-repeat: no-repeat;*/
+	font-size: .85em;
+	font-family: Calibri, Verdana, Helvetica, Sans-Serif;
+	margin: 0;
+	padding: 0;
+	color: #494949;
+}
+
+a:link, a:visited
+{
+	color: #333;
+	text-decoration: underline;
+}
+a:hover
+{
+	color: #FD2A97;
+	text-decoration: none;
+}
+a:active
+{
+	color: #FD2A97;
+}
+
+a img
+{
+	border: none;
+}
+
+ul
+{
+	margin-bottom: 10px;
+	margin-top: 10px;
+	line-height: 1.6em;
+}
+
+p
+{
+	margin-bottom: 20px;
+	line-height: 1.6em;
+	margin-top: 0;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6
+{
+	font-size: 1.5em;
+	color: #000;
+	font-family: Calibri, Arial, Helvetica, sans-serif;
+}
+
+h1
+{
+	font-size: 2em;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+h2
+{
+	padding: 0 0 10px 0;
+}
+h3
+{
+	font-size: 1.2em;
+}
+h4
+{
+	font-size: 1.1em;
+}
+h5, h6
+{
+	font-size: 1em;
+}
+
+/* this rule styles <h2> tags that are the 
+first child of the left and right table columns */
+.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
+{
+	margin-top: 0;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+/* you can specify a greater or lesser percentage for the 
+page width. Or, you can specify an exact pixel width. */
+.page
+{
+	max-width: 850px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#header
+{
+	position: relative;
+	margin-bottom: 0px;
+	color: #000;
+	padding: 0 0px 0 0;
+	height: 120px;
+}
+
+div#logo
+{
+	float: left;
+}
+
+#main
+{
+	padding: 15px;
+	background-color: #fafafa;
+	background-image: url(/Content/bg_gradient.gif);
+	background-repeat: repeat-x;
+	background-position: bottom;
+	margin-bottom: 30px;
+	border: 1px solid white;
+	_height: 1px; /* only IE6 applies CSS properties starting with an underscrore */
+}
+
+#content
+{
+	float: right;
+	width: 623px;
+	min-height: 300px;
+	background-image: url(/Content/present.png);
+	background-position: bottom right;
+	background-repeat: no-repeat;
+	
+}
+
+#footer
+{
+	color: #999;
+	padding: 5px 0 0 0;
+	text-align: center;
+	line-height: normal;
+}
+
+#footer p
+{
+	padding: 5px 0;
+	margin: 0;
+	font-size: .9em;
+}
+
+#userpanel
+{
+	position: absolute;
+	top: 15px;
+	right: 0;
+	color: #fff;
+}
+
+#userpanel a
+{
+	color: #fff;
+}
+
+a.actionLink
+{
+	text-decoration: none;
+	background-color: #FD2A97;
+	color: White;
+	padding: 0 10px;
+	clear: both;
+}
+a.actionLink:hover
+{
+	background-color: #DB4652;
+}
+
+/* USER LIST
+----------------------------------------------------------*/
+
+#userlist
+{
+	background-color: #aaa;
+	float: left;
+	margin-right: 15px;
+	width: 180px;
+}
+
+#userlist ul
+{
+	list-style-type: none;
+	padding: 0;
+}
+
+#userlist a
+{
+	color: #fff;
+	display: block;
+	width: 160px;
+	text-decoration: none;
+	padding: 0 10px;
+	text-transform: capitalize;
+}
+
+#userlist a.active, #userlist a:hover
+{
+	background-color: #FD2A97;
+}
+
+/* TAB MENU   
+----------------------------------------------------------*/
+ul#menu
+{
+	padding: 0;
+	position: relative;
+	margin: 0;
+	text-align: right;
+	top: 82px;
+}
+
+ul#menu li
+{
+	display: inline;
+	list-style: none;
+}
+
+ul#menu li a
+{
+	padding: 10px 15px;
+	text-decoration: none;
+	line-height: 2.8em;
+	background-color: #aaa;
+	color: #fff;
+}
+
+ul#menu li a:hover, ul#menu li a:active
+{
+	background-color: #FFF;
+	color: #FD2A97;
+	text-decoration: none;
+}
+
+ul#menu li.selected a
+{
+	background-color: #fafafa;
+	color: #FD2A97;
+}
+
+/* Forms
+----------------------------------------------------------*/
+form label
+{
+	display: block;
+}
+
+.checkboxBlock label 
+{
+	display: inline-block;
+	position: relative;
+	top: -2px;
+}
+
+input[type=text], input[type=password]
+{
+	width: 300px;
+	font-family: Calibri, Arial, Sans-Serif;
+}
+
+textarea
+{
+	width: 300px;
+	height: 100px;
+	font-family: Calibri, Arial, Sans-Serif;
+	font-size: 85%;
+}
+
+div.notify-info
+{
+	border: 1px solid #1c1;
+	margin-bottom: 20px;
+	padding: 10px;
+	color: #1c1;
+}
+
+div.notify-error
+{
+	border: 1px solid #f00;
+	margin-bottom: 20px;
+	padding: 10px;
+	color: #f00;
+}
+
+/* Wish table
+----------------------------------------------------------*/
+table.wishTable
+{
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+table.wishTable th
+{
+	background-color: #aaa;
+	text-align: left;
+	color: #fff;
+}
+table.wishTable th.name
+{
+	width: 150px;
+}
+table.wishTable th.description
+{
+	width: 200px;
+}
+table.wishTable th.link
+{
+	width: 100px;
+}
+table.wishTable th.calledBy
+{
+	width: 100px;
+}
+table.wishTable th.toolCell
+{
+	background-color: Transparent;
+	text-align: center;
+}
+
+table.wishTable td
+{
+	vertical-align: top;
+	padding-bottom: 5px;
+}
+
+table.wishTable td.toolCell, table.wishTable th.toolCell
+{
+	text-align: right;
+}
+/* MISC  
+----------------------------------------------------------*/
+.clear
+{
+	clear: both;
+}
+
+/******************************************************
+/* Float container fix
+/*****************************************************/
+.fc:after
+{
+	content: ".";
+	clear: both;
+	display: block;
+	visibility: hidden;
+	height: 0;
+}
+
+* html .fc
+{
+	height: 1px;
+}
+

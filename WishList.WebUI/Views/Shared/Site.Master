@@ -1,0 +1,47 @@
+<%@ Master Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title><%: ViewData["Title"] %></title>
+    <%: Html.Css( "Site.css" ) %>
+    <%: Html.Script( "jquery-1.3.2.min.js" )%>
+    <%: Html.Script( "jquery.validate.min.js" )%>
+    <%: Html.Script( "MicrosoftMvcJQueryValidation.js" )%>
+    <%: Html.Script( "utils.js" )%>
+</head>
+<body>
+    <div class="page">
+        <div id="header">
+            <div id="logo">
+                <a href="/"><img src="/Content/logo.png" alt="Önskelistemaskinen" /></a>
+            </div>
+            <% Html.RenderPartial( "/Views/Shared/UserPanel.ascx" ); %>
+            <% if (AppHelper.UserIsLoggedIn())
+               { %>
+            <% Html.RenderPartial( "/Views/Shared/UserTabs.ascx" ); %>
+            <% } %>
+        </div>
+        <div id="main" class="fc">
+            <div id="userlist">	
+				<% Html.RenderAction( "List", "Users" ); %>
+            </div>
+            <div id="content">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		try {
+		var pageTracker = _gat._getTracker("UA-909814-2");
+		pageTracker._trackPageview();
+
+		} catch (err) { }
+	</script>
+</body>
+</html>

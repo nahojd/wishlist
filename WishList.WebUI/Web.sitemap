@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="~/" title="Hem"  description="">
+        <siteMapNode url="~/Home" title="Min shoppinglista"  description="" />
+		<siteMapNode url="~/List/LatestActivity" title="Senaste önskningar"  description="" />
+        <siteMapNode url="/Account/Edit" title="Mitt konto"  description="" />
+    </siteMapNode>
+</siteMap>

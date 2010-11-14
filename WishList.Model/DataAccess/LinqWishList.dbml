@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="WishList" EntityNamespace="WishList.SqlRepository.Data" ContextNamespace="WishList.SqlRepository" Class="LinqWishListDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\sqlexpress;Initial Catalog=WishList;Integrated Security=True" SettingsObjectName="WishList.Data.Properties.Settings" SettingsPropertyName="WishListConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Wish" Member="Wishes">
+    <Type Name="Wish">
+      <Column Name="WishId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="OwnerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TjingedById" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LinkUrl" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Changed" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="User_Wish" Member="User" ThisKey="OwnerId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="User_Wish1" Member="User1" ThisKey="TjingedById" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ApprovalTicket" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="NotifyOnChange" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="User_Wish" Member="Wishes" ThisKey="UserId" OtherKey="OwnerId" Type="Wish" />
+      <Association Name="User_Wish1" Member="Wishes1" ThisKey="UserId" OtherKey="TjingedById" Type="Wish" />
+    </Type>
+  </Table>
+</Database>
