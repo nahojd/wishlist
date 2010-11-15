@@ -22,4 +22,21 @@
       </__PredeploymentMetadata>
     </DeploymentExtensionConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <DeploymentExtension Include="Microsoft.Data.Schema.Sql.Build.SqlPlanOrderModifier">
+      <Assembly>Microsoft.Data.Schema.Sql</Assembly>
+      <Version>10.0.0.0</Version>
+      <Token>sD9ffxHVCjo=</Token>
+    </DeploymentExtension>
+    <DeploymentExtension Include="Microsoft.Data.Schema.Sql.Build.SqlPrePostDeploymentModifier">
+      <Assembly>Microsoft.Data.Schema.Sql</Assembly>
+      <Version>10.0.0.0</Version>
+      <Token>sD9ffxHVCjo=</Token>
+    </DeploymentExtension>
+    <DeploymentExtension Include="Microsoft.Data.Schema.Sql.Refactoring.SqlRefactoringDeploymentContributor">
+      <Assembly>Microsoft.Data.Schema.Sql</Assembly>
+      <Version>10.0.0.0</Version>
+      <Token>sD9ffxHVCjo=</Token>
+    </DeploymentExtension>
+  </ItemGroup>
 </Project>

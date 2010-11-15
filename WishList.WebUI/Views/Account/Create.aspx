@@ -2,7 +2,7 @@
 
 <asp:Content  ContentPlaceHolderID="MainContent" runat="server">
     <%=Notify.Error( ViewData.Model.StatusMessage )%>
-    <% using (Html.BeginForm<AccountController>( x => x.Create() )) { %>
+    <% using (Html.BeginForm()) { %>
      <p><label for="Name">Namn</label>
      <%=Html.TextBox("name")%></p>
      <p><label for="password">Lösenord</label>
@@ -12,7 +12,7 @@
      <p><label for="message">Meddelande (frivilligt)</label>
      <%=Html.TextArea("message")%></p>
      
-     <%=Html.SubmitButton("btnCreate", "Skapa konto")%>
-
+	 <input type="submit" value="Skapa konto" />
+     
     <% } %>
 </asp:Content>

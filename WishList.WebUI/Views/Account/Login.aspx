@@ -6,7 +6,7 @@
     <p>Du måste logga in för att använda Önskelistemaskinen. Om du inte har ett konto kan du skapa ett genom att klicka på "Registrera användare" uppe till höger.</p>
 
     <%=Notify.Error(ViewData.Model.Error) %>
-    <% using (Html.BeginForm<AccountController>( x => x.Authenticate() )) { %>
+    <% using (Html.BeginForm("Authenticate", "Account")) { %>
      <table>
         <tr>
             <td>Login</td>
@@ -19,7 +19,7 @@
         </tr>     
         <tr>
             <td colspan="2">
-                <%=Html.SubmitButton("btnLogin", "Login")%>
+                <input type="submit" value="Login" />
             </td>
         </tr>     
      </table>

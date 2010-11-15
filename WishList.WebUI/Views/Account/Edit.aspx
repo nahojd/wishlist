@@ -16,7 +16,7 @@
 				<label for="NotifyOnChange">Meddela mig via e-post när en önskning jag tjingat ändras</label>
 			</p>
 
-			<%=Html.SubmitButton("EditButton", "Spara")%>
+			<input type="submit" value="Spara" />
 		<% } %>
     </fieldset>
     
@@ -29,7 +29,7 @@
 			<a href="javascript:togglePassword('password', 'togglePasswordLink');" id="togglePasswordLink">Visa tecken</a>
 			</p>
 			
-			<%= Html.SubmitButton( "ChangePasswordButton", "Ändra lösenord" )%>
+			<input type="submit" value="Ändra lösenord" />
 		<% } %>
     </fieldset>
 

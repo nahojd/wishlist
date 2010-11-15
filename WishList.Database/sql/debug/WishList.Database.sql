@@ -3821,7 +3821,7 @@ BEGIN
 	IF( @TranStarted = 1 )
 		COMMIT TRANSACTION
 	RETURN(0)
-END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+END
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4138,7 +4138,6 @@ BEGIN
 		COMMIT TRANSACTION
 	RETURN(0)
 END
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4692,7 +4691,6 @@ GO
   CREATE VIEW [dbo].[vw_aspnet_Applications]
   AS SELECT [dbo].[aspnet_Applications].[ApplicationName], [dbo].[aspnet_Applications].[LoweredApplicationName], [dbo].[aspnet_Applications].[ApplicationId], [dbo].[aspnet_Applications].[Description]
   FROM [dbo].[aspnet_Applications]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4735,7 +4733,6 @@ GO
             [dbo].[aspnet_Users].[LastActivityDate]
   FROM [dbo].[aspnet_Membership] INNER JOIN [dbo].[aspnet_Users]
       ON [dbo].[aspnet_Membership].[UserId] = [dbo].[aspnet_Users].[UserId]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4758,7 +4755,6 @@ GO
                  + DATALENGTH([dbo].[aspnet_Profile].[PropertyValuesString])
                  + DATALENGTH([dbo].[aspnet_Profile].[PropertyValuesBinary])
   FROM [dbo].[aspnet_Profile]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4778,7 +4774,6 @@ GO
   CREATE VIEW [dbo].[vw_aspnet_Roles]
   AS SELECT [dbo].[aspnet_Roles].[ApplicationId], [dbo].[aspnet_Roles].[RoleId], [dbo].[aspnet_Roles].[RoleName], [dbo].[aspnet_Roles].[LoweredRoleName], [dbo].[aspnet_Roles].[Description]
   FROM [dbo].[aspnet_Roles]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4798,7 +4793,6 @@ GO
   CREATE VIEW [dbo].[vw_aspnet_Users]
   AS SELECT [dbo].[aspnet_Users].[ApplicationId], [dbo].[aspnet_Users].[UserId], [dbo].[aspnet_Users].[UserName], [dbo].[aspnet_Users].[LoweredUserName], [dbo].[aspnet_Users].[MobileAlias], [dbo].[aspnet_Users].[IsAnonymous], [dbo].[aspnet_Users].[LastActivityDate]
   FROM [dbo].[aspnet_Users]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4818,7 +4812,6 @@ GO
   CREATE VIEW [dbo].[vw_aspnet_UsersInRoles]
   AS SELECT [dbo].[aspnet_UsersInRoles].[UserId], [dbo].[aspnet_UsersInRoles].[RoleId]
   FROM [dbo].[aspnet_UsersInRoles]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4838,7 +4831,6 @@ GO
   CREATE VIEW [dbo].[vw_aspnet_WebPartState_Paths]
   AS SELECT [dbo].[aspnet_Paths].[ApplicationId], [dbo].[aspnet_Paths].[PathId], [dbo].[aspnet_Paths].[Path], [dbo].[aspnet_Paths].[LoweredPath]
   FROM [dbo].[aspnet_Paths]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4858,7 +4850,6 @@ GO
   CREATE VIEW [dbo].[vw_aspnet_WebPartState_Shared]
   AS SELECT [dbo].[aspnet_PersonalizationAllUsers].[PathId], [DataSize]=DATALENGTH([dbo].[aspnet_PersonalizationAllUsers].[PageSettings]), [dbo].[aspnet_PersonalizationAllUsers].[LastUpdatedDate]
   FROM [dbo].[aspnet_PersonalizationAllUsers]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4878,7 +4869,6 @@ GO
   CREATE VIEW [dbo].[vw_aspnet_WebPartState_User]
   AS SELECT [dbo].[aspnet_PersonalizationPerUser].[PathId], [dbo].[aspnet_PersonalizationPerUser].[UserId], [DataSize]=DATALENGTH([dbo].[aspnet_PersonalizationPerUser].[PageSettings]), [dbo].[aspnet_PersonalizationPerUser].[LastUpdatedDate]
   FROM [dbo].[aspnet_PersonalizationPerUser]
-  
 GO
 SET ANSI_NULLS, QUOTED_IDENTIFIER ON;
 
@@ -4996,13 +4986,129 @@ INSERT [dbo].[aspnet_Membership] ([ApplicationId], [UserId], [Password], [Passwo
 
 
 GO
-PRINT N'Checking existing data aginst newly created constraints';
+PRINT N'Checking existing data against newly created constraints';
+
+
+GO
+USE [$(DatabaseName)];
 
 
 GO
 ALTER TABLE [dbo].[Wish] WITH CHECK CHECK CONSTRAINT [FK_Wish_User];
 
 ALTER TABLE [dbo].[Wish] WITH CHECK CHECK CONSTRAINT [FK_Wish_User1];
+
+
+GO
+CREATE TABLE [#__checkStatus] (
+    [Table]      NVARCHAR (270),
+    [Constraint] NVARCHAR (270),
+    [Where]      NVARCHAR (MAX)
+);
+
+SET NOCOUNT ON;
+
+
+GO
+INSERT INTO [#__checkStatus]
+EXECUTE (N'DBCC CHECKCONSTRAINTS (N''[dbo].[aspnet_Membership]'')
+    WITH NO_INFOMSGS');
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        DROP TABLE [#__checkStatus];
+        RAISERROR (N'An error occured while verifying constraints on table [dbo].[aspnet_Membership]', 16, 127);
+    END
+
+
+GO
+INSERT INTO [#__checkStatus]
+EXECUTE (N'DBCC CHECKCONSTRAINTS (N''[dbo].[aspnet_Paths]'')
+    WITH NO_INFOMSGS');
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        DROP TABLE [#__checkStatus];
+        RAISERROR (N'An error occured while verifying constraints on table [dbo].[aspnet_Paths]', 16, 127);
+    END
+
+
+GO
+INSERT INTO [#__checkStatus]
+EXECUTE (N'DBCC CHECKCONSTRAINTS (N''[dbo].[aspnet_PersonalizationAllUsers]'')
+    WITH NO_INFOMSGS');
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        DROP TABLE [#__checkStatus];
+        RAISERROR (N'An error occured while verifying constraints on table [dbo].[aspnet_PersonalizationAllUsers]', 16, 127);
+    END
+
+
+GO
+INSERT INTO [#__checkStatus]
+EXECUTE (N'DBCC CHECKCONSTRAINTS (N''[dbo].[aspnet_PersonalizationPerUser]'')
+    WITH NO_INFOMSGS');
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        DROP TABLE [#__checkStatus];
+        RAISERROR (N'An error occured while verifying constraints on table [dbo].[aspnet_PersonalizationPerUser]', 16, 127);
+    END
+
+
+GO
+INSERT INTO [#__checkStatus]
+EXECUTE (N'DBCC CHECKCONSTRAINTS (N''[dbo].[aspnet_Profile]'')
+    WITH NO_INFOMSGS');
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        DROP TABLE [#__checkStatus];
+        RAISERROR (N'An error occured while verifying constraints on table [dbo].[aspnet_Profile]', 16, 127);
+    END
+
+
+GO
+INSERT INTO [#__checkStatus]
+EXECUTE (N'DBCC CHECKCONSTRAINTS (N''[dbo].[aspnet_Roles]'')
+    WITH NO_INFOMSGS');
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        DROP TABLE [#__checkStatus];
+        RAISERROR (N'An error occured while verifying constraints on table [dbo].[aspnet_Roles]', 16, 127);
+    END
+
+
+GO
+INSERT INTO [#__checkStatus]
+EXECUTE (N'DBCC CHECKCONSTRAINTS (N''[dbo].[aspnet_Users]'')
+    WITH NO_INFOMSGS');
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        DROP TABLE [#__checkStatus];
+        RAISERROR (N'An error occured while verifying constraints on table [dbo].[aspnet_Users]', 16, 127);
+    END
+
+
+GO
+INSERT INTO [#__checkStatus]
+EXECUTE (N'DBCC CHECKCONSTRAINTS (N''[dbo].[aspnet_UsersInRoles]'')
+    WITH NO_INFOMSGS');
+
+IF @@ROWCOUNT > 0
+    BEGIN
+        DROP TABLE [#__checkStatus];
+        RAISERROR (N'An error occured while verifying constraints on table [dbo].[aspnet_UsersInRoles]', 16, 127);
+    END
+
+
+GO
+SET NOCOUNT OFF;
+
+DROP TABLE [#__checkStatus];
 
 
 GO

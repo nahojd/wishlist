@@ -17,7 +17,7 @@
 			<Metadata Name="CompatibilityMode" Value="100" />
 		</CustomData>
 		<CustomData Category="Permissions" Type="XmlPermissions">
-			<Metadata Name="FileName" Value="D:\USERS\JOHAN\DOCUMENTS\VISUAL STUDIO 2010\PROJECTS\WISHLIST2\WISHLIST.DATABASE\PROPERTIES\DATABASE.SQLPERMISSIONS" />
+			<Metadata Name="FileName" Value="C:\USERS\JOHAN\HGREPS\WISHLIST\WISHLIST.DATABASE\PROPERTIES\DATABASE.SQLPERMISSIONS" />
 		</CustomData>
 	</Header>
 	<Model>
@@ -1130,6 +1130,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="2782" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE [dbo].aspnet_AnyDataInTables&#xA;    @TablesToCheck int&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -1345,6 +1348,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="1328" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [dbo].aspnet_Applications_CreateApplication&#xA;    @ApplicationName      nvarchar(256),&#xA;    @ApplicationId        uniqueidentifier OUTPUT&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -1421,6 +1427,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="394" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [dbo].aspnet_CheckSchemaVersion&#xA;    @Feature                   nvarchar(128),&#xA;    @CompatibleSchemaVersion   nvarchar(128)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -1954,6 +1963,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="852" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_ChangePasswordQuestionAndAnswer&#xA;    @ApplicationName       nvarchar(256),&#xA;    @UserName              nvarchar(256),&#xA;    @NewPasswordQuestion   nvarchar(256),&#xA;    @NewPasswordAnswer     nvarchar(128)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -2539,6 +2551,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="5479" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_CreateUser&#xA;    @ApplicationName                        nvarchar(256),&#xA;    @UserName                               nvarchar(256),&#xA;    @Password                               nvarchar(128),&#xA;    @PasswordSalt                           nvarchar(128),&#xA;    @Email                                  nvarchar(256),&#xA;    @PasswordQuestion                       nvarchar(256),&#xA;    @PasswordAnswer                         nvarchar(128),&#xA;    @IsApproved                             bit,&#xA;    @CurrentTimeUtc                         datetime,&#xA;    @CreateDate                             datetime = NULL,&#xA;    @UniqueEmail                            int      = 0,&#xA;    @PasswordFormat                         int      = 0,&#xA;    @UserId                                 uniqueidentifier OUTPUT&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -2820,6 +2835,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="2128" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_FindUsersByEmail&#xA;    @ApplicationName       nvarchar(256),&#xA;    @EmailToMatch          nvarchar(256),&#xA;    @PageIndex             int,&#xA;    @PageSize              int&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -3092,6 +3110,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1794" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_FindUsersByName&#xA;    @ApplicationName       nvarchar(256),&#xA;    @UserNameToMatch       nvarchar(256),&#xA;    @PageIndex             int,&#xA;    @PageSize              int&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -3341,6 +3362,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1650" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_GetAllUsers&#xA;    @ApplicationName       nvarchar(256),&#xA;    @PageIndex             int,&#xA;    @PageSize              int&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -3463,6 +3487,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="771" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_GetNumberOfUsersOnline&#xA;    @ApplicationName            nvarchar(256),&#xA;    @MinutesSinceLastInActive   int,&#xA;    @CurrentTimeUtc             datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -3835,6 +3862,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="4443" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_GetPassword&#xA;    @ApplicationName                nvarchar(256),&#xA;    @UserName                       nvarchar(256),&#xA;    @MaxInvalidPasswordAttempts     int,&#xA;    @PasswordAttemptWindow          int,&#xA;    @CurrentTimeUtc                 datetime,&#xA;    @PasswordAnswer                 nvarchar(128) = NULL&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -4071,6 +4101,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="2141" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_GetPasswordWithFormat&#xA;    @ApplicationName                nvarchar(256),&#xA;    @UserName                       nvarchar(256),&#xA;    @UpdateLastLoginActivityDate    bit,&#xA;    @CurrentTimeUtc                 datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -4178,6 +4211,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="880" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_GetUserByEmail&#xA;    @ApplicationName  nvarchar(256),&#xA;    @Email            nvarchar(256)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -4381,6 +4417,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1886" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_GetUserByName&#xA;    @ApplicationName      nvarchar(256),&#xA;    @UserName             nvarchar(256),&#xA;    @CurrentTimeUtc       datetime,&#xA;    @UpdateLastActivity   bit = 0&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -4532,6 +4571,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="878" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_GetUserByUserId&#xA;    @UserId               uniqueidentifier,&#xA;    @CurrentTimeUtc       datetime,&#xA;    @UpdateLastActivity   bit = 0&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -4946,6 +4988,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="4525" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_ResetPassword&#xA;    @ApplicationName             nvarchar(256),&#xA;    @UserName                    nvarchar(256),&#xA;    @NewPassword                 nvarchar(128),&#xA;    @MaxInvalidPasswordAttempts  int,&#xA;    @PasswordAttemptWindow       int,&#xA;    @PasswordSalt                nvarchar(128),&#xA;    @CurrentTimeUtc              datetime,&#xA;    @PasswordFormat              int = 0,&#xA;    @PasswordAnswer              nvarchar(128) = NULL&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -5144,6 +5189,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="918" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_SetPassword&#xA;    @ApplicationName  nvarchar(256),&#xA;    @UserName         nvarchar(256),&#xA;    @NewPassword      nvarchar(128),&#xA;    @PasswordSalt     nvarchar(128),&#xA;    @CurrentTimeUtc   datetime,&#xA;    @PasswordFormat   int = 0&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -5285,6 +5333,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1022" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_UnlockUser&#xA;    @ApplicationName                         nvarchar(256),&#xA;    @UserName                                nvarchar(256)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -5610,6 +5661,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="2122" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_UpdateUser&#xA;    @ApplicationName      nvarchar(256),&#xA;    @UserName             nvarchar(256),&#xA;    @Email                nvarchar(256),&#xA;    @Comment              ntext,&#xA;    @IsApproved           bit,&#xA;    @LastLoginDate        datetime,&#xA;    @LastActivityDate     datetime,&#xA;    @UniqueEmail          int,&#xA;    @CurrentTimeUtc       datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -6049,6 +6103,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="4671" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Membership_UpdateUserInfo&#xA;    @ApplicationName                nvarchar(256),&#xA;    @UserName                       nvarchar(256),&#xA;    @IsPasswordCorrect              bit,&#xA;    @UpdateLastLoginActivityDate    bit,&#xA;    @MaxInvalidPasswordAttempts     int,&#xA;    @PasswordAttemptWindow          int,&#xA;    @CurrentTimeUtc                 datetime,&#xA;    @LastLoginDate                  datetime,&#xA;    @LastActivityDate               datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -6262,6 +6319,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="586" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Paths_CreatePath&#xA;    @ApplicationId UNIQUEIDENTIFIER,&#xA;    @Path           NVARCHAR(256),&#xA;    @PathId         UNIQUEIDENTIFIER OUTPUT&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -6331,6 +6391,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="278" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Personalization_GetApplicationId (&#xA;    @ApplicationName NVARCHAR(256),&#xA;    @ApplicationId UNIQUEIDENTIFIER OUT)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -6462,6 +6525,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="915" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationAdministration_DeleteAllState (&#xA;    @AllUsersScope bit,&#xA;    @ApplicationName NVARCHAR(256),&#xA;    @Count int OUT)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -6954,6 +7020,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="4840" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationAdministration_FindState (&#xA;    @AllUsersScope bit,&#xA;    @ApplicationName NVARCHAR(256),&#xA;    @PageIndex              INT,&#xA;    @PageSize               INT,&#xA;    @Path NVARCHAR(256) = NULL,&#xA;    @UserName NVARCHAR(256) = NULL,&#xA;    @InactiveSinceDate DATETIME = NULL)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -7171,6 +7240,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1401" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationAdministration_GetCountOfState (&#xA;    @Count int OUT,&#xA;    @AllUsersScope bit,&#xA;    @ApplicationName NVARCHAR(256),&#xA;    @Path NVARCHAR(256) = NULL,&#xA;    @UserName NVARCHAR(256) = NULL,&#xA;    @InactiveSinceDate DATETIME = NULL)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -7292,6 +7364,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="796" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationAdministration_ResetSharedState (&#xA;    @Count int OUT,&#xA;    @ApplicationName NVARCHAR(256),&#xA;    @Path NVARCHAR(256))&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -7479,6 +7554,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1291" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationAdministration_ResetUserState (&#xA;    @Count                  int                 OUT,&#xA;    @ApplicationName        NVARCHAR(256),&#xA;    @InactiveSinceDate      DATETIME            = NULL,&#xA;    @UserName               NVARCHAR(256)       = NULL,&#xA;    @Path                   NVARCHAR(256)       = NULL)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -7648,6 +7726,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="736" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationAllUsers_GetPageSettings (&#xA;    @ApplicationName  NVARCHAR(256),&#xA;    @Path              NVARCHAR(256))&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -7754,6 +7835,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="732" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationAllUsers_ResetPageSettings (&#xA;    @ApplicationName  NVARCHAR(256),&#xA;    @Path              NVARCHAR(256))&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -7907,6 +7991,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1100" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationAllUsers_SetPageSettings (&#xA;    @ApplicationName  NVARCHAR(256),&#xA;    @Path             NVARCHAR(256),&#xA;    @PageSettings     IMAGE,&#xA;    @CurrentTimeUtc   DATETIME)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -8240,6 +8327,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1266" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationPerUser_GetPageSettings (&#xA;    @ApplicationName  NVARCHAR(256),&#xA;    @UserName         NVARCHAR(256),&#xA;    @Path             NVARCHAR(256),&#xA;    @CurrentTimeUtc   DATETIME)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -8421,6 +8511,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1260" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationPerUser_ResetPageSettings (&#xA;    @ApplicationName  NVARCHAR(256),&#xA;    @UserName         NVARCHAR(256),&#xA;    @Path             NVARCHAR(256),&#xA;    @CurrentTimeUtc   DATETIME)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -8637,6 +8730,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1721" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_PersonalizationPerUser_SetPageSettings (&#xA;    @ApplicationName  NVARCHAR(256),&#xA;    @UserName         NVARCHAR(256),&#xA;    @Path             NVARCHAR(256),&#xA;    @PageSettings     IMAGE,&#xA;    @CurrentTimeUtc   DATETIME)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -8864,6 +8960,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="1044" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Profile_DeleteInactiveProfiles&#xA;    @ApplicationName        nvarchar(256),&#xA;    @ProfileAuthOptions     int,&#xA;    @InactiveSinceDate      datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -9008,6 +9107,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="1653" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Profile_DeleteProfiles&#xA;    @ApplicationName        nvarchar(256),&#xA;    @UserNames              nvarchar(4000)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -9137,6 +9239,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="876" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Profile_GetNumberOfInactiveProfiles&#xA;    @ApplicationName        nvarchar(256),&#xA;    @ProfileAuthOptions     int,&#xA;    @InactiveSinceDate      datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -9446,6 +9551,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="2090" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Profile_GetProfiles&#xA;    @ApplicationName        nvarchar(256),&#xA;    @ProfileAuthOptions     int,&#xA;    @PageIndex              int,&#xA;    @PageSize               int,&#xA;    @UserNameToMatch        nvarchar(256) = NULL,&#xA;    @InactiveSinceDate      datetime      = NULL&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -9594,6 +9702,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="976" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Profile_GetProperties&#xA;    @ApplicationName      nvarchar(256),&#xA;    @UserName             nvarchar(256),&#xA;    @CurrentTimeUtc       datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -9888,6 +9999,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="2483" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Profile_SetProperties&#xA;    @ApplicationName        nvarchar(256),&#xA;    @PropertyNames          ntext,&#xA;    @PropertyValuesString   ntext,&#xA;    @PropertyValuesBinary   image,&#xA;    @UserName               nvarchar(256),&#xA;    @IsUserAnonymous        bit,&#xA;    @CurrentTimeUtc         datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -10012,6 +10126,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="753" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [dbo].aspnet_RegisterSchemaVersion&#xA;    @Feature                   nvarchar(128),&#xA;    @CompatibleSchemaVersion   nvarchar(128),&#xA;    @IsCurrentVersion          bit,&#xA;    @RemoveIncompatibleSchema  bit&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -10287,6 +10404,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1338" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_Roles_CreateRole&#xA;    @ApplicationName  nvarchar(256),&#xA;    @RoleName         nvarchar(256)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -10479,6 +10599,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="1804" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Roles_DeleteRole&#xA;    @ApplicationName            nvarchar(256),&#xA;    @RoleName                   nvarchar(256),&#xA;    @DeleteOnlyIfRoleIsEmpty    bit&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -10549,6 +10672,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="462" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Roles_GetAllRoles (&#xA;    @ApplicationName           nvarchar(256))&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -10642,6 +10768,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="560" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_Roles_RoleExists&#xA;    @ApplicationName  nvarchar(256),&#xA;    @RoleName         nvarchar(256)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -10851,6 +10980,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="758" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [dbo].aspnet_Setup_RemoveAllRoleMembers&#xA;    @name   sysname&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -10931,6 +11063,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="712" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [dbo].aspnet_Setup_RestorePermissions&#xA;    @name   sysname&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -11002,6 +11137,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="297" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [dbo].aspnet_UnRegisterSchemaVersion&#xA;    @Feature                   nvarchar(128),&#xA;    @CompatibleSchemaVersion   nvarchar(128)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -11338,6 +11476,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="681" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [dbo].aspnet_Users_CreateUser&#xA;    @ApplicationId    uniqueidentifier,&#xA;    @UserName         nvarchar(256),&#xA;    @IsUserAnonymous  bit,&#xA;    @LastActivityDate DATETIME,&#xA;    @UserId           uniqueidentifier OUTPUT&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -11634,6 +11775,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="4072" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE [dbo].aspnet_Users_DeleteUser&#xA;    @ApplicationName  nvarchar(256),&#xA;    @UserName         nvarchar(256),&#xA;    @TablesToDeleteFrom int,&#xA;    @NumTablesDeletedFrom int OUTPUT&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -11811,7 +11955,7 @@ BEGIN
 	IF( @TranStarted = 1 )
 		COMMIT TRANSACTION
 	RETURN(0)
-END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ]]></Value>
+END]]></Value>
 			</Property>
 			<Relationship Name="BodyDependencies">
 				<Entry>
@@ -12121,6 +12265,9 @@ END                                                                             
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="3307" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_UsersInRoles_AddUsersToRoles&#xA;&#x9;@ApplicationName  nvarchar(256),&#xA;&#x9;@UserNames&#x9;&#x9;  nvarchar(4000),&#xA;&#x9;@RoleNames&#x9;&#x9;  nvarchar(4000),&#xA;&#x9;@CurrentTimeUtc   datetime&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -12271,6 +12418,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="948" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_UsersInRoles_FindUsersInRole&#xA;    @ApplicationName  nvarchar(256),&#xA;    @RoleName         nvarchar(256),&#xA;    @UserNameToMatch  nvarchar(256)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -12399,6 +12549,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="856" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_UsersInRoles_GetRolesForUser&#xA;    @ApplicationName  nvarchar(256),&#xA;    @UserName         nvarchar(256)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -12527,6 +12680,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="862" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_UsersInRoles_GetUsersInRoles&#xA;    @ApplicationName  nvarchar(256),&#xA;    @RoleName         nvarchar(256)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -12685,6 +12841,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="1073" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_UsersInRoles_IsUserInRole&#xA;    @ApplicationName  nvarchar(256),&#xA;    @UserName         nvarchar(256),&#xA;    @RoleName         nvarchar(256)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -12809,8 +12968,7 @@ BEGIN
 	IF( @TranStarted = 1 )
 		COMMIT TRANSACTION
 	RETURN(0)
-END
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ]]></Value>
+END]]></Value>
 			</Property>
 			<Relationship Name="BodyDependencies">
 				<Entry>
@@ -13093,6 +13251,9 @@ END
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="3367" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE dbo.aspnet_UsersInRoles_RemoveUsersFromRoles&#xA;&#x9;@ApplicationName  nvarchar(256),&#xA;&#x9;@UserNames&#x9;&#x9;  nvarchar(4000),&#xA;&#x9;@RoleNames&#x9;&#x9;  nvarchar(4000)&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -13734,6 +13895,9 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1432" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.aspnet_WebEvent_LogEvent&#xA;        @EventId         char(32),&#xA;        @EventTimeUtc    datetime,&#xA;        @EventTime       datetime,&#xA;        @EventType       nvarchar(256),&#xA;        @EventSequence   decimal(19,0),&#xA;        @EventOccurrence decimal(19,0),&#xA;        @EventCode       int,&#xA;        @EventDetailCode int,&#xA;        @Message         nvarchar(1024),&#xA;        @ApplicationPath nvarchar(256),&#xA;        @ApplicationVirtualPath nvarchar(256),&#xA;        @MachineName    nvarchar(256),&#xA;        @RequestUrl      nvarchar(1024),&#xA;        @ExceptionType   nvarchar(256),&#xA;        @Details         ntext&#xA;AS" />
 			</Annotation>
 		</Element>
@@ -14068,8 +14232,7 @@ END]]></Value>
 			<Property Name="IsQuotedIdentifierOn" Value="False" />
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="False"><![CDATA[ SELECT [dbo].[aspnet_Applications].[ApplicationName], [dbo].[aspnet_Applications].[LoweredApplicationName], [dbo].[aspnet_Applications].[ApplicationId], [dbo].[aspnet_Applications].[Description]
-  FROM [dbo].[aspnet_Applications]
-  ]]></Value>
+  FROM [dbo].[aspnet_Applications]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14133,6 +14296,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="280" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_Applications]&#xA;  AS" />
 			</Annotation>
 		</Element>
@@ -14164,8 +14330,7 @@ END]]></Value>
             [dbo].[aspnet_Users].[IsAnonymous],
             [dbo].[aspnet_Users].[LastActivityDate]
   FROM [dbo].[aspnet_Membership] INNER JOIN [dbo].[aspnet_Users]
-      ON [dbo].[aspnet_Membership].[UserId] = [dbo].[aspnet_Users].[UserId]
-  ]]></Value>
+      ON [dbo].[aspnet_Membership].[UserId] = [dbo].[aspnet_Users].[UserId]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14463,6 +14628,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="1481" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_MembershipUsers]&#xA;  AS" />
 			</Annotation>
 		</Element>
@@ -14474,8 +14642,7 @@ END]]></Value>
       [DataSize]=  DATALENGTH([dbo].[aspnet_Profile].[PropertyNames])
                  + DATALENGTH([dbo].[aspnet_Profile].[PropertyValuesString])
                  + DATALENGTH([dbo].[aspnet_Profile].[PropertyValuesBinary])
-  FROM [dbo].[aspnet_Profile]
-  ]]></Value>
+  FROM [dbo].[aspnet_Profile]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14527,6 +14694,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="382" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_Profiles]&#xA;  AS" />
 			</Annotation>
 		</Element>
@@ -14535,8 +14705,7 @@ END]]></Value>
 			<Property Name="IsQuotedIdentifierOn" Value="False" />
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="False"><![CDATA[ SELECT [dbo].[aspnet_Roles].[ApplicationId], [dbo].[aspnet_Roles].[RoleId], [dbo].[aspnet_Roles].[RoleName], [dbo].[aspnet_Roles].[LoweredRoleName], [dbo].[aspnet_Roles].[Description]
-  FROM [dbo].[aspnet_Roles]
-  ]]></Value>
+  FROM [dbo].[aspnet_Roles]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14612,6 +14781,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="255" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_Roles]&#xA;  AS" />
 			</Annotation>
 		</Element>
@@ -14620,8 +14792,7 @@ END]]></Value>
 			<Property Name="IsQuotedIdentifierOn" Value="False" />
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="False"><![CDATA[ SELECT [dbo].[aspnet_Users].[ApplicationId], [dbo].[aspnet_Users].[UserId], [dbo].[aspnet_Users].[UserName], [dbo].[aspnet_Users].[LoweredUserName], [dbo].[aspnet_Users].[MobileAlias], [dbo].[aspnet_Users].[IsAnonymous], [dbo].[aspnet_Users].[LastActivityDate]
-  FROM [dbo].[aspnet_Users]
-  ]]></Value>
+  FROM [dbo].[aspnet_Users]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14721,6 +14892,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="332" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_Users]&#xA;  AS" />
 			</Annotation>
 		</Element>
@@ -14729,8 +14903,7 @@ END]]></Value>
 			<Property Name="IsQuotedIdentifierOn" Value="False" />
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="False"><![CDATA[ SELECT [dbo].[aspnet_UsersInRoles].[UserId], [dbo].[aspnet_UsersInRoles].[RoleId]
-  FROM [dbo].[aspnet_UsersInRoles]
-  ]]></Value>
+  FROM [dbo].[aspnet_UsersInRoles]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14770,6 +14943,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="167" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_UsersInRoles]&#xA;  AS" />
 			</Annotation>
 		</Element>
@@ -14778,8 +14954,7 @@ END]]></Value>
 			<Property Name="IsQuotedIdentifierOn" Value="False" />
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="False"><![CDATA[ SELECT [dbo].[aspnet_Paths].[ApplicationId], [dbo].[aspnet_Paths].[PathId], [dbo].[aspnet_Paths].[Path], [dbo].[aspnet_Paths].[LoweredPath]
-  FROM [dbo].[aspnet_Paths]
-  ]]></Value>
+  FROM [dbo].[aspnet_Paths]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14843,6 +15018,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="224" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_WebPartState_Paths]&#xA;  AS" />
 			</Annotation>
 		</Element>
@@ -14851,8 +15029,7 @@ END]]></Value>
 			<Property Name="IsQuotedIdentifierOn" Value="False" />
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="False"><![CDATA[ SELECT [dbo].[aspnet_PersonalizationAllUsers].[PathId], [DataSize]=DATALENGTH([dbo].[aspnet_PersonalizationAllUsers].[PageSettings]), [dbo].[aspnet_PersonalizationAllUsers].[LastUpdatedDate]
-  FROM [dbo].[aspnet_PersonalizationAllUsers]
-  ]]></Value>
+  FROM [dbo].[aspnet_PersonalizationAllUsers]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14898,6 +15075,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="294" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_WebPartState_Shared]&#xA;  AS" />
 			</Annotation>
 		</Element>
@@ -14906,8 +15086,7 @@ END]]></Value>
 			<Property Name="IsQuotedIdentifierOn" Value="False" />
 			<Property Name="QueryScript">
 				<Value QuotedIdentifiers="False"><![CDATA[ SELECT [dbo].[aspnet_PersonalizationPerUser].[PathId], [dbo].[aspnet_PersonalizationPerUser].[UserId], [DataSize]=DATALENGTH([dbo].[aspnet_PersonalizationPerUser].[PageSettings]), [dbo].[aspnet_PersonalizationPerUser].[LastUpdatedDate]
-  FROM [dbo].[aspnet_PersonalizationPerUser]
-  ]]></Value>
+  FROM [dbo].[aspnet_PersonalizationPerUser]]]></Value>
 			</Property>
 			<Relationship Name="Columns">
 				<Entry>
@@ -14965,6 +15144,9 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="3" />
+				<Property Name="Length" Value="336" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="&#xA;  CREATE VIEW [dbo].[vw_aspnet_WebPartState_User]&#xA;  AS" />
 			</Annotation>
 		</Element>

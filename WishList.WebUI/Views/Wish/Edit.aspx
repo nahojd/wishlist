@@ -8,7 +8,7 @@
         <p><label for="Description">Beskrivning</label><%= Html.TextAreaFor( w => w.Description, new { maxlength = 500 } )%></p>
         <p><label for="LinkUrl">Länk</label><%= Html.EditorFor( w => w.LinkUrl )%></p>
         
-        <%= Html.SubmitButton("Save", "Spara") %>
+		<input type="submit" value="Spara" />
     <% } %>
     
     <%= Html.ActionLink( "Ta bort önskning", "Delete", new { wishId = Model.Id } )%>   <a href="javascript:history.go(-1)">Avbryt</a>

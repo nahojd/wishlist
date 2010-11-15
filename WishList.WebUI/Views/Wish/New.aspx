@@ -8,7 +8,7 @@
         <p><label for="Description">Beskrivning</label><%= Html.TextArea( "Description", null, new { maxlength = 500 } )%></p>
         <p><label for="LinkUrl">Länk</label><%= Html.TextBox( "LinkUrl", null, new { maxlength = 255 } )%></p>
        
-        <%= Html.SubmitButton("Save", "Spara") %>
+        <input type="submit" value="Spara" />
         
     <% } %>
 </asp:Content>

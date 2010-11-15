@@ -168,6 +168,7 @@
     <Content Include="Views\Account\ApproveOrDeclineStatus.aspx" />
     <Content Include="Views\Account\Create.aspx" />
     <Content Include="Views\Account\Edit.aspx" />
+    <Content Include="Views\Account\Login.aspx" />
     <Content Include="Views\List\Show.aspx" />
     <Content Include="Views\List\ShowShoppingList.ascx" />
     <Content Include="Views\Shared\UserPanel.ascx" />
