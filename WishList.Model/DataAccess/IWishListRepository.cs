@@ -10,7 +10,10 @@ namespace WishList.Data.DataAccess
 
 		Wish SaveWish( Wish wish );
 
-		void RemoveWish( Wish wish );
+		IQueryable<User> GetFriends( User user );
+		void AddFriend( User user, User friend );
+		void RemoveFriend( User user, User friend);
+        void RemoveWish( Wish wish );
 
 		User CreateUser( User user );
 

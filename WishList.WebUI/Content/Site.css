@@ -132,7 +132,6 @@ div#logo
 	background-image: url(/Content/present.png);
 	background-position: bottom right;
 	background-repeat: no-repeat;
-	
 }
 
 #footer
@@ -187,23 +186,42 @@ a.actionLink:hover
 	width: 180px;
 }
 
+#userlist form 
+{
+	padding-bottom: 15px;
+}
+
+#userlist h3 
+{
+	color: #fff;
+}
+
+#userlist h3, #userlist input[type=submit] 
+{
+	margin-left: 15px;
+}
+
 #userlist ul
 {
 	list-style-type: none;
 	padding: 0;
-}
-
-#userlist a
-{
-	color: #fff;
-	display: block;
-	width: 160px;
-	text-decoration: none;
-	padding: 0 10px;
 	text-transform: capitalize;
 }
 
-#userlist a.active, #userlist a:hover
+#userlist li
+{
+	display: block;
+	width: 160px;
+}
+
+#userlist li, #userlist a
+{
+	color: #fff;
+	text-decoration: none;
+	padding: 0 10px;
+}
+
+#userlist li.active, #userlist li:hover
 {
 	background-color: #FD2A97;
 }
@@ -254,7 +272,7 @@ form label
 	display: block;
 }
 
-.checkboxBlock label 
+.checkboxBlock label
 {
 	display: inline-block;
 	position: relative;

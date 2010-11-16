@@ -10,10 +10,13 @@ using System.Web;
 
 namespace WishList.Services
 {
-	public class UserService : WishList.Services.IUserService
+	public class UserService : IUserService
 	{
 		IWishListRepository _repository = null;
 		private static readonly string _userListCacheKey = "UserList";
+
+		public UserService()
+			: this( new SqlWishListRepository() ) { }
 
 		public UserService( IWishListRepository repository )
 		{
@@ -26,12 +29,33 @@ namespace WishList.Services
 
 		public IList<User> GetUsers()
 		{
-			//return UserList;
 			List<User> userList = new List<User>( UserList.Count );
-			foreach( User u in UserList ) {
+			foreach (User u in UserList)
+			{
 				userList.Add( u.Clone() );
 			}
 			return userList;
+		}
+
+		public IList<User> GetFriends( User user )
+		{
+			return _repository.GetFriends( user ).ToList();
+		}
+
+		public void AddFriend( string username, string friendname )
+		{
+			var user = GetUser( username );
+			var friend = GetUser( friendname );
+
+			_repository.AddFriend( user, friend );
+		}
+
+		public void RemoveFriend( string username, string friendname )
+		{
+			var user = GetUser( username );
+			var friend = GetUser( friendname );
+
+			_repository.RemoveFriend( user, friend );
 		}
 
 		public User CreateUser( User user )
@@ -93,7 +117,7 @@ namespace WishList.Services
 			}
 		}
 
-		private void ClearCache()
+		public void ClearCache()
 		{
 			HttpRuntime.Cache.Remove( _userListCacheKey );
 		}
@@ -136,5 +160,8 @@ namespace WishList.Services
 			_repository.SetPassword( username, newPassword );
 			ClearCache();
 		}
+
+
+		
 	}
 }

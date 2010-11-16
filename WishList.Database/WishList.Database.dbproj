@@ -558,4 +558,9 @@
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema Objects\Tables\dbo.Friend.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+  </ItemGroup>
 </Project>

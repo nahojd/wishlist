@@ -26,3 +26,5 @@
     <% } %>
 
 </asp:Content>
+
+<asp:Content runat="server" ContentPlaceHolderID="LeftContent"></asp:Content>

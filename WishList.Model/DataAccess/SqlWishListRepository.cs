@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Security;
+using WishList.SqlRepository;
+using RepData = WishList.SqlRepository.Data;
 
 namespace WishList.Data.DataAccess
 {
@@ -16,7 +18,6 @@ namespace WishList.Data.DataAccess
 		~SqlWishListRepository()
 		{
 			db.Dispose();
-			db = null;
 		}
 
 		public IQueryable<User> GetUsers()
@@ -69,7 +70,7 @@ namespace WishList.Data.DataAccess
 				bool createNew = wishToSave == null;
 				if (createNew)
 				{
-					wishToSave = new SqlRepository.Data.Wish();
+					wishToSave = new RepData.Wish();
 					dataContext.Wishes.InsertOnSubmit( wishToSave );
 					wishToSave.Created = timeStamp;
 					wishToSave.Changed = timeStamp;
@@ -100,11 +101,11 @@ namespace WishList.Data.DataAccess
 
 		public void RemoveWish( Wish wish )
 		{
-			using (SqlRepository.LinqWishListDataContext dataContext = new SqlRepository.LinqWishListDataContext())
+			using (var dataContext = new SqlRepository.LinqWishListDataContext())
 			{
-				SqlRepository.Data.Wish wishToBeRemoved = (from w in dataContext.Wishes
-														   where w.WishId == wish.Id
-														   select w).SingleOrDefault();
+				RepData.Wish wishToBeRemoved = (from w in dataContext.Wishes
+											  where w.WishId == wish.Id
+											  select w).SingleOrDefault();
 
 				dataContext.Wishes.DeleteOnSubmit( wishToBeRemoved );
 				dataContext.SubmitChanges();
@@ -118,7 +119,7 @@ namespace WishList.Data.DataAccess
 
 			if (createStatus == MembershipCreateStatus.Success)
 			{
-				var newUser = new SqlRepository.Data.User
+				var newUser = new RepData.User
 								{
 									Name = user.Name,
 									Email = user.Email,
@@ -128,7 +129,7 @@ namespace WishList.Data.DataAccess
 
 				try
 				{
-					using (SqlRepository.LinqWishListDataContext dataContext = new SqlRepository.LinqWishListDataContext())
+					using (var dataContext = new SqlRepository.LinqWishListDataContext())
 					{
 						dataContext.Users.InsertOnSubmit( newUser );
 						dataContext.SubmitChanges();
@@ -170,7 +171,7 @@ namespace WishList.Data.DataAccess
 			mu.IsApproved = true;
 			Membership.UpdateUser( mu );
 
-			using (SqlRepository.LinqWishListDataContext dataContext = new SqlRepository.LinqWishListDataContext())
+			using (var dataContext = new SqlRepository.LinqWishListDataContext())
 			{
 				var user = (from u in dataContext.Users
 							where u.Name == username
@@ -194,7 +195,7 @@ namespace WishList.Data.DataAccess
 
 		public User UpdateUser( User user )
 		{
-			using (SqlRepository.LinqWishListDataContext dataContext = new SqlRepository.LinqWishListDataContext())
+			using (var dataContext = new SqlRepository.LinqWishListDataContext())
 			{
 				var dbUser = (from u in dataContext.Users
 							  where u.UserId == user.Id
@@ -227,6 +228,51 @@ namespace WishList.Data.DataAccess
 				return null;
 
 			return str.Length > length ? str.Substring( 0, length ) : str;
+		}
+
+
+		public IQueryable<User> GetFriends( User user )
+		{
+			return from u in db.Users
+				   where db.Friends.Any( x => x.UserId == user.Id && x.FriendId == u.UserId )
+				   select new User
+					{
+						Id = u.UserId,
+						Name = u.Name,
+						Email = u.Email,
+						NotifyOnChange = u.NotifyOnChange
+					};
+		}
+
+		public void AddFriend( User user, User friend )
+		{
+			using (var context = new LinqWishListDataContext())
+			{
+				var friendAlreadyExists = GetFriend( user, friend, context ) != null;
+				if (friendAlreadyExists)
+					throw new InvalidOperationException( String.Format( "{0} är redan vän till {1}!", friend.Name, user.Name ) );
+
+				context.Friends.InsertOnSubmit( new RepData.Friend { UserId = user.Id, FriendId = friend.Id } );
+				context.SubmitChanges();
+			}
+		}
+
+		public void RemoveFriend( User user, User friend )
+		{
+			using (var context = new LinqWishListDataContext())
+			{
+				var friendToRemove = GetFriend( user, friend, context );
+
+				context.Friends.DeleteOnSubmit( friendToRemove );
+				context.SubmitChanges();
+			}
+		}
+
+		private static RepData.Friend GetFriend( User user, User friend, LinqWishListDataContext context )
+		{
+			return (from f in context.Friends
+					where f.UserId == user.Id && f.FriendId == friend.Id
+					select f).SingleOrDefault();
 		}
 	}
 }

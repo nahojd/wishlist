@@ -9,12 +9,22 @@ using WishList.WebUI.Helpers;
 using System.Web.Routing;
 using WishList.WebUI.ModelBinders;
 using System.Security.Principal;
+using WishList.WebUI.ViewModels;
 
 namespace WishList.WebUI.Controllers
 {
-    public partial class UsersController : Controller
+	public partial class UsersController : Controller
 	{
-        public virtual ActionResult Index()
+		private IUserService service;
+
+		public UsersController() : this( new UserService() ) { }
+
+		public UsersController( IUserService service )
+		{
+			this.service = service;
+		}
+
+		public virtual ActionResult Index()
 		{
 			// Add action logic here
 			throw new NotImplementedException();
@@ -24,10 +34,6 @@ namespace WishList.WebUI.Controllers
 		{
 			if (currentPrincipal != null)
 			{
-
-				SqlWishListRepository repository = new SqlWishListRepository();
-				UserService service = new UserService( repository );
-
 				UsersListData data = new UsersListData { Users = service.GetUsers() };
 
 				//HACK: Is this a call to the Show action in the List controller? Route should not be hard coded!!
@@ -39,6 +45,24 @@ namespace WishList.WebUI.Controllers
 				return View( data );
 			}
 			return null;
+		}
+
+		[Authorize]
+		public ActionResult ListFriends( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
+		{
+			var user = service.GetUser( currentUser.Identity.Name );
+			var userList = service.GetFriends( user );
+			userList.Insert( 0, user );
+			var model = new ListFriendsModel { Friends = userList };
+
+
+			string id = RouteData.Values["id"] as string;
+			if (!string.IsNullOrWhiteSpace( id ))
+			{
+				model.SelectedUsername = id;
+			}
+
+			return View( model );
 		}
 	}
 

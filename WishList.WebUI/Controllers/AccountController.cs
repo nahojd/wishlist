@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using WishList.Data.DataAccess;
 using WishList.Services;
@@ -9,16 +10,25 @@ using System.Configuration;
 using System.Diagnostics;
 using WishList.WebUI.ModelBinders;
 using System.Security.Principal;
+using System.Collections.Generic;
 
 namespace WishList.WebUI.Controllers
 {
-	public partial class AccountController : Controller
+	public struct Service
+	{
+		static Service()
+		{
+			
+		}
+	}
+    public class AccountController : Controller
 	{
 		public class UserData
 		{
 			public string Error { get; set; }
 			public string Info { get; set; }
 			public User User { get; set; }
+			public IDictionary<string, bool> Friends { get; set; }
 
 			public UserData()
 			{
@@ -33,29 +43,16 @@ namespace WishList.WebUI.Controllers
 			public string StatusMessage { get; set; }
 		}
 
-		private IWishListRepository _repository;
-		private UserService _service;
+		private IUserService _service;
 
 		public AccountController()
-			: this( new SqlWishListRepository() )
+			: this( new UserService() )
 		{
 		}
 
-		public AccountController( IWishListRepository repository )
+		public AccountController( IUserService service )
 		{
-			_repository = repository;
-		}
-
-		private UserService Service
-		{
-			get
-			{
-				if (_service == null)
-				{
-					_service = new UserService( _repository );
-				}
-				return _service;
-			}
+			_service = service;
 		}
 
 		#region Controller actions
@@ -85,7 +82,7 @@ namespace WishList.WebUI.Controllers
 		public virtual ActionResult Authenticate( string username, string password, string returnUrl )
 		{
 
-			bool success = Service.ValidateUser( username, password );
+			bool success = _service.ValidateUser( username, password );
 
 			if (success)
 			{
@@ -120,31 +117,67 @@ namespace WishList.WebUI.Controllers
 			SaveAccountResult result = new SaveAccountResult { StatusMessage = "Ditt konto kunde inte skapas" };
 
 			user.SetPassword( password );
-			User createdUser = Service.CreateUser( user );
-			if (createdUser != null)
-			{
-				result.Success = true;
-				result.StatusMessage = "Ditt konto är skapat men är ännu inte aktiverat. Detta sker inom kort.";
-				SendRequestForApproval( createdUser, Service.GetApprovalTicket( user.Name ).Value, message );
-			}
+			User createdUser = _service.CreateUser( user );
+
+			if (createdUser == null)
+				return View( "Create", result );
+
+			result.Success = true;
+			result.StatusMessage = "Ditt konto är skapat men är ännu inte aktiverat. Detta sker inom kort.";
+			SendRequestForApproval( createdUser, _service.GetApprovalTicket( user.Name ).Value, message );
 
 			return View( "Create", result );
 		}
 
 		[AcceptVerbs( "GET" )]
+		[Authorize]
 		public virtual ActionResult Edit( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
 		{
-			User user = Service.GetUser( currentUser.Identity.Name );
+			User user = _service.GetUser( currentUser.Identity.Name );
 
-			return View( new UserData { User = user } );
+			return View( new UserData
+			{
+				User = user,
+				Friends = GetFriends(user)
+			} );
 		}
 
-		[AcceptVerbs( "POST" )]
+		private IDictionary<string, bool> GetFriends( User user )
+		{
+			var friends = _service.GetFriends( user );
+			var allUsers = _service.GetUsers();
+			var friendDictionary = new SortedDictionary<string, bool>();
+			foreach (var u in allUsers)
+			{
+				if (u.Name != user.Name)
+					friendDictionary.Add( u.Name, friends.Any( x => x.Name == u.Name ) );
+			}
+			return friendDictionary;
+		}
+
+		[Authorize]
+		public ActionResult AddFriend( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser, string username )
+		{
+			_service.AddFriend( currentUser.Identity.Name, username );
+
+			return Json( new { status = "ok" } );
+		}
+
+		[Authorize]
+		public ActionResult RemoveFriend( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser, string username )
+		{
+			_service.RemoveFriend( currentUser.Identity.Name, username );
+
+			return Json( new { status = "ok" } );
+		}
+
+        [AcceptVerbs( "POST" )]
+		[Authorize]
 		public virtual ActionResult Edit( User editedUser, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
 		{
 			//TODO: Validation checks
 
-			User user = Service.GetUser( currentUser.Identity.Name );
+			User user = _service.GetUser( currentUser.Identity.Name );
 
 			user.Email = editedUser.Email;
 			user.NotifyOnChange = editedUser.NotifyOnChange;
@@ -152,7 +185,7 @@ namespace WishList.WebUI.Controllers
 			UserData data = new UserData { User = user };
 			try
 			{
-				data.User = Service.UpdateUser( user );
+				data.User = _service.UpdateUser( user );
 				data.Info = "Ändringen sparad";
 			}
 			catch
@@ -163,15 +196,16 @@ namespace WishList.WebUI.Controllers
 			return View( data );
 		}
 
+		[Authorize]
 		public virtual ActionResult ChangePassword( string password, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
 		{
 			UserData data = new UserData();
-			User user = Service.GetUser( currentUser.Identity.Name );
+			User user = _service.GetUser( currentUser.Identity.Name );
 			data.User = user;
 
 			if (!string.IsNullOrEmpty( password ))
 			{
-				Service.UpdatePassword( user.Name, password );
+				_service.UpdatePassword( user.Name, password );
 				data.Info = "Ditt lösenord är uppdaterat!";
 			}
 			else
@@ -196,7 +230,7 @@ namespace WishList.WebUI.Controllers
 
 			try
 			{
-				Service.ApproveUser( username, guid );
+				_service.ApproveUser( username, guid );
 			}
 			catch (InvalidOperationException ex)
 			{
@@ -249,23 +283,21 @@ namespace WishList.WebUI.Controllers
 
 		private void SendApprovalConfirmation( string username )
 		{
-			User user = Service.GetUser( username );
+			User user = _service.GetUser( username );
 			if (user != null)
 			{
 				string body = string.Format( "Ditt konto har blivit godkänt. Du kan nu logga in på {0}",
 											ConfigurationManager.AppSettings["ApplicationUrl"] );
-				SmtpClient client = new SmtpClient
-										{
-											Host = ConfigurationManager.AppSettings["SmtpServer"]
-										};
-				try
+				using (SmtpClient client = new SmtpClient { Host = ConfigurationManager.AppSettings["SmtpServer"] })
 				{
-					client.Send( ConfigurationManager.AppSettings["AdministratorEmail"], user.Email,
-								"Ditt konto på Önskelistemaskinen har aktiverats", body );
-				}
-				catch
-				{
-					Debug.WriteLine( "Det gick inte att skicka mailet." );
+					try
+					{
+						client.Send( ConfigurationManager.AppSettings["AdministratorEmail"], user.Email, "Ditt konto på Önskelistemaskinen har aktiverats", body );
+					}
+					catch
+					{
+						Debug.WriteLine( "Det gick inte att skicka mailet." );
+					}
 				}
 			}
 		}

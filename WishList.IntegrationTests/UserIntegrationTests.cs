@@ -18,7 +18,7 @@ namespace WishList.IntegrationTests
 	public class UserIntegrationTests
 	{
 		UserService service;
-		IWishListRepository rep;
+		SqlWishListRepository rep;
 		private List<string> usersToDelete;
 
 		public UserIntegrationTests()
@@ -69,6 +69,7 @@ namespace WishList.IntegrationTests
 									  where u.Name == userName
 									  select u;
 				db.Users.DeleteAllOnSubmit( removeUserQuery );
+
 				db.SubmitChanges();
 			}
 
@@ -232,6 +233,57 @@ namespace WishList.IntegrationTests
 			User user = CreateUser( "ApprovalTicketTestUser", "ApprovalTicketTestUser@test.com", "approveme" );
 			Guid? ticket = rep.GetApprovalTicket( user.Name );
 			Assert.IsTrue( ticket.HasValue, "Approval ticket was null" );
+		}
+
+		[TestMethod]
+		public void CanAddFriend()
+		{
+			var user = CreateUser( "addfrienduser", "a@b.se", "p4ssw0rd" );
+			var friend1 = CreateUser( "friend11", "c@d.se", "p4ssw0rd" );
+
+			rep.AddFriend( user, friend1 );
+
+			var friends = rep.GetFriends( user );
+			Assert.AreEqual( friend1.Name, friends.Single().Name );
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void WhenFriendExist_AddFriendWillThrowException()
+		{
+			var user = CreateUser( "doubleaddfrienduser", "a@b.se", "p4ssw0rd" );
+			var friend = CreateUser( "friend123123", "c@d.se", "p4ssw0rd" );
+
+			rep.AddFriend( user, friend );
+			rep.AddFriend( user, friend );
+		}
+
+		[TestMethod]
+		public void CanRemoveFriend()
+		{
+			var user = CreateUser( "removefrienduser", "a@b.se", "p4ssw0rd" );
+			var friend = CreateUser( "friend29", "c@d.se", "p4ssw0rd" );
+			rep.AddFriend( user, friend );
+
+			rep.RemoveFriend( user, friend );
+
+			var friends = rep.GetFriends( user );
+			Assert.AreEqual( 0, friends.Count() );
+		}
+
+		[TestMethod]
+		public void CanGetFriends()
+		{
+			var user = CreateUser( "friendtestuser", "a@b.se", "p4ssw0rd" );
+			var friend1 = CreateUser( "friend1", "b@c.se", "p4ssw0rd" );
+			var friend2 = CreateUser( "friend2", "d@e.se", "p4ssw0rd" );
+			rep.AddFriend( user, friend1 );
+			rep.AddFriend( user, friend2 );
+
+			var result = rep.GetFriends( user );
+
+			Assert.IsNotNull( result );
+			Assert.AreEqual( 2, result.Count() );
 		}
 	}
 }

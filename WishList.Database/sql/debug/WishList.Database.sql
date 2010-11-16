@@ -749,6 +749,17 @@ CREATE TABLE [dbo].[aspnet_WebEvent_Events] (
 
 
 GO
+PRINT N'Creating [dbo].[Friend]...';
+
+
+GO
+CREATE TABLE [dbo].[Friend] (
+    [UserId]   INT NOT NULL,
+    [FriendId] INT NOT NULL
+);
+
+
+GO
 PRINT N'Creating [dbo].[User]...';
 
 

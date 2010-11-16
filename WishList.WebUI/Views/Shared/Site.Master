@@ -24,7 +24,9 @@
         </div>
         <div id="main" class="fc">
             <div id="userlist">	
-				<% Html.RenderAction( "List", "Users" ); %>
+				<asp:ContentPlaceHolder runat="server" ID="LeftContent">
+					<% Html.RenderAction( "ListFriends", "Users" ); %>
+				</asp:ContentPlaceHolder>
             </div>
             <div id="content">
                 <asp:ContentPlaceHolder ID="MainContent" runat="server" />

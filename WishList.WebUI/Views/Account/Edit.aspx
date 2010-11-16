@@ -34,3 +34,34 @@
     </fieldset>
 
 </asp:Content>
+
+<asp:Content runat="server" ContentPlaceHolderID="LeftContent">
+	
+	<% if (false) { %><script type="text/javascript" src="~/Scripts/jquery-1.3.2-vsdoc.js"></script><% } %>
+	<script type="text/javascript">
+		function saveFriend(name, addFriend) {
+			var url;
+			if (addFriend)
+				url = '<%: Url.Action("AddFriend") %>?username=' + name;
+			else
+				url = '<%: Url.Action("RemoveFriend") %>?username=' + name;
+
+			$.getJSON(url, function (data) {
+				alert(data.status);
+			});
+		}
+	</script>
+
+	
+	<h3>Vänner</h3>
+	<%: Html.HiddenFor(m => m.User.Id)%>
+	<ul>
+	<% foreach (var item in Model.Friends) { %>
+		<li>
+			<input type="checkbox" name="friend_<%: item.Key  %>" <%: item.Value ? "checked=checked" : "" %> onclick="saveFriend('<%: item.Key %>', this.checked);" />
+			<%: item.Key %>
+		</li>
+	<% } %>
+	</ul>
+		
+</asp:Content>
