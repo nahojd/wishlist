@@ -11,6 +11,7 @@ using System.Security.Principal;
 
 namespace WishList.WebUI.Controllers
 {
+	[Authorize]
     public partial class ListController : Controller
 	{
 		private readonly IWishService _wishService;

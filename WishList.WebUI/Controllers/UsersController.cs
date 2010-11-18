@@ -13,6 +13,7 @@ using WishList.WebUI.ViewModels;
 
 namespace WishList.WebUI.Controllers
 {
+	[Authorize]
 	public partial class UsersController : Controller
 	{
 		private IUserService service;
@@ -22,12 +23,6 @@ namespace WishList.WebUI.Controllers
 		public UsersController( IUserService service )
 		{
 			this.service = service;
-		}
-
-		public virtual ActionResult Index()
-		{
-			// Add action logic here
-			throw new NotImplementedException();
 		}
 
 		public virtual ActionResult List( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentPrincipal )
@@ -47,7 +42,7 @@ namespace WishList.WebUI.Controllers
 			return null;
 		}
 
-		[Authorize]
+
 		public ActionResult ListFriends( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
 		{
 			var user = service.GetUser( currentUser.Identity.Name );

@@ -138,13 +138,6 @@
     <Compile Include="ModelBinders\IPrincipalModelBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ListFriendsModel.cs" />
-    <Compile Include="Views\Account\ApproveOrDeclineStatus.aspx.cs">
-      <DependentUpon>ApproveOrDeclineStatus.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Account\ApproveOrDeclineStatus.aspx.designer.cs">
-      <DependentUpon>ApproveOrDeclineStatus.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Home\About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

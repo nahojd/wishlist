@@ -226,6 +226,12 @@ a.actionLink:hover
 	background-color: #FD2A97;
 }
 
+#userlist p 
+{
+	margin: 10px;
+	color: #000;
+}
+
 /* TAB MENU   
 ----------------------------------------------------------*/
 ul#menu

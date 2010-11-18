@@ -7,6 +7,7 @@ using WishList.WebUI.ModelBinders;
 
 namespace WishList.WebUI.Controllers
 {
+	[Authorize]
 	public partial class WishController : Controller
 	{
 		private readonly IWishService _wishService;
@@ -19,7 +20,6 @@ namespace WishList.WebUI.Controllers
 		}
 
 		[AcceptVerbs( "GET" )]
-		[Authorize]
 		public virtual ActionResult Edit( int wishId, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
 		{
 			Wish wish = _wishService.GetWish( wishId );
@@ -37,7 +37,6 @@ namespace WishList.WebUI.Controllers
 		}
 
 		[AcceptVerbs( "POST" )]
-		[Authorize]
 		public virtual ActionResult Edit( int wishId, Wish editedWish, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
 		{
 			if (ModelState.IsValid)
@@ -68,7 +67,6 @@ namespace WishList.WebUI.Controllers
 		}
 
 		[AcceptVerbs( "POST" )]
-		[Authorize]
 		public virtual ActionResult New( Wish newWish, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal user )
 		{
 			if (ModelState.IsValid)
@@ -82,7 +80,6 @@ namespace WishList.WebUI.Controllers
 			return View(newWish);
 		}
 
-		[Authorize]
 		public virtual ActionResult Call( int wishId, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal user )
 		{
 			if (user == null)
@@ -103,7 +100,6 @@ namespace WishList.WebUI.Controllers
 
 		}
 
-		[Authorize]
 		public virtual ActionResult UnCall( int wishId, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal user )
 		{
 			if (user == null)
@@ -118,7 +114,6 @@ namespace WishList.WebUI.Controllers
 			return RedirectToAction( "Show", "List", new { id = wish.Owner.Name } );
 		}
 
-		[Authorize]
 		public virtual ActionResult Delete( int wishId, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentPrincipal )
 		{
 			if (currentPrincipal == null)

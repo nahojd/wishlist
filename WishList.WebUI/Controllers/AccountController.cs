@@ -14,14 +14,7 @@ using System.Collections.Generic;
 
 namespace WishList.WebUI.Controllers
 {
-	public struct Service
-	{
-		static Service()
-		{
-			
-		}
-	}
-    public class AccountController : Controller
+	public class AccountController : Controller
 	{
 		public class UserData
 		{
@@ -54,9 +47,7 @@ namespace WishList.WebUI.Controllers
 		{
 			_service = service;
 		}
-
-		#region Controller actions
-
+				
 		public virtual ActionResult Index()
 		{
 			return RedirectToAction( "Login" );
@@ -72,13 +63,13 @@ namespace WishList.WebUI.Controllers
 			return View( "Login", data );
 		}
 
-		[AcceptVerbs( "GET" )]
+		[HttpGet]
 		public virtual ActionResult Authenticate()
 		{
 			return View( "Login" );
 		}
 
-		[AcceptVerbs( "POST" )]
+		[HttpPost]
 		public virtual ActionResult Authenticate( string username, string password, string returnUrl )
 		{
 
@@ -105,13 +96,12 @@ namespace WishList.WebUI.Controllers
 			return RedirectToAction( "Index", "Home" );
 		}
 
-		[AcceptVerbs( "GET" )]
 		public virtual ActionResult Create()
 		{
 			return View( new SaveAccountResult() );
 		}
 
-		[AcceptVerbs( "POST" )]
+		[HttpPost]
 		public virtual ActionResult Create( User user, string password, string message )
 		{
 			SaveAccountResult result = new SaveAccountResult { StatusMessage = "Ditt konto kunde inte skapas" };
@@ -129,7 +119,7 @@ namespace WishList.WebUI.Controllers
 			return View( "Create", result );
 		}
 
-		[AcceptVerbs( "GET" )]
+		[HttpGet]
 		[Authorize]
 		public virtual ActionResult Edit( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
 		{
@@ -138,8 +128,33 @@ namespace WishList.WebUI.Controllers
 			return View( new UserData
 			{
 				User = user,
-				Friends = GetFriends(user)
+				Friends = GetFriends( user )
 			} );
+		}
+
+		[HttpPost]
+		[Authorize]
+		public virtual ActionResult Edit( User editedUser, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
+		{
+			//TODO: Validation checks
+
+			User user = _service.GetUser( currentUser.Identity.Name );
+
+			user.Email = editedUser.Email;
+			user.NotifyOnChange = editedUser.NotifyOnChange;
+
+			UserData data = new UserData { User = user };
+			try
+			{
+				data.User = _service.UpdateUser( user );
+				data.Info = "Ändringen sparad";
+			}
+			catch
+			{
+				data.Error = "Kunde inte spara dina ändringar.";
+			}
+
+			return View( data );
 		}
 
 		private IDictionary<string, bool> GetFriends( User user )
@@ -169,31 +184,6 @@ namespace WishList.WebUI.Controllers
 			_service.RemoveFriend( currentUser.Identity.Name, username );
 
 			return Json( new { status = "ok" } );
-		}
-
-        [AcceptVerbs( "POST" )]
-		[Authorize]
-		public virtual ActionResult Edit( User editedUser, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
-		{
-			//TODO: Validation checks
-
-			User user = _service.GetUser( currentUser.Identity.Name );
-
-			user.Email = editedUser.Email;
-			user.NotifyOnChange = editedUser.NotifyOnChange;
-
-			UserData data = new UserData { User = user };
-			try
-			{
-				data.User = _service.UpdateUser( user );
-				data.Info = "Ändringen sparad";
-			}
-			catch
-			{
-				data.Error = "Kunde inte spara dina ändringar.";
-			}
-
-			return View( data );
 		}
 
 		[Authorize]
@@ -247,7 +237,6 @@ namespace WishList.WebUI.Controllers
 			throw new NotImplementedException( "Decline är inte implementerat ännu - gör manuellt" );
 		}
 
-		#endregion
 
 		#region Helper methods
 
