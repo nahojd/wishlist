@@ -7,6 +7,7 @@ syntax: glob
 
 WishList.WebUI/bin
 WishList.WebUI/obj
+WishList.WebUI/App_Data
 WishList.IntegrationTests/bin
 WishList.IntegrationTests/obj
 WishList.Model/bin

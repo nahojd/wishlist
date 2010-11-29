@@ -59,8 +59,27 @@ namespace WishList.Tests.Controllers
 			Assert.IsNotNull( userData.User, "User was null" );
 			Assert.AreEqual( editUser.Email, userData.User.Email, "Email did not change" );
 			Assert.AreEqual( editUser.NotifyOnChange, userData.User.NotifyOnChange, "NotifyOnChange did not change" );
+		}
 
+		[TestMethod]
+		public void PostToEdit_ShouldReturnModelWithDictionaryOfFriends()
+		{
+			User user = new User { Name = "friendstest" };
+			_service.GetUser( Arg.Any<string>() ).Returns( user );
+			_service.GetUsers().Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" } } );
+			_service.GetFriends( user ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
+			_service.UpdateUser( Arg.Any<User>() ).Returns( x => x.Arg<User>() );
 
+			IPrincipal currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
+
+			var result = controller.Edit( user, currentUser ) as ViewResult;
+			var model = result.ViewData.Model as AccountController.UserData;
+
+			Assert.IsNotNull( model.Friends );
+			Assert.AreEqual( model.Friends.Count, 3 );
+			Assert.IsTrue( model.Friends["User1"] );
+			Assert.IsFalse( model.Friends["User2"] );
+			Assert.IsTrue( model.Friends["User3"] );
 		}
 
 		[TestMethod]

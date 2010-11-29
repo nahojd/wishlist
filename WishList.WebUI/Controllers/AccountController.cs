@@ -22,12 +22,6 @@ namespace WishList.WebUI.Controllers
 			public string Info { get; set; }
 			public User User { get; set; }
 			public IDictionary<string, bool> Friends { get; set; }
-
-			public UserData()
-			{
-				User = new User();
-			}
-
 		}
 
 		public class SaveAccountResult
@@ -47,7 +41,7 @@ namespace WishList.WebUI.Controllers
 		{
 			_service = service;
 		}
-				
+
 		public virtual ActionResult Index()
 		{
 			return RedirectToAction( "Login" );
@@ -143,18 +137,18 @@ namespace WishList.WebUI.Controllers
 			user.Email = editedUser.Email;
 			user.NotifyOnChange = editedUser.NotifyOnChange;
 
-			UserData data = new UserData { User = user };
+			var model = new UserData { User = user, Friends = GetFriends( user ) };
 			try
 			{
-				data.User = _service.UpdateUser( user );
-				data.Info = "Ändringen sparad";
+				model.User = _service.UpdateUser( user );
+				model.Info = "Ändringen sparad";
 			}
 			catch
 			{
-				data.Error = "Kunde inte spara dina ändringar.";
+				model.Error = "Kunde inte spara dina ändringar.";
 			}
 
-			return View( data );
+			return View( model );
 		}
 
 		private IDictionary<string, bool> GetFriends( User user )
