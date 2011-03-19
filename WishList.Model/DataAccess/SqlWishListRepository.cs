@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Security;
 using WishList.SqlRepository;
 using RepData = WishList.SqlRepository.Data;
+using WishList.Data.Membership;
 
 namespace WishList.Data.DataAccess
 {
@@ -10,17 +11,21 @@ namespace WishList.Data.DataAccess
 	{
 		SqlRepository.LinqWishListDataContext readDataContext;
 		LinqWishListDataContext writeDataContext;
+		IMembershipWrapper membership;
+
 		bool disposed;
 
-		public SqlWishListRepository()
+		public SqlWishListRepository( IMembershipWrapper membership )
 		{
 			readDataContext = new SqlRepository.LinqWishListDataContext { ObjectTrackingEnabled = false };
+			this.membership = membership;
 		}
 
-		public SqlWishListRepository( LinqWishListDataContext dataContext )
+		public SqlWishListRepository( LinqWishListDataContext dataContext, IMembershipWrapper membership )
 		{
 			readDataContext = dataContext;
 			writeDataContext = dataContext;
+			this.membership = membership;
 		}
 
 		~SqlWishListRepository()
@@ -134,7 +139,7 @@ namespace WishList.Data.DataAccess
 		public User CreateUser( User user )
 		{
 			MembershipCreateStatus createStatus;
-			MembershipUser membershipUser = Membership.CreateUser( user.Name, user.Password, user.Email, null, null, false, out createStatus );
+			MembershipUser membershipUser = membership.CreateUser( user.Name, user.Password, user.Email, null, null, false, out createStatus );
 
 			if (createStatus == MembershipCreateStatus.Success)
 			{
@@ -159,7 +164,7 @@ namespace WishList.Data.DataAccess
 				}
 				catch (Exception)
 				{
-					Membership.DeleteUser( membershipUser.UserName );
+					membership.DeleteUser( membershipUser.UserName );
 					throw;
 				}
 			}
@@ -180,14 +185,14 @@ namespace WishList.Data.DataAccess
 				throw new InvalidOperationException( "Wrong ticket" );
 			}
 
-			MembershipUser mu = Membership.GetUser( username );
+			MembershipUser mu = membership.GetUser( username );
 			if (mu == null)
 			{
 				throw new InvalidOperationException( String.Format( "No user with username {0}", username ) );
 			}
 
 			mu.IsApproved = true;
-			Membership.UpdateUser( mu );
+			membership.UpdateUser( mu );
 
 			var dataContext = GetWriteDataContext();
 			var user = (from u in dataContext.Users
@@ -199,7 +204,7 @@ namespace WishList.Data.DataAccess
 
 		public bool ValidateUser( string username, string password )
 		{
-			return Membership.ValidateUser( username, password );
+			return membership.ValidateUser( username, password );
 		}
 
 		public Guid? GetApprovalTicket( string username )
@@ -231,7 +236,7 @@ namespace WishList.Data.DataAccess
 		public void SetPassword( string username, string password )
 		{
 
-			MembershipUser mu = Membership.GetUser( username );
+			MembershipUser mu = membership.GetUser( username );
 			mu.ChangePassword( mu.ResetPassword(), password );
 
 		}

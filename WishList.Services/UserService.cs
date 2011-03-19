@@ -7,6 +7,7 @@ using WishList.Data.Filters;
 using WishList.Data.DataAccess;
 using System.Web.Caching;
 using System.Web;
+using WishList.Data.Membership;
 
 namespace WishList.Services
 {
@@ -16,7 +17,7 @@ namespace WishList.Services
 		private static readonly string _userListCacheKey = "UserList";
 
 		public UserService()
-			: this( new SqlWishListRepository() ) { }
+			: this( new SqlWishListRepository( new MembershipWrapper() ) ) { }
 
 		public UserService( IWishListRepository repository )
 		{
@@ -162,6 +163,6 @@ namespace WishList.Services
 		}
 
 
-		
+
 	}
 }

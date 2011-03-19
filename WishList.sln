@@ -6,6 +6,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B26C4C5-554E-46CF-BA4E-F004F6CFA19D}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
+		Performance1.psess = Performance1.psess
 		WishList.vsmdi = WishList.vsmdi
 	EndProjectSection
 EndProject

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
+using WishList.Data.Membership;
 
 namespace WishList.WebUI.IoC
 {
@@ -20,7 +21,8 @@ namespace WishList.WebUI.IoC
 				} );
 
 			//ForRequestedType<WishList.Data.DataAccess.IWishListRepository>().TheDefaultIsConcreteType<WishList.Data.DataAccess.SqlWishListRepository>();
-			ForRequestedType<WishList.Data.DataAccess.IWishListRepository>().TheDefault.Is.ConstructedBy( () => new WishList.Data.DataAccess.SqlWishListRepository() );
+			var membership = new MembershipWrapper();
+			ForRequestedType<WishList.Data.DataAccess.IWishListRepository>().TheDefault.Is.ConstructedBy( () => new WishList.Data.DataAccess.SqlWishListRepository( membership ) );
 
 			//För den inbyggda account-controllern. Kan tas bort om den inte längre används.
 			//ForRequestedType<Kurshantering.WebUI.Controllers.IFormsAuthentication>().TheDefaultIsConcreteType<Kurshantering.WebUI.Controllers.FormsAuthenticationService>();
