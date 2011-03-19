@@ -8,6 +8,10 @@ using WishList.Data;
 using WishList.Data.Extensions;
 using WishList.Services;
 using WishList.Data.Filters;
+using DB = WishList.SqlRepository.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Transactions;
 
 namespace WishList.IntegrationTests
 {
@@ -17,16 +21,13 @@ namespace WishList.IntegrationTests
 	[TestClass]
 	public class WishListIntegrationTests
 	{
+		private SqlRepository.LinqWishListDataContext dataContext;
 		private UserService service;
-		private IWishListRepository rep;
+		private SqlWishListRepository rep;
 		private WishService wishService;
 
-		public WishListIntegrationTests()
-		{
-			rep = new SqlWishListRepository();
-			service = new UserService( rep );
-			wishService = new WishService( rep, new TestMailService() );
-		}
+		private int firstUserId;
+		private int secondUserId;
 
 		private TestContext testContextInstance;
 
@@ -51,29 +52,42 @@ namespace WishList.IntegrationTests
 		[TestInitialize]
 		public void SetUp()
 		{
+			dataContext = new SqlRepository.LinqWishListDataContext();
+			dataContext.Connection.Open();
+			var transaction = dataContext.Connection.BeginTransaction();
+			dataContext.Transaction = transaction;
+			rep = new SqlWishListRepository( dataContext );
+			service = new UserService( rep );
+			wishService = new WishService( rep, new TestMailService() );
 
+
+			PopulateDB();
+		}
+
+		private void PopulateDB()
+		{
+			var firstUser = new DB.User { Name = "First", Email = "first@example.com" };
+			var secondUser = new DB.User { Name = "Second", Email = "second@example.com" };
+			dataContext.Users.InsertOnSubmit( firstUser );
+			dataContext.Users.InsertOnSubmit( secondUser );
+
+			var wishes = new List<DB.Wish>{ 
+				new DB.Wish { Name = "First wish", Description = "1st", Created = DateTime.Now, User = firstUser }, 
+				new DB.Wish { Name = "Second wish", Description = "2nd", Created = DateTime.Now, User = secondUser } 
+			};
+			dataContext.Wishes.InsertAllOnSubmit( wishes );
+
+			dataContext.SubmitChanges();
+			firstUserId = firstUser.UserId;
+			secondUserId = secondUser.UserId;
 		}
 
 		[TestCleanup]
 		public void TearDown()
 		{
-			//Clean up database
-			using (SqlRepository.LinqWishListDataContext db = new SqlRepository.LinqWishListDataContext())
-			{
-				//Remove wishes that was added in SqlRepository_Can_Add_Wish and SqlRepository_Can_Remove_Wish
-				var removeWishQuery = from w in db.Wishes
-									  where w.Name == "Addtest wish"
-									  || w.Name == "Removetest wish"
-									  || w.Name == "Update test wish" || w.Name == "Updated test wish"
-									  || w.Name.StartsWith( "Lorem ipsum" )
-									  select w;
-				db.Wishes.DeleteAllOnSubmit( removeWishQuery );
-
-				//Remove user that was created in SqlRepository_Can_Create_User
-				var removeUserQuery = from u in db.Users where u.Name == "CreateTestUser" select u;
-				db.Users.DeleteAllOnSubmit( removeUserQuery );
-				db.SubmitChanges();
-			}
+			dataContext.Transaction.Rollback();
+			dataContext.Connection.Close();
+			rep.Dispose();
 		}
 
 		#region Additional test attributes
@@ -112,49 +126,41 @@ namespace WishList.IntegrationTests
 		[TestMethod]
 		public void SqlRepository_Can_Return_ShoppingList()
 		{
-			int userId = 1;
-			IList<Wish> shoppinglist = wishService.GetShoppingList( userId );
+			IList<Wish> shoppinglist = wishService.GetShoppingList( firstUserId );
 			Assert.IsNotNull( shoppinglist, "Shoppinglist was null" );
 		}
 
 		[TestMethod]
 		public void SqlRepository_Can_Add_Wish()
 		{
-			//DateTime startTime = DateTime.Now;
-
 			Wish wish = new Wish
 			{
-				Name = "Addtest wish", //If you change this, change cleanup code.
+				Name = "Addtest wish",
 				Description = "Description of wish",
-				Owner = new User() { Id = 1 },
-				CalledByUser = new User() { Id = 2 },
+				Owner = new User() { Id = firstUserId },
+				CalledByUser = new User() { Id = secondUserId },
 				LinkUrl = "http://localhost"
 			};
 
 			rep.SaveWish( wish );
 
-			using (SqlRepository.LinqWishListDataContext db = new SqlRepository.LinqWishListDataContext())
-			{
-				var loadedWishes = (from w in db.Wishes
-									where w.Name == wish.Name
-									select w).ToList();
+			var loadedWishes = (from w in dataContext.Wishes
+								where w.Name == wish.Name
+								select w).ToList();
 
-				Assert.IsTrue( loadedWishes.Count == 1, "Did not contain 1 wish" );
-				Assert.AreEqual( loadedWishes[0].Name, wish.Name, "Wish name was not correct" );
-				Assert.AreEqual( loadedWishes[0].Description, wish.Description, "Wish description was not correct" );
-				Assert.AreEqual( loadedWishes[0].OwnerId, wish.Owner.Id, "Wish ownerid was not correct" );
-				Assert.AreEqual( loadedWishes[0].TjingedById, wish.CalledByUser.Id, "Wish tjingedbyid was not correct" );
-				Assert.AreEqual( loadedWishes[0].LinkUrl, wish.LinkUrl, "Wish linkurl was not correct" );
-				//Assert.IsTrue( loadedWishes[0].Created >= startTime, string.Format("Created time ({0}) was less than the start time ({1})", loadedWishes[0].Created.Ticks, startTime.Ticks ) );
-				Assert.AreEqual( loadedWishes[0].Created, loadedWishes[0].Changed, "Change time was not equal to created time" );
-
-			}
+			Assert.IsTrue( loadedWishes.Count == 1, "Did not contain 1 wish" );
+			Assert.AreEqual( loadedWishes[0].Name, wish.Name, "Wish name was not correct" );
+			Assert.AreEqual( loadedWishes[0].Description, wish.Description, "Wish description was not correct" );
+			Assert.AreEqual( loadedWishes[0].OwnerId, wish.Owner.Id, "Wish ownerid was not correct" );
+			Assert.AreEqual( loadedWishes[0].TjingedById, wish.CalledByUser.Id, "Wish tjingedbyid was not correct" );
+			Assert.AreEqual( loadedWishes[0].LinkUrl, wish.LinkUrl, "Wish linkurl was not correct" );
+			Assert.AreEqual( loadedWishes[0].Created, loadedWishes[0].Changed, "Change time was not equal to created time" );
 		}
 
 		[TestMethod]
 		public void Newly_Created_Wish_Will_Have_A_Change_Date()
 		{
-			Wish wish = new Wish { Owner = new User { Id = 1 }, Name = "Change date test wish", Description = "Whatever..." };
+			Wish wish = new Wish { Owner = new User { Id = firstUserId }, Name = "Change date test wish", Description = "Whatever..." };
 			wish = rep.SaveWish( wish );
 
 			Assert.IsNotNull( wish.Changed, "Changed date was null on newly created wish" );
@@ -168,7 +174,7 @@ namespace WishList.IntegrationTests
 				Name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus, neque eu imperdiet posuere, orci sapien faucibus metus, a suscipit lacus metus.",
 				Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ut mi et enim condimentum blandit. Vivamus tincidunt nulla eu sapien. Morbi vel metus. Nunc ac turpis. Duis sollicitudin viverra arcu. Aliquam erat volutpat. Quisque lorem libero, consequat a, mollis et, rhoncus vel, velit. Donec elementum luctus nunc. Mauris ultrices, turpis et condimentum ornare, purus augue malesuada lacus, nec porta ipsum nisi eu ligula. Donec eu massa. Maecenas at dolor. Curabitur non augue. Praesent viverra. Donec sit amet nisl. Mauris consequat. In volutpat, est sit amet condimentum tempus, tellus nullam.",
 				LinkUrl = "http://Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean magna purus, dictum et, interdum vitae, adipiscing non, enim. Nunc nibh mi, malesuada sit amet, tristique et, pellentesque eget, nisi. Etiam metus urna, pellentesque id, volutpat at, aliquet vitae, dolor. In accumsan. Praesent volutpat.com",
-				Owner = new User { Id = 1 }
+				Owner = new User { Id = firstUserId }
 			};
 
 			Wish createdWish = rep.SaveWish( wish );
@@ -184,27 +190,24 @@ namespace WishList.IntegrationTests
 			//First we add the wish we want to remove later.
 			Wish wish = new Wish
 			{
-				Name = "Removetest wish", //If you change this, change cleanup code.
+				Name = "Removetest wish",
 				Description = "Description of wish",
-				Owner = new User() { Id = 1 },
-				CalledByUser = new User() { Id = 2 },
+				Owner = new User() { Id = firstUserId },
+				CalledByUser = new User() { Id = secondUserId },
 				LinkUrl = "http://localhost"
 			};
 			int numberOfWishes = rep.GetWishes().Count<Wish>();
 			Wish savedWish = rep.SaveWish( wish );
 
-			Assert.AreEqual<int>( numberOfWishes + 1, rep.GetWishes().Count<Wish>() );
+			Assert.AreEqual<int>( numberOfWishes + 1, rep.GetWishes().Count() );
 			rep.RemoveWish( savedWish );
-			Assert.AreEqual<int>( numberOfWishes, rep.GetWishes().Count<Wish>(), "Number of wishes in repository did not decrease" );
+			Assert.AreEqual<int>( numberOfWishes, rep.GetWishes().Count(), "Number of wishes in repository did not decrease" );
 
-			using (WishList.SqlRepository.LinqWishListDataContext db = new WishList.SqlRepository.LinqWishListDataContext())
-			{
-				WishList.SqlRepository.Data.Wish loadedWish = (from w in db.Wishes
-															   where w.WishId == savedWish.Id
-															   select w).SingleOrDefault<WishList.SqlRepository.Data.Wish>();
+			var loadedWish = (from w in dataContext.Wishes
+							  where w.WishId == savedWish.Id
+							  select w).SingleOrDefault();
 
-				Assert.IsNull( loadedWish, "Removed wish was still found in repository" );
-			}
+			Assert.IsNull( loadedWish, "Removed wish was still found in repository" );
 		}
 
 		[TestMethod]
@@ -216,7 +219,7 @@ namespace WishList.IntegrationTests
 				Name = "Update test wish",
 				Description = "The test description",
 				LinkUrl = "http://notupdated.yet",
-				Owner = new User() { Id = 1 },
+				Owner = new User() { Id = firstUserId },
 				CalledByUser = null
 			};
 			Wish wishToUpdate = rep.SaveWish( wish );
@@ -225,7 +228,7 @@ namespace WishList.IntegrationTests
 			wishToUpdate.Name = "Updated test wish";
 			wishToUpdate.Description = "Updated description";
 			wishToUpdate.LinkUrl = "http://isupdated.now";
-			wishToUpdate.CalledByUser = new User() { Id = 2 };
+			wishToUpdate.CalledByUser = new User() { Id = secondUserId };
 			Wish updatedWish = rep.SaveWish( wishToUpdate );
 
 			Assert.IsNotNull( updatedWish, "Updated wish could not be loaded" );
@@ -246,7 +249,7 @@ namespace WishList.IntegrationTests
 				Name = "Update test wish",
 				Description = "The test description",
 				LinkUrl = "http://notupdated.yet",
-				Owner = new User() { Id = 1 },
+				Owner = new User() { Id = firstUserId },
 				CalledByUser = null
 			};
 			wish = rep.SaveWish( wish );
@@ -267,13 +270,13 @@ namespace WishList.IntegrationTests
 				Name = "Update test wish",
 				Description = "The test description",
 				LinkUrl = "http://notupdated.yet",
-				Owner = new User() { Id = 1 },
+				Owner = new User() { Id = firstUserId },
 				CalledByUser = null
 			};
 			wish = rep.SaveWish( wish );
 			DateTime lastChanged = wish.Changed.Value;
 
-			wish.CalledByUser = new User { Id = 1 };
+			wish.CalledByUser = new User { Id = firstUserId };
 			rep.SaveWish( wish );
 
 			var updatedWish = rep.GetWishes().WithId( wish.Id );

@@ -6,23 +6,44 @@ using RepData = WishList.SqlRepository.Data;
 
 namespace WishList.Data.DataAccess
 {
-	public class SqlWishListRepository : IWishListRepository
+	public class SqlWishListRepository : IWishListRepository, IDisposable
 	{
-		SqlRepository.LinqWishListDataContext db;
+		SqlRepository.LinqWishListDataContext readDataContext;
+		LinqWishListDataContext writeDataContext;
+		bool disposed;
 
 		public SqlWishListRepository()
 		{
-			db = new SqlRepository.LinqWishListDataContext { ObjectTrackingEnabled = false };
+			readDataContext = new SqlRepository.LinqWishListDataContext { ObjectTrackingEnabled = false };
+		}
+
+		public SqlWishListRepository( LinqWishListDataContext dataContext )
+		{
+			readDataContext = dataContext;
+			writeDataContext = dataContext;
 		}
 
 		~SqlWishListRepository()
 		{
-			db.Dispose();
+			this.Dispose();
+		}
+
+		public void Dispose()
+		{
+			if (!disposed)
+			{
+				readDataContext.Dispose();
+				if (writeDataContext != null)
+				{
+					writeDataContext.Dispose();
+				}
+				disposed = true;
+			}
 		}
 
 		public IQueryable<User> GetUsers()
 		{
-			return from user in db.Users
+			return from user in readDataContext.Users
 				   select new User
 				   {
 					   Id = user.UserId,
@@ -34,7 +55,7 @@ namespace WishList.Data.DataAccess
 
 		public IQueryable<Wish> GetWishes()
 		{
-			return from wish in db.Wishes
+			return from wish in readDataContext.Wishes
 				   select new Wish
 				   {
 					   Id = wish.WishId,
@@ -55,61 +76,59 @@ namespace WishList.Data.DataAccess
 		/// <returns></returns>
 		public Wish SaveWish( Wish wish )
 		{
-			using (var dataContext = new SqlRepository.LinqWishListDataContext())
+			var dataContext = GetWriteDataContext();
+			wish.Name = TruncateString( wish.Name, 100 );
+			wish.Description = TruncateString( wish.Description, 500 );
+			wish.LinkUrl = TruncateString( wish.LinkUrl, 255 );
+
+			DateTime timeStamp = DateTime.Now;
+
+			var wishToSave = (from w in dataContext.Wishes
+							  where w.WishId == wish.Id
+							  select w).SingleOrDefault();
+
+			bool createNew = wishToSave == null;
+			if (createNew)
 			{
-				wish.Name = TruncateString( wish.Name, 100 );
-				wish.Description = TruncateString( wish.Description, 500 );
-				wish.LinkUrl = TruncateString( wish.LinkUrl, 255 );
-
-				DateTime timeStamp = DateTime.Now;
-
-				var wishToSave = (from w in dataContext.Wishes
-								  where w.WishId == wish.Id
-								  select w).SingleOrDefault();
-
-				bool createNew = wishToSave == null;
-				if (createNew)
-				{
-					wishToSave = new RepData.Wish();
-					dataContext.Wishes.InsertOnSubmit( wishToSave );
-					wishToSave.Created = timeStamp;
-					wishToSave.Changed = timeStamp;
-				}
-				else if (!wish.CalledDiffers( wishToSave.TjingedById ))
-				{ //We don't want to update the change time if the wish was called or uncalled
-					wishToSave.Changed = timeStamp;
-				}
-
-				wishToSave.Name = wish.Name;
-				wishToSave.Description = wish.Description;
-				wishToSave.LinkUrl = wish.LinkUrl;
-				wishToSave.TjingedById = wish.CalledByUser != null ? (int?)wish.CalledByUser.Id : null;
-				wishToSave.OwnerId = wish.Owner.Id;
-
-				dataContext.SubmitChanges();
-
-				Wish savedWish = (Wish)wish.Clone();
-				savedWish.Id = wishToSave.WishId;
-				if (createNew)
-				{
-					savedWish.Created = wishToSave.Created;
-				}
-				savedWish.Changed = wishToSave.Changed;
-				return savedWish;
+				wishToSave = new RepData.Wish();
+				dataContext.Wishes.InsertOnSubmit( wishToSave );
+				wishToSave.Created = timeStamp;
+				wishToSave.Changed = timeStamp;
 			}
+			else if (!wish.CalledDiffers( wishToSave.TjingedById ))
+			{ //We don't want to update the change time if the wish was called or uncalled
+				wishToSave.Changed = timeStamp;
+			}
+
+			wishToSave.Name = wish.Name;
+			wishToSave.Description = wish.Description;
+			wishToSave.LinkUrl = wish.LinkUrl;
+			wishToSave.TjingedById = wish.CalledByUser != null ? (int?)wish.CalledByUser.Id : null;
+			wishToSave.OwnerId = wish.Owner.Id;
+
+			dataContext.SubmitChanges();
+
+			Wish savedWish = (Wish)wish.Clone();
+			savedWish.Id = wishToSave.WishId;
+			if (createNew)
+			{
+				savedWish.Created = wishToSave.Created;
+			}
+			savedWish.Changed = wishToSave.Changed;
+
+			return savedWish;
 		}
 
 		public void RemoveWish( Wish wish )
 		{
-			using (var dataContext = new SqlRepository.LinqWishListDataContext())
-			{
-				RepData.Wish wishToBeRemoved = (from w in dataContext.Wishes
-											  where w.WishId == wish.Id
-											  select w).SingleOrDefault();
 
-				dataContext.Wishes.DeleteOnSubmit( wishToBeRemoved );
-				dataContext.SubmitChanges();
-			}
+			var dataContext = GetWriteDataContext();
+			RepData.Wish wishToBeRemoved = (from w in dataContext.Wishes
+											where w.WishId == wish.Id
+											select w).SingleOrDefault();
+
+			dataContext.Wishes.DeleteOnSubmit( wishToBeRemoved );
+			dataContext.SubmitChanges();
 		}
 
 		public User CreateUser( User user )
@@ -129,11 +148,10 @@ namespace WishList.Data.DataAccess
 
 				try
 				{
-					using (var dataContext = new SqlRepository.LinqWishListDataContext())
-					{
-						dataContext.Users.InsertOnSubmit( newUser );
-						dataContext.SubmitChanges();
-					}
+					var dataContext = GetWriteDataContext();
+					dataContext.Users.InsertOnSubmit( newUser );
+					dataContext.SubmitChanges();
+
 
 					User createdUser = user.Clone();
 					createdUser.Id = newUser.UserId;
@@ -171,14 +189,12 @@ namespace WishList.Data.DataAccess
 			mu.IsApproved = true;
 			Membership.UpdateUser( mu );
 
-			using (var dataContext = new SqlRepository.LinqWishListDataContext())
-			{
-				var user = (from u in dataContext.Users
-							where u.Name == username
-							select u).SingleOrDefault();
-				user.ApprovalTicket = null;
-				dataContext.SubmitChanges();
-			}
+			var dataContext = GetWriteDataContext();
+			var user = (from u in dataContext.Users
+						where u.Name == username
+						select u).SingleOrDefault();
+			user.ApprovalTicket = null;
+			dataContext.SubmitChanges();
 		}
 
 		public bool ValidateUser( string username, string password )
@@ -188,30 +204,28 @@ namespace WishList.Data.DataAccess
 
 		public Guid? GetApprovalTicket( string username )
 		{
-			return (from u in db.Users
+			return (from u in readDataContext.Users
 					where u.Name == username
 					select u.ApprovalTicket).SingleOrDefault();
 		}
 
 		public User UpdateUser( User user )
 		{
-			using (var dataContext = new SqlRepository.LinqWishListDataContext())
-			{
-				var dbUser = (from u in dataContext.Users
-							  where u.UserId == user.Id
-							  select u).SingleOrDefault();
-				dbUser.Email = user.Email;
-				dbUser.NotifyOnChange = user.NotifyOnChange;
-				dataContext.SubmitChanges();
+			var dataContext = GetWriteDataContext();
+			var dbUser = (from u in dataContext.Users
+						  where u.UserId == user.Id
+						  select u).SingleOrDefault();
+			dbUser.Email = user.Email;
+			dbUser.NotifyOnChange = user.NotifyOnChange;
+			dataContext.SubmitChanges();
 
-				return new User
-				{
-					Id = dbUser.UserId,
-					Name = dbUser.Name,
-					Email = dbUser.Email,
-					NotifyOnChange = dbUser.NotifyOnChange
-				};
-			}
+			return new User
+			{
+				Id = dbUser.UserId,
+				Name = dbUser.Name,
+				Email = dbUser.Email,
+				NotifyOnChange = dbUser.NotifyOnChange
+			};
 		}
 
 		public void SetPassword( string username, string password )
@@ -233,8 +247,8 @@ namespace WishList.Data.DataAccess
 
 		public IQueryable<User> GetFriends( User user )
 		{
-			return from u in db.Users
-				   where db.Friends.Any( x => x.UserId == user.Id && x.FriendId == u.UserId )
+			return from u in readDataContext.Users
+				   where readDataContext.Friends.Any( x => x.UserId == user.Id && x.FriendId == u.UserId )
 				   select new User
 					{
 						Id = u.UserId,
@@ -246,26 +260,22 @@ namespace WishList.Data.DataAccess
 
 		public void AddFriend( User user, User friend )
 		{
-			using (var context = new LinqWishListDataContext())
-			{
-				var friendAlreadyExists = GetFriend( user, friend, context ) != null;
-				if (friendAlreadyExists)
-					throw new InvalidOperationException( String.Format( "{0} är redan vän till {1}!", friend.Name, user.Name ) );
+			var context = GetWriteDataContext();
+			var friendAlreadyExists = GetFriend( user, friend, context ) != null;
+			if (friendAlreadyExists)
+				throw new InvalidOperationException( String.Format( "{0} är redan vän till {1}!", friend.Name, user.Name ) );
 
-				context.Friends.InsertOnSubmit( new RepData.Friend { UserId = user.Id, FriendId = friend.Id } );
-				context.SubmitChanges();
-			}
+			context.Friends.InsertOnSubmit( new RepData.Friend { UserId = user.Id, FriendId = friend.Id } );
+			context.SubmitChanges();
 		}
 
 		public void RemoveFriend( User user, User friend )
 		{
-			using (var context = new LinqWishListDataContext())
-			{
-				var friendToRemove = GetFriend( user, friend, context );
+			var context = GetWriteDataContext();
+			var friendToRemove = GetFriend( user, friend, context );
 
-				context.Friends.DeleteOnSubmit( friendToRemove );
-				context.SubmitChanges();
-			}
+			context.Friends.DeleteOnSubmit( friendToRemove );
+			context.SubmitChanges();
 		}
 
 		private static RepData.Friend GetFriend( User user, User friend, LinqWishListDataContext context )
@@ -273,6 +283,13 @@ namespace WishList.Data.DataAccess
 			return (from f in context.Friends
 					where f.UserId == user.Id && f.FriendId == friend.Id
 					select f).SingleOrDefault();
+		}
+
+		private LinqWishListDataContext GetWriteDataContext()
+		{
+			if (writeDataContext == null)
+				writeDataContext = new LinqWishListDataContext();
+			return writeDataContext;
 		}
 	}
 }
