@@ -7,6 +7,7 @@ using WishList.Data;
 using WishList.Data.DataAccess;
 using WishList.Data.Filters;
 using WishList.Services;
+using System.Threading;
 
 namespace WishList.Tests
 {
@@ -227,6 +228,7 @@ namespace WishList.Tests
         {
             var wish = Service.GetWish(2);
             DateTime lastChanged = wish.Changed.Value;
+			Thread.Sleep( 50 ); //Make sure that some time passes before save...
 
             Service.SaveWish(wish, false);
             var updatedWish = Service.GetWish(2);

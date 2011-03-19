@@ -6,7 +6,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B26C4C5-554E-46CF-BA4E-F004F6CFA19D}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
-		WishList22.vsmdi = WishList22.vsmdi
+		WishList.vsmdi = WishList.vsmdi
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deps", "Deps", "{F3149088-1786-4AEE-B29A-A1D34E384605}"
@@ -43,17 +43,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.Data", "WishList.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.Services", "WishList.Services\WishList.Services.csproj", "{048DA3E0-43E7-4059-A5AB-65F7E021F493}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.IntegrationTests", "WishList.IntegrationTests\WishList.IntegrationTests.csproj", "{C5962727-C3C6-4B0C-82E7-9BE911032CC8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.WebUI", "WishList.WebUI\WishList.WebUI.csproj", "{99E34800-8855-439A-9158-3942EB15369F}"
 EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = WishList22.vsmdi
+		CategoryFile = WishList.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,10 +66,6 @@ Global
 		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99E34800-8855-439A-9158-3942EB15369F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99E34800-8855-439A-9158-3942EB15369F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99E34800-8855-439A-9158-3942EB15369F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,9 +77,12 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0B26C4C5-554E-46CF-BA4E-F004F6CFA19D} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
 		{A15AC291-6B57-4860-A3B3-8507193D0920} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
-		{C5962727-C3C6-4B0C-82E7-9BE911032CC8} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
 		{04B593B9-B7AA-4848-98BB-C32B709C000C} = {B0C342E2-FA62-4EDF-9E88-011519CC9459}
 		{048DA3E0-43E7-4059-A5AB-65F7E021F493} = {B0C342E2-FA62-4EDF-9E88-011519CC9459}
 		{99E34800-8855-439A-9158-3942EB15369F} = {C9AE5A75-05BE-4DC9-89EA-7C8EE4932261}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
