@@ -9,9 +9,7 @@ using WishList.Data.Extensions;
 using WishList.Services;
 using WishList.Data.Filters;
 using DB = WishList.SqlRepository.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.Transactions;
+using System.Configuration;
 
 namespace WishList.IntegrationTests
 {
@@ -52,7 +50,12 @@ namespace WishList.IntegrationTests
 		[TestInitialize]
 		public void SetUp()
 		{
+#if DEBUG
+			dataContext = new SqlRepository.LinqWishListDataContext(ConfigurationManager.ConnectionStrings["LocalTestDb"].ConnectionString);
+#else 
 			dataContext = new SqlRepository.LinqWishListDataContext();
+#endif
+
 			dataContext.Connection.Open();
 			var transaction = dataContext.Connection.BeginTransaction();
 			dataContext.Transaction = transaction;

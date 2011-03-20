@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WishList.Data.DataAccess;
 using WishList.Data;
 using WishList.Services;
-using WishList.Data.Filters;
 using System.Web.Security;
+using System.Configuration;
+using DB = WishList.SqlRepository.Data;
 
 namespace WishList.IntegrationTests
 {
@@ -21,7 +21,6 @@ namespace WishList.IntegrationTests
 		MembershipMock membership;
 		UserService service;
 		SqlWishListRepository rep;
-		//private List<string> usersToDelete;
 
 		/// <summary>
 		///Gets or sets the test context which provides
@@ -32,28 +31,41 @@ namespace WishList.IntegrationTests
 		[TestInitialize]
 		public void SetUp()
 		{
+#if DEBUG
+			dataContext = new SqlRepository.LinqWishListDataContext( ConfigurationManager.ConnectionStrings["LocalTestDb"].ConnectionString );
+#else 
 			dataContext = new SqlRepository.LinqWishListDataContext();
+#endif
 			dataContext.Connection.Open();
 			var transaction = dataContext.Connection.BeginTransaction();
 			dataContext.Transaction = transaction;
 			membership = new MembershipMock();
 			rep = new SqlWishListRepository( dataContext, membership );
 			service = new UserService( rep );
-			//usersToDelete = new List<string>();
+
+			PopulateDB();
+		}
+
+		private void PopulateDB()
+		{
+			var firstUser = new DB.User { Name = "First", Email = "first@example.com" };
+			var secondUser = new DB.User { Name = "Second", Email = "second@example.com" };
+			dataContext.Users.InsertOnSubmit( firstUser );
+			dataContext.Users.InsertOnSubmit( secondUser );
+
+			dataContext.SubmitChanges();
 		}
 
 		[TestCleanup]
 		public void TearDown()
 		{
-			//Clear up users created in this test
-			//usersToDelete.ForEach( DeleteUser );
 			dataContext.Transaction.Rollback();
 			dataContext.Connection.Close();
 			rep.Dispose();
 		}
 
 		/// <summary>
-		/// Creates a new user and adds it to the list of users to be deleted on teardown
+		/// Creates a new user
 		/// </summary>
 		/// <param name="username"></param>
 		/// <param name="email"></param>
@@ -61,25 +73,8 @@ namespace WishList.IntegrationTests
 		/// <returns></returns>
 		private User CreateUser( string username, string email, string password )
 		{
-			User user = rep.CreateUser( new User { Name = username, Email = email, Password = password } );
-			//usersToDelete.Add( username );
-			return user;
+			return rep.CreateUser( new User { Name = username, Email = email, Password = password } );
 		}
-
-		//private static void DeleteUser( string userName )
-		//{
-		//    using (SqlRepository.LinqWishListDataContext db = new WishList.SqlRepository.LinqWishListDataContext())
-		//    {
-		//        var removeUserQuery = from u in db.Users
-		//                              where u.Name == userName
-		//                              select u;
-		//        db.Users.DeleteAllOnSubmit( removeUserQuery );
-
-		//        db.SubmitChanges();
-		//    }
-
-		//    Membership.DeleteUser( userName );
-		//}
 
 		#region Additional test attributes
 		//
@@ -106,7 +101,7 @@ namespace WishList.IntegrationTests
 		[TestMethod]
 		public void SqlRepository_Can_Return_Users()
 		{
-			IList<User> users = rep.GetUsers().ToList<User>();
+			var users = rep.GetUsers().ToList<User>();
 
 			Assert.IsNotNull( users, "Users was null" );
 			Assert.IsTrue( users.Count > 0, "User count was 0" );
@@ -115,24 +110,21 @@ namespace WishList.IntegrationTests
 		[TestMethod]
 		public void SqlRepository_Can_Create_User()
 		{
-			User user = new User
-			{
-				Name = "CreateTestUser",
-				Email = "createtest@example.com",
-				Password = "CreateTestPassword",
-				NotifyOnChange = true
-			};
+			var user = new User
+						{
+							Name = "CreateTestUser",
+							Email = "createtest@example.com",
+							Password = "CreateTestPassword",
+							NotifyOnChange = true
+						};
 
-			User createdUser = rep.CreateUser( user );
-
-			////Make sure the user is deleted on teardown
-			//usersToDelete.Add( user.Name );
+			var createdUser = rep.CreateUser( user );
 
 			Assert.IsNotNull( createdUser, "Created user was null" );
 			Assert.IsTrue( createdUser.Id > 0, "User id was not greater than 0" );
 			Assert.AreEqual( user.Name, createdUser.Name, "Created user's name did not match" );
 
-			User loadedUser = service.GetUser( createdUser.Id );
+			var loadedUser = service.GetUser( createdUser.Id );
 			Assert.IsNotNull( loadedUser, "Could not load created user from repository" );
 			Assert.AreEqual( user.Name, loadedUser.Name, "Created user's name was wrong" );
 			Assert.AreEqual( user.Email, loadedUser.Email, "Created user's email was wrong" );
@@ -142,10 +134,10 @@ namespace WishList.IntegrationTests
 		[TestMethod]
 		public void SqlRepository_Can_Update_User()
 		{
-			User user = CreateUser( "UpdateTestUser", "updatetest@test.com", "updatetest" );
+			var user = CreateUser( "UpdateTestUser", "updatetest@test.com", "updatetest" );
 			int updateUserId = user.Id;
 
-			string newEmail = "updatedemail@test.com";
+			var newEmail = "updatedemail@test.com";
 
 			user.Email = newEmail;
 			user.NotifyOnChange = true;
@@ -174,9 +166,7 @@ namespace WishList.IntegrationTests
 		[ExpectedException( typeof( InvalidOperationException ), "InvalidOperationException was not thrown" )]
 		public void SqlRepository_Will_Not_Create_Duplicate_Users()
 		{
-			User user = new User { Name = "DuplicateUser", Password = "password", Email = "duplicateuser@example.com" };
-
-			//usersToDelete.Add( "DuplicateUser" ); //Make sure the created user is deleted on teardown
+			var user = new User { Name = "DuplicateUser", Password = "password", Email = "duplicateuser@example.com" };
 
 			rep.CreateUser( user );
 			rep.CreateUser( user );
@@ -185,33 +175,31 @@ namespace WishList.IntegrationTests
 		[TestMethod]
 		public void SqlRepository_Can_Log_On_User()
 		{
-			string password = "l0g0nt3st";
-			User user = CreateUser( "LogOnTestUser", "logontest@example.com", password );
+			var password = "l0g0nt3st";
+			var user = CreateUser( "LogOnTestUser", "logontest@example.com", password );
 
 			bool logonStatus = rep.ValidateUser( user.Name, password );
 			Assert.IsFalse( logonStatus, "User could log on before being activated" );
 
-			MembershipUser membershipUser = membership.GetUser( user.Name );
+			var membershipUser = membership.GetUser( user.Name );
 			membershipUser.IsApproved = true;
 			membership.UpdateUser( membershipUser );
 
 			logonStatus = rep.ValidateUser( user.Name, password );
 			Assert.IsTrue( logonStatus, "User could not log on" );
-
-			//DeleteUser( user.Name );
 		}
 
 		[TestMethod]
 		public void Service_Can_Approve_User()
 		{
-			User user = CreateUser( "ApproveTestUser", "approvetest@test.com", "approveme" );
+			var user = CreateUser( "ApproveTestUser", "approvetest@test.com", "approveme" );
 			Assert.IsNotNull( user, "Created user was null" );
 
-			MembershipUser membershipUser = membership.GetUser( user.Name );
+			var membershipUser = membership.GetUser( user.Name );
 			Assert.IsNotNull( membershipUser, "Membership user was null" );
 			Assert.IsFalse( membershipUser.IsApproved, "Created membership user was already approved" );
 
-			Guid? ticket = rep.GetApprovalTicket( user.Name );
+			var ticket = rep.GetApprovalTicket( user.Name );
 			service.ApproveUser( user.Name, ticket.Value );
 			membershipUser = membership.GetUser( user.Name );
 			Assert.IsTrue( membershipUser.IsApproved, "Membership user was not approved" );
@@ -226,9 +214,9 @@ namespace WishList.IntegrationTests
 		[ExpectedException( typeof( InvalidOperationException ), "ApproveUser did not throw exception even though the ticket was wrong" )]
 		public void Service_Will_Not_Approve_User_With_Wrong_Ticket()
 		{
-			User user = CreateUser( "ApproveTestFailUser", "ApproveTestFailUser@test.com", "approveme" );
+			var user = CreateUser( "ApproveTestFailUser", "ApproveTestFailUser@test.com", "approveme" );
 
-			MembershipUser membershipUser = membership.GetUser( user.Name );
+			//MembershipUser membershipUser = membership.GetUser( user.Name );
 
 			service.ApproveUser( user.Name, Guid.NewGuid() );
 		}
@@ -236,7 +224,7 @@ namespace WishList.IntegrationTests
 		[TestMethod]
 		public void SqlRepository_Can_Get_Approval_Ticket_For_User()
 		{
-			User user = CreateUser( "ApprovalTicketTestUser", "ApprovalTicketTestUser@test.com", "approveme" );
+			var user = CreateUser( "ApprovalTicketTestUser", "ApprovalTicketTestUser@test.com", "approveme" );
 			Guid? ticket = rep.GetApprovalTicket( user.Name );
 			Assert.IsTrue( ticket.HasValue, "Approval ticket was null" );
 		}

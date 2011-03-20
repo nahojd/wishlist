@@ -19,15 +19,18 @@ namespace WishList.Tests.Controllers
 	public class ListControllerTest
 	{
 		IWishListRepository _repository;
-		IWishService _wishService;
-		IUserService _userService;
+		WishService _wishService;
+		UserService _userService;
 
-		public ListControllerTest()
+		[TestInitialize]
+		public void Setup()
 		{
 			_repository = new TestWishListRepository();
 			_wishService = new WishService( _repository, null );
 			_userService = new UserService( _repository );
+			_userService.ClearCache();
 		}
+
 
 		private TestContext testContextInstance;
 
@@ -131,10 +134,10 @@ namespace WishList.Tests.Controllers
 		{
 			var controller = new ListController( _wishService, _userService );
 			IPrincipal user = new GenericPrincipal( new GenericIdentity( "User 1", "Forms" ), null );
+
             var result = controller.LatestActivity( user );
 
 			Assert.IsInstanceOfType( result, typeof( ViewResult ) );
-			
 			ViewResult viewResult = result as ViewResult;
 			Assert.IsInstanceOfType( viewResult.ViewData.Model, typeof( WishList.WebUI.Controllers.LatestActivityViewModel ), "Model was not an IList of Wishes" );
 			Assert.AreEqual( ((WishList.WebUI.Controllers.LatestActivityViewModel)viewResult.ViewData.Model).Wishes.Count, 10, "Wrong number of wishes" );

@@ -81,12 +81,16 @@ namespace WishList.Services
 
 		public User GetUser( int userId )
 		{
-			return UserList.WithId( userId ).Clone();
+			if (UserList.Any( u => u.Id == userId ))
+				return UserList.WithId( userId ).Clone();
+			return null;
 		}
 
 		public User GetUser( string username )
 		{
-			return UserList.WithName( username ).Clone();
+			if ((UserList.Any( u => u.Name == username)))
+				return UserList.WithName( username ).Clone();
+			return null;
 		}
 
 		/// <summary>
