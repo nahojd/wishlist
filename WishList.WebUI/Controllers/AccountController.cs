@@ -271,7 +271,7 @@ namespace WishList.WebUI.Controllers
 			{
 				string body = string.Format( "Ditt konto har blivit godkänt. Du kan nu logga in på {0}",
 											ConfigurationManager.AppSettings["ApplicationUrl"] );
-				using (SmtpClient client = new SmtpClient { Host = ConfigurationManager.AppSettings["SmtpServer"] })
+				using (var client = new SmtpClient())
 				{
 					try
 					{

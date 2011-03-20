@@ -279,5 +279,16 @@ namespace WishList.IntegrationTests
 			Assert.IsNotNull( result );
 			Assert.AreEqual( 2, result.Count() );
 		}
+
+		[TestMethod]
+		public void WhenNoFriendsExist_GetFriendsWillReturnEmptyList()
+		{
+			var user = CreateUser( "friendtestuser", "test@example.com", "foobar" );
+
+			var result = rep.GetFriends( user );
+
+			Assert.IsNotNull( result );
+			Assert.AreEqual( 0, result.Count() );
+		}
 	}
 }
