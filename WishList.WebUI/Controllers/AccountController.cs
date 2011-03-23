@@ -183,21 +183,24 @@ namespace WishList.WebUI.Controllers
 		[Authorize]
 		public virtual ActionResult ChangePassword( string password, [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser )
 		{
-			UserData data = new UserData();
-			User user = _service.GetUser( currentUser.Identity.Name );
-			data.User = user;
+			var user = _service.GetUser( currentUser.Identity.Name );
+			var model = new UserData
+			{
+				User = user,
+				Friends = GetFriends( user )
+			};
 
 			if (!string.IsNullOrEmpty( password ))
 			{
 				_service.UpdatePassword( user.Name, password );
-				data.Info = "Ditt lösenord är uppdaterat!";
+				model.Info = "Ditt lösenord är uppdaterat!";
 			}
 			else
 			{
-				data.Error = "Du kan inte ha ett tomt lösenord!";
+				model.Error = "Du kan inte ha ett tomt lösenord!";
 			}
 
-			return View( "Edit", data );
+			return View( "Edit", model );
 		}
 
 		public virtual ActionResult Approve( string username, string ticket )

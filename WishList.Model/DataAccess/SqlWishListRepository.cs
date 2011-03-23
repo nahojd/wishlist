@@ -3,7 +3,7 @@ using System.Linq;
 using System.Web.Security;
 using WishList.SqlRepository;
 using RepData = WishList.SqlRepository.Data;
-using WishList.Data.Membership;
+using System.Reflection;
 
 namespace WishList.Data.DataAccess
 {
@@ -11,21 +11,18 @@ namespace WishList.Data.DataAccess
 	{
 		SqlRepository.LinqWishListDataContext readDataContext;
 		LinqWishListDataContext writeDataContext;
-		IMembershipWrapper membership;
 
 		bool disposed;
 
-		public SqlWishListRepository( IMembershipWrapper membership )
+		public SqlWishListRepository()
 		{
 			readDataContext = new SqlRepository.LinqWishListDataContext { ObjectTrackingEnabled = false };
-			this.membership = membership;
 		}
 
-		public SqlWishListRepository( LinqWishListDataContext dataContext, IMembershipWrapper membership )
+		public SqlWishListRepository( LinqWishListDataContext dataContext )
 		{
 			readDataContext = dataContext;
 			writeDataContext = dataContext;
-			this.membership = membership;
 		}
 
 		~SqlWishListRepository()
@@ -138,38 +135,69 @@ namespace WishList.Data.DataAccess
 
 		public User CreateUser( User user )
 		{
-			MembershipCreateStatus createStatus;
-			MembershipUser membershipUser = membership.CreateUser( user.Name, user.Password, user.Email, null, null, false, out createStatus );
+			//MembershipCreateStatus createStatus;
+			//MembershipUser membershipUser = membership.CreateUser( user.Name, user.Password, user.Email, null, null, false, out createStatus );
 
-			if (createStatus == MembershipCreateStatus.Success)
-			{
-				var newUser = new RepData.User
-								{
-									Name = user.Name,
-									Email = user.Email,
-									NotifyOnChange = user.NotifyOnChange,
-									ApprovalTicket = Guid.NewGuid()
-								};
+			//if (createStatus == MembershipCreateStatus.Success)
+			//{
 
-				try
-				{
-					var dataContext = GetWriteDataContext();
-					dataContext.Users.InsertOnSubmit( newUser );
-					dataContext.SubmitChanges();
+			if (!UsernameIsUnique( user.Name ))
+				throw new InvalidOperationException( "A user with that name already exists!" );
 
 
-					User createdUser = user.Clone();
-					createdUser.Id = newUser.UserId;
-					return createdUser;
-				}
-				catch (Exception)
-				{
-					membership.DeleteUser( membershipUser.UserName );
-					throw;
-				}
-			}
+			var salt = CreateSalt( user );
+			var passwordHash = GetHash( user.Password, salt );
 
-			throw new InvalidOperationException( "Could not register user: " + createStatus );
+			var newUser = new RepData.User
+							{
+								Name = user.Name,
+								Email = user.Email,
+								NotifyOnChange = user.NotifyOnChange,
+								ApprovalTicket = Guid.NewGuid(),
+								PasswordHash = passwordHash,
+								Salt = salt
+							};
+
+			//try
+			//{
+			var dataContext = GetWriteDataContext();
+			dataContext.Users.InsertOnSubmit( newUser );
+			dataContext.SubmitChanges();
+
+
+			var createdUser = user.Clone();
+			createdUser.Id = newUser.UserId;
+			return createdUser;
+			//}
+			//    catch (Exception)
+			//    {
+			//        membership.DeleteUser( membershipUser.UserName );
+			//        throw;
+			//    }
+			//}
+
+			//throw new InvalidOperationException( "Could not register user: " + createStatus );
+		}
+
+		public bool UsernameIsUnique( string username )
+		{
+			return !GetUsers().Any( u => u.Name.ToLower() == username.ToLower() );
+		}
+
+		internal static string CreateSalt( User user )
+		{
+			return GetHash( user.Name + DateTime.Now.Ticks, "" );
+		}
+
+		internal static string GetHash( string password, string salt )
+		{
+			//TODO: Remove dependency of SqlMembershipProvider without changing behavior...
+			var type = typeof( SqlMembershipProvider );
+			BindingFlags privateBindings = BindingFlags.NonPublic | BindingFlags.Instance;
+			MethodInfo miGetDescription = type.GetMethod( "EncodePassword", privateBindings );
+			var provider = new SqlMembershipProvider();
+			var hash = miGetDescription.Invoke( provider, new object[] { password, 1, salt } ) as string;
+			return hash;
 		}
 
 		public void ApproveUser( string username, Guid ticket )
@@ -185,14 +213,14 @@ namespace WishList.Data.DataAccess
 				throw new InvalidOperationException( "Wrong ticket" );
 			}
 
-			MembershipUser mu = membership.GetUser( username );
-			if (mu == null)
-			{
-				throw new InvalidOperationException( String.Format( "No user with username {0}", username ) );
-			}
+			//MembershipUser mu = membership.GetUser( username );
+			//if (mu == null)
+			//{
+			//    throw new InvalidOperationException( String.Format( "No user with username {0}", username ) );
+			//}
 
-			mu.IsApproved = true;
-			membership.UpdateUser( mu );
+			//mu.IsApproved = true;
+			//membership.UpdateUser( mu );
 
 			var dataContext = GetWriteDataContext();
 			var user = (from u in dataContext.Users
@@ -204,7 +232,12 @@ namespace WishList.Data.DataAccess
 
 		public bool ValidateUser( string username, string password )
 		{
-			return membership.ValidateUser( username, password );
+			var user = readDataContext.Users
+				.Where( u => u.Name == username )
+				.Where( u => u.ApprovalTicket == null )
+				.SingleOrDefault();
+
+			return user != null && user.PasswordHash == GetHash( password, user.Salt );
 		}
 
 		public Guid? GetApprovalTicket( string username )
@@ -235,10 +268,12 @@ namespace WishList.Data.DataAccess
 
 		public void SetPassword( string username, string password )
 		{
-
-			MembershipUser mu = membership.GetUser( username );
-			mu.ChangePassword( mu.ResetPassword(), password );
-
+			var dataContext = GetWriteDataContext();
+			var user = dataContext.Users.Where( u => u.Name == username ).SingleOrDefault();
+			if (user == null)
+				throw new ArgumentException( "No such user", "username" );
+			user.PasswordHash = GetHash( password, user.Salt );
+			dataContext.SubmitChanges();
 		}
 
 		private static string TruncateString( string str, int length )

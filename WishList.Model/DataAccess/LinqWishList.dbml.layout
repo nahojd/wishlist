@@ -8,43 +8,43 @@
         <elementListCompartment Id="0ab2fa29-685b-43e5-b228-d8dee3a73357" absoluteBounds="4.015, 1.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="845115d7-2e8d-43cd-8680-413380e7963e" absoluteBounds="1.125, 1.25, 2, 1.7708968098958331">
-      <DataClassMoniker Name="/LinqWishListDataContext/User" />
-      <nestedChildShapes>
-        <elementListCompartment Id="69aa509a-ad0a-4bf3-9a8f-188b6a3bd289" absoluteBounds="1.1400000000000001, 1.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(3.125 : 2.13544840494792); (4 : 2.13544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/LinqWishListDataContext/User/User_Wish" />
-      <nodes>
-        <classShapeMoniker Id="845115d7-2e8d-43cd-8680-413380e7963e" />
-        <classShapeMoniker Id="a365a197-c2ec-4a4a-b037-5a688017db04" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(3.125 : 1.63022420247396); (4 : 1.63022420247396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/LinqWishListDataContext/User/User_Wish1" />
-      <nodes>
-        <classShapeMoniker Id="845115d7-2e8d-43cd-8680-413380e7963e" />
-        <classShapeMoniker Id="a365a197-c2ec-4a4a-b037-5a688017db04" />
-      </nodes>
-    </associationConnector>
     <classShape Id="e6092763-c4b8-48e9-b3cc-0900dcfab1a3" absoluteBounds="1.125, 3.75, 2, 1.1939925130208333">
       <DataClassMoniker Name="/LinqWishListDataContext/Friend" />
       <nestedChildShapes>
         <elementListCompartment Id="9efd42d6-38f4-4839-af36-075ec78f859f" absoluteBounds="1.1399999999999997, 4.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.125 : 3.02089680989583); (2.125 : 3.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <classShape Id="53187957-083e-4426-90ec-c0d448772737" absoluteBounds="1.25, 0.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/LinqWishListDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="705d32de-248b-4f23-a6a1-5dd7aab261b8" absoluteBounds="1.2649999999999997, 1.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3.25 : 1.82774983723958); (4 : 1.82774983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/LinqWishListDataContext/User/User_Wish" />
+      <nodes>
+        <classShapeMoniker Id="53187957-083e-4426-90ec-c0d448772737" />
+        <classShapeMoniker Id="a365a197-c2ec-4a4a-b037-5a688017db04" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(3.25 : 1.22637491861979); (4 : 1.22637491861979)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/LinqWishListDataContext/User/User_Wish1" />
+      <nodes>
+        <classShapeMoniker Id="53187957-083e-4426-90ec-c0d448772737" />
+        <classShapeMoniker Id="a365a197-c2ec-4a4a-b037-5a688017db04" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.1875 : 2.90549967447917); (2.1875 : 3.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/LinqWishListDataContext/User/User_Friend" />
       <nodes>
-        <classShapeMoniker Id="845115d7-2e8d-43cd-8680-413380e7963e" />
+        <classShapeMoniker Id="53187957-083e-4426-90ec-c0d448772737" />
         <classShapeMoniker Id="e6092763-c4b8-48e9-b3cc-0900dcfab1a3" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.6875 : 3.02089680989583); (2.6875 : 3.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.71875 : 2.90549967447917); (2.71875 : 3.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/LinqWishListDataContext/User/User_Friend1" />
       <nodes>
-        <classShapeMoniker Id="845115d7-2e8d-43cd-8680-413380e7963e" />
+        <classShapeMoniker Id="53187957-083e-4426-90ec-c0d448772737" />
         <classShapeMoniker Id="e6092763-c4b8-48e9-b3cc-0900dcfab1a3" />
       </nodes>
     </associationConnector>

@@ -59,7 +59,7 @@ namespace WishList.IntegrationTests
 			dataContext.Connection.Open();
 			var transaction = dataContext.Connection.BeginTransaction();
 			dataContext.Transaction = transaction;
-			rep = new SqlWishListRepository( dataContext, new MembershipMock() );
+			rep = new SqlWishListRepository( dataContext );
 			service = new UserService( rep );
 			wishService = new WishService( rep, new TestMailService() );
 

@@ -18,7 +18,6 @@ namespace WishList.IntegrationTests
 	public class UserIntegrationTests
 	{
 		private SqlRepository.LinqWishListDataContext dataContext;
-		MembershipMock membership;
 		UserService service;
 		SqlWishListRepository rep;
 
@@ -39,8 +38,7 @@ namespace WishList.IntegrationTests
 			dataContext.Connection.Open();
 			var transaction = dataContext.Connection.BeginTransaction();
 			dataContext.Transaction = transaction;
-			membership = new MembershipMock();
-			rep = new SqlWishListRepository( dataContext, membership );
+			rep = new SqlWishListRepository( dataContext );
 			service = new UserService( rep );
 
 			PopulateDB();
@@ -124,11 +122,22 @@ namespace WishList.IntegrationTests
 			Assert.IsTrue( createdUser.Id > 0, "User id was not greater than 0" );
 			Assert.AreEqual( user.Name, createdUser.Name, "Created user's name did not match" );
 
-			var loadedUser = service.GetUser( createdUser.Id );
+			var loadedUser = dataContext.Users.Where( u => u.UserId == createdUser.Id ).Single();
 			Assert.IsNotNull( loadedUser, "Could not load created user from repository" );
 			Assert.AreEqual( user.Name, loadedUser.Name, "Created user's name was wrong" );
 			Assert.AreEqual( user.Email, loadedUser.Email, "Created user's email was wrong" );
 			Assert.AreEqual( user.NotifyOnChange, loadedUser.NotifyOnChange, "Created user's NotifyOnChange was wrong" );
+		}
+
+		[TestMethod]
+		public void CreateUser_WillSetSaltAndPasswordHash()
+		{
+			var user = new User { Name = "Foo", Email = "foo@example.com", Password = "foobar" };
+			rep.CreateUser( user );
+
+			var createdUser = dataContext.Users.Where( u => u.Name == user.Name ).Single();
+			var expectedHash = SqlWishListRepository.GetHash(user.Password, createdUser.Salt);
+			Assert.AreEqual( expectedHash, createdUser.PasswordHash );
 		}
 
 		[TestMethod]
@@ -149,45 +158,120 @@ namespace WishList.IntegrationTests
 			Assert.AreEqual( true, user.NotifyOnChange, "NotifyOnChange did not change" );
 		}
 
-		//Kan inte testas så länge vi använder MembershipUser....
-		//[TestMethod]
-		//public void SqlRepository_Can_Update_Password()
-		//{
-		//    User user = CreateUser( "UpdatePasswordTestUser", "updatepassword@test.com", "oldpassword" );
-		//    rep.ApproveUser( user.Name, rep.GetApprovalTicket( user.Name ).Value );
-		//    string newPassword = "n3w p4ssw0rd";
+		[TestMethod]
+		public void SqlRepository_Can_Update_Password()
+		{
+		    User user = CreateUser( "UpdatePasswordTestUser", "updatepassword@test.com", "oldpassword" );
+		    rep.ApproveUser( user.Name, rep.GetApprovalTicket( user.Name ).Value );
+		    string newPassword = "n3w p4ssw0rd";
 
-		//    rep.SetPassword( user.Name, newPassword );
+		    rep.SetPassword( user.Name, newPassword );
 
-		//    Assert.IsTrue( rep.ValidateUser( user.Name, newPassword ), "Could not log on with new password" );
-		//}
+		    Assert.IsTrue( rep.ValidateUser( user.Name, newPassword ), "Could not log on with new password" );
+		}
 
 		[TestMethod]
-		[ExpectedException( typeof( InvalidOperationException ), "InvalidOperationException was not thrown" )]
+		public void WhenUsernameExistInDb_UsernameIsUniqueWillReturnFalse()
+		{
+			var result = rep.UsernameIsUnique( "First" );
+
+			Assert.IsFalse( result );
+		}
+
+		[TestMethod]
+		public void WhenUsernameDoesNotExistInDb_UsernameIsUniqueWilLReturnTrue()
+		{
+			var result = rep.UsernameIsUnique( "askjdhalksjdhlasjkdhl" );
+			Assert.IsTrue( result );
+		}
+
+		[TestMethod]
+		//[ExpectedException( typeof( InvalidOperationException ), "InvalidOperationException was not thrown" )]
 		public void SqlRepository_Will_Not_Create_Duplicate_Users()
 		{
 			var user = new User { Name = "DuplicateUser", Password = "password", Email = "duplicateuser@example.com" };
 
-			rep.CreateUser( user );
-			rep.CreateUser( user );
+			var user1 = rep.CreateUser( user );
+			Assert.IsNotNull( user1 );
+			try
+			{
+				rep.CreateUser( user );
+			}
+			catch (InvalidOperationException ex)
+			{
+				Assert.AreEqual( "A user with that name already exists!", ex.Message );
+				return;
+			}
+			Assert.Fail();
 		}
 
 		[TestMethod]
-		public void SqlRepository_Can_Log_On_User()
+		public void WhenUserIsNotValidated_ValidateUserWillReturnFalse()
 		{
-			var password = "l0g0nt3st";
-			var user = CreateUser( "LogOnTestUser", "logontest@example.com", password );
+			var user = CreateUser( "LogOnTestUser", "logontest@example.com", "l0g0nt3st" );
 
-			bool logonStatus = rep.ValidateUser( user.Name, password );
-			Assert.IsFalse( logonStatus, "User could log on before being activated" );
+			var result = rep.ValidateUser( user.Name, user.Password );
 
-			var membershipUser = membership.GetUser( user.Name );
-			membershipUser.IsApproved = true;
-			membership.UpdateUser( membershipUser );
-
-			logonStatus = rep.ValidateUser( user.Name, password );
-			Assert.IsTrue( logonStatus, "User could not log on" );
+			Assert.IsFalse( result );
 		}
+
+		[TestMethod]
+		public void WhenPasswordIsWrong_ValidateUserWillReturnFalse()
+		{
+			var user = CreateUser( "LogOnTestUser", "logontest@example.com", "l0g0nt3st" );
+			rep.ApproveUser( user.Name, rep.GetApprovalTicket( user.Name ).Value );
+
+			var result = rep.ValidateUser( user.Name, "wrongpassword" );
+
+			Assert.IsFalse( result );
+		}
+
+		[TestMethod]
+		public void WhenUsernameDoesNotExist_ValidateUserWillReturnFalse()
+		{
+			var result = rep.ValidateUser( "Badusername", "whateverpassword" );
+
+			Assert.IsFalse( result );
+		}
+
+		[TestMethod]
+		public void WhenUserIsApprovedAndUsernameAndPasswordAreCorrect_ValidateUserWillReturnTrue()
+		{
+			var user = CreateUser( "LogOnTestUser", "logontest@example.com", "l0g0nt3st" );
+			rep.ApproveUser( user.Name, rep.GetApprovalTicket( user.Name ).Value );
+
+			var result = rep.ValidateUser( user.Name, user.Password );
+
+			Assert.IsTrue( result );
+		}
+
+		[TestMethod]
+		public void ValidateUserIsNotCaseSensitiveOnUsername()
+		{
+			var user = CreateUser( "LogOnTestUser", "logontest@example.com", "l0g0nt3st" );
+			rep.ApproveUser( user.Name, rep.GetApprovalTicket( user.Name ).Value );
+
+			var result = rep.ValidateUser( user.Name.ToUpper(), user.Password );
+
+			Assert.IsTrue( result );
+		}
+
+		//[TestMethod]
+		//public void SqlRepository_Can_Log_On_User()
+		//{
+		//    var password = "l0g0nt3st";
+		//    var user = CreateUser( "LogOnTestUser", "logontest@example.com", password );
+
+		//    bool logonStatus = rep.ValidateUser( user.Name, password );
+		//    Assert.IsFalse( logonStatus, "User could log on before being activated" );
+
+		//    var membershipUser = membership.GetUser( user.Name );
+		//    membershipUser.IsApproved = true;
+		//    membership.UpdateUser( membershipUser );
+
+		//    logonStatus = rep.ValidateUser( user.Name, password );
+		//    Assert.IsTrue( logonStatus, "User could not log on" );
+		//}
 
 		[TestMethod]
 		public void Service_Can_Approve_User()
@@ -195,14 +279,14 @@ namespace WishList.IntegrationTests
 			var user = CreateUser( "ApproveTestUser", "approvetest@test.com", "approveme" );
 			Assert.IsNotNull( user, "Created user was null" );
 
-			var membershipUser = membership.GetUser( user.Name );
-			Assert.IsNotNull( membershipUser, "Membership user was null" );
-			Assert.IsFalse( membershipUser.IsApproved, "Created membership user was already approved" );
+			//var membershipUser = membership.GetUser( user.Name );
+			//Assert.IsNotNull( membershipUser, "Membership user was null" );
+			//Assert.IsFalse( membershipUser.IsApproved, "Created membership user was already approved" );
 
 			var ticket = rep.GetApprovalTicket( user.Name );
 			service.ApproveUser( user.Name, ticket.Value );
-			membershipUser = membership.GetUser( user.Name );
-			Assert.IsTrue( membershipUser.IsApproved, "Membership user was not approved" );
+			//membershipUser = membership.GetUser( user.Name );
+			//Assert.IsTrue( membershipUser.IsApproved, "Membership user was not approved" );
 
 			ticket = rep.GetApprovalTicket( user.Name );
 			Assert.IsFalse( ticket.HasValue, "Approved user had a ticket" );

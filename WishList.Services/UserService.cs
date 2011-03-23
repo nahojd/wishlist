@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using WishList.Data;
 using WishList.Data.Filters;
 using WishList.Data.DataAccess;
-using System.Web.Caching;
 using System.Web;
-using WishList.Data.Membership;
 
 namespace WishList.Services
 {
@@ -17,7 +14,7 @@ namespace WishList.Services
 		private static readonly string _userListCacheKey = "UserList";
 
 		public UserService()
-			: this( new SqlWishListRepository( new MembershipWrapper() ) ) { }
+			: this( new SqlWishListRepository() ) { }
 
 		public UserService( IWishListRepository repository )
 		{
@@ -88,7 +85,7 @@ namespace WishList.Services
 
 		public User GetUser( string username )
 		{
-			if ((UserList.Any( u => u.Name == username)))
+			if ((UserList.Any( u => u.Name.Equals( username, StringComparison.InvariantCultureIgnoreCase ) )))
 				return UserList.WithName( username ).Clone();
 			return null;
 		}

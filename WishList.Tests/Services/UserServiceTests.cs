@@ -104,6 +104,26 @@ namespace WishList.Tests
 		}
 
 		[TestMethod]
+		public void GetUserByName_IsNotCaseSensitive()
+		{
+			rep.GetUsers().Returns( new List<User> { new User { Id = 1, Name = "User1" } }.AsQueryable() );
+
+			var user = service.GetUser( "uSEr1" );
+
+			Assert.IsNotNull( user );
+		}
+
+		[TestMethod]
+		public void GetUserByNameReturnsNull_WhenUserDoesNotExist()
+		{
+			rep.GetUsers().Returns( new List<User>().AsQueryable() );
+
+			var user = service.GetUser( "foo" );
+
+			Assert.IsNull( user );
+		}
+
+		[TestMethod]
 		public void WhenRepositoryValidateUserIsTrue_ValidateUserIsTrue()
 		{
 			rep.ValidateUser( "User 1", "pwd1" ).Returns( true );
