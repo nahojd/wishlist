@@ -55,6 +55,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\elmah.1.1\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="Glimpse.Net">
+      <HintPath>..\packages\Glimpse.0.78\lib\net40\Glimpse.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Mvc">
       <HintPath>..\Deps\Microsoft.Web.Mvc.dll</HintPath>
     </Reference>
@@ -157,11 +160,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Elmah\placeholder.txt" />
+    <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Components\UserSession\Views\Summary.aspx" />
     <Content Include="Content\bg_gradient.gif" />
     <Content Include="Content\logo.png" />
     <Content Include="Content\Themes\Xmas\red-christmas-tree.jpg" />
     <Content Include="Default.aspx" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\utils.js" />
     <Content Include="Views\Account\ApproveOrDeclineStatus.aspx" />
