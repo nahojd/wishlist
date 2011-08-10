@@ -13,10 +13,10 @@ namespace WishList.WebUI.IoC
 					assemblyScanner.TheCallingAssembly();
 					assemblyScanner.Assembly( "WishList.Data" );
 					assemblyScanner.Assembly( "WishList.Services" );
-					assemblyScanner.With<DefaultConventionScanner>();
+					assemblyScanner.WithDefaultConventions();
 				} );
 
-			ForRequestedType<WishList.Data.DataAccess.IWishListRepository>().TheDefault.Is.ConstructedBy( () => new WishList.Data.DataAccess.SqlWishListRepository() );
+			For<WishList.Data.DataAccess.IWishListRepository>().Use( () => new WishList.Data.DataAccess.SqlWishListRepository() );
 
 		}
 	}
