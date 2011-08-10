@@ -8,7 +8,7 @@ using WishList.Data.DataAccess;
 using WishList.Data.Filters;
 using WishList.Services;
 using System.Web.Security;
-using NSubstitute;
+using Moq;
 
 namespace WishList.Tests
 {
@@ -18,14 +18,14 @@ namespace WishList.Tests
 	[TestClass]
 	public class UserServiceTests
 	{
-		private IWishListRepository rep;
+		private Mock<IWishListRepository> rep;
 		private UserService service;
 
 		[TestInitialize]
 		public void Setup()
 		{
-			rep = Substitute.For<IWishListRepository>();
-			service = new UserService( rep );
+			rep = new Mock<IWishListRepository>();
+			service = new UserService( rep.Object );
 			service.ClearCache();
 		}
 
@@ -33,39 +33,35 @@ namespace WishList.Tests
 		public void CreateUser_WillCallRepositoryAndReturnCreatedUser()
 		{
 			User user = new User { Name = "TestUser1" };
-			rep.CreateUser( user ).Returns( x =>
-			{
-				var u = x.Arg<User>();
-				u.Id = 5;
-				return u;
-			} );
+			rep.Setup( x => x.CreateUser( user ) ).Returns( ( User u ) => { u.Id = 5; return u; } );
+
+
 
 			User createdUser = service.CreateUser( user );
 
 			Assert.IsNotNull( createdUser, "Created user was null" );
 			Assert.AreEqual( createdUser.Id, 5 );
 
-			rep.Received().CreateUser( user );
+			rep.VerifyAll();
 		}
 
 		[TestMethod]
 		public void Will_Not_Create_Duplicate_User()
 		{
-			User user = new User { Name = "TestUser2", Email = "testuser2@example.com", Password = "abc123" };
+			var user = new User { Name = "TestUser2", Email = "testuser2@example.com", Password = "abc123" };
 			var alreadyCalled = false;
-			rep.CreateUser( user ).Returns( x =>
+			rep.Setup( x => x.CreateUser( user) ).Returns( ( User u ) =>
 			{
 				if (alreadyCalled)
 					throw new InvalidOperationException();
 
-				var u = x.Arg<User>();
 				u.Id = 5;
 				alreadyCalled = true;
 				return u;
 			} );
 
-			User createdUser1 = service.CreateUser( user );
-			User createdUser2 = service.CreateUser( user );
+			var createdUser1 = service.CreateUser( user );
+			var createdUser2 = service.CreateUser( user );
 
 			Assert.IsNotNull( createdUser1, "User 1 was not created" );
 			Assert.IsNull( createdUser2, "Duplicate user creation did not return null" );
@@ -75,20 +71,20 @@ namespace WishList.Tests
 		public void WhenCacheIsClearGetUsers_WillGetUsersFromRepository()
 		{
 
-			rep.GetUsers().Returns( new List<User> { new User(), new User() }.AsQueryable() );
+			rep.Setup( x => x.GetUsers() ).Returns( new List<User> { new User(), new User() }.AsQueryable() );
 
 			var users = service.GetUsers();
 
 			Assert.IsTrue( users.Count > 0 );
-			rep.Received().GetUsers();
+			rep.VerifyAll();
 		}
 
 		[TestMethod]
 		public void Can_Get_User_1_From_Service_By_Id()
 		{
-			rep.GetUsers().Returns( new List<User> { new User { Id = 1 } }.AsQueryable() );
+			rep.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Id = 1 } }.AsQueryable() );
 
-			User user1 = service.GetUser( 1 );
+			var user1 = service.GetUser( 1 );
 			Assert.IsNotNull( user1, "User was null" );
 			Assert.AreEqual<int>( 1, user1.Id, "User Id was not 1" );
 		}
@@ -96,7 +92,7 @@ namespace WishList.Tests
 		[TestMethod]
 		public void Can_Get_User_1_From_Service_By_Name()
 		{
-			rep.GetUsers().Returns( new List<User> { new User { Id = 1, Name = "User 1" } }.AsQueryable() );
+			rep.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Id = 1, Name = "User 1" } }.AsQueryable() );
 
 			User user1 = service.GetUser( "User 1" );
 			Assert.IsNotNull( user1, "User was null" );
@@ -106,7 +102,7 @@ namespace WishList.Tests
 		[TestMethod]
 		public void GetUserByName_IsNotCaseSensitive()
 		{
-			rep.GetUsers().Returns( new List<User> { new User { Id = 1, Name = "User1" } }.AsQueryable() );
+			rep.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Id = 1, Name = "User1" } }.AsQueryable() );
 
 			var user = service.GetUser( "uSEr1" );
 
@@ -116,7 +112,7 @@ namespace WishList.Tests
 		[TestMethod]
 		public void GetUserByNameReturnsNull_WhenUserDoesNotExist()
 		{
-			rep.GetUsers().Returns( new List<User>().AsQueryable() );
+			rep.Setup( x => x.GetUsers() ).Returns( new List<User>().AsQueryable() );
 
 			var user = service.GetUser( "foo" );
 
@@ -126,23 +122,23 @@ namespace WishList.Tests
 		[TestMethod]
 		public void WhenRepositoryValidateUserIsTrue_ValidateUserIsTrue()
 		{
-			rep.ValidateUser( "User 1", "pwd1" ).Returns( true );
+			rep.Setup( x => x.ValidateUser( "User 1", "pwd1" ) ).Returns( true );
 
 			var status = service.ValidateUser( "User 1", "pwd1" );
 
 			Assert.IsTrue( status, "User could not log on" );
-			rep.Received().ValidateUser( "User 1", "pwd1" );
+			rep.VerifyAll();
 		}
 
 		[TestMethod]
 		public void WhenRepositoryValidateUserIsFalse_ValidateUserIsFalse()
 		{
-			rep.ValidateUser( "User 1", "wrong password" ).Returns( false );
+			rep.Setup( x => x.ValidateUser( "User 1", "wrong password" ) ).Returns( false );
 
 			var status = service.ValidateUser( "User 1", "wrong password" );
 
 			Assert.IsFalse( status, "User could log on with wrong password" );
-			rep.Received().ValidateUser( "User 1", "wrong password" );
+			rep.VerifyAll();
 		}
 
 		[TestMethod]
@@ -163,49 +159,49 @@ namespace WishList.Tests
 		public void GetApprovalTicket_WillCallRepository()
 		{
 			Guid ticket = Guid.NewGuid();
-			rep.GetApprovalTicket( Arg.Any<string>() ).Returns( ticket );
+			rep.Setup( x => x.GetApprovalTicket( It.IsAny<string>() ) ).Returns( ticket );
 
 			var result = service.GetApprovalTicket( "someuser" );
 
 			Assert.AreEqual( ticket, result );
-			rep.Received().GetApprovalTicket( Arg.Any<string>() );
+			rep.VerifyAll();
 		}
 
 		[TestMethod]
 		public void WhenUserExists_UpdateUserWillCallRepositoryAndReturnUser()
 		{
-			rep.GetUsers().Returns( new List<User> { new User { Id = 17, Email = "oldemail@example.com", Name = "testuser" } }.AsQueryable() );
-			User user = new User
-			{
-				Id = 17,
-				Email = "newemail@example.com",
-				Name = "testuser"
-			};
-			rep.UpdateUser( Arg.Any<User>() ).Returns( x => x.Arg<User>() );
+			rep.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Id = 17, Email = "oldemail@example.com", Name = "testuser" } }.AsQueryable() );
+			var user = new User
+						{
+							Id = 17,
+							Email = "newemail@example.com",
+							Name = "testuser"
+						};
+			rep.Setup( x => x.UpdateUser( It.IsAny<User>() ) ).Returns( (User x) => x );
 
 			var updatedUser = service.UpdateUser( user );
 
 			Assert.IsNotNull( updatedUser );
 			Assert.AreEqual( user, updatedUser );
-			rep.Received().UpdateUser( user );
+			rep.Verify( x => x.UpdateUser( user ), Times.Once() );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( ArgumentException ), "Blank email did not cause exception" )]
 		public void Cannot_Update_User_With_Blank_Email()
 		{
-			User user = new User { Email = string.Empty };
+			var user = new User { Email = string.Empty };
 			service.UpdateUser( user );
 		}
 
 		[TestMethod]
 		public void UpdatePassword_WillCallRepository()
 		{
-			string username = "username";
-            string password = "password";
-            service.UpdatePassword( username, password );
+			var username = "username";
+			var password = "password";
+			service.UpdatePassword( username, password );
 
-			rep.Received().SetPassword( username, password );
+			rep.Verify( x => x.SetPassword( username, password ), Times.Once() );
 		}
 
 		[TestMethod]
@@ -220,33 +216,33 @@ namespace WishList.Tests
 		public void GetFriends_Will_Get_Friends_From_Repository()
 		{
 			var user = new User();
-			rep.GetFriends( user ).Returns( new List<User> { new User(), new User() }.AsQueryable() );
+			rep.Setup( x => x.GetFriends( user ) ).Returns( new List<User> { new User(), new User() }.AsQueryable() );
 
 			var result = service.GetFriends( user );
 
 			Assert.IsNotNull( result );
 			Assert.AreEqual( 2, result.Count );
-			rep.Received().GetFriends( user );
+			rep.VerifyAll();
 		}
 
 		[TestMethod]
 		public void WhenUserAndFriendExist_AddFriendWillCallAddFriendInRepository()
 		{
-			rep.GetUsers().Returns( new List<User> { new User { Name = "user" }, new User { Name = "friend" } }.AsQueryable() );
+			rep.Setup( r => r.GetUsers() ).Returns( new List<User> { new User { Name = "user" }, new User { Name = "friend" } }.AsQueryable() );
 
 			service.AddFriend( "user", "friend" );
 
-			rep.Received().AddFriend( Arg.Is<User>( x => x.Name == "user" ), Arg.Is<User>( x => x.Name == "friend" ) );
+			rep.Verify( r => r.AddFriend( It.Is<User>( x => x.Name == "user" ), It.Is<User>( x => x.Name == "friend" ) ) );
 		}
 
 		[TestMethod]
 		public void WhenUserAndFriendExist_RemoveFriendWillCallRemoveFriendInRepository()
 		{
-			rep.GetUsers().Returns( new List<User> { new User { Name = "user" }, new User { Name = "friend" } }.AsQueryable() );
+			rep.Setup( r => r.GetUsers() ).Returns( new List<User> { new User { Name = "user" }, new User { Name = "friend" } }.AsQueryable() );
 
 			service.RemoveFriend( "user", "friend" );
 
-			rep.Received().RemoveFriend( Arg.Is<User>( x => x.Name == "user" ), Arg.Is<User>( x => x.Name == "friend" ) );
+			rep.Verify( r => r.RemoveFriend( It.Is<User>( x => x.Name == "user" ), It.Is<User>( x => x.Name == "friend" ) ), Times.Once() );
 		}
 	}
 }

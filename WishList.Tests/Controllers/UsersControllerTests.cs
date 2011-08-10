@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WishList.WebUI.Controllers;
 using WishList.Services;
-using NSubstitute;
+using Moq;
 using WishList.Data;
 using System.Web.Mvc;
 using System.Security.Principal;
@@ -17,17 +17,26 @@ namespace WishList.Tests.Controllers
 	[TestClass]
 	public class UsersControllerTests
 	{
+		private GenericPrincipal currentUser;
+		private User user;
 		UsersController controller;
-		IUserService service;
+		Mock<IUserService> service;
 
 		[TestInitialize]
 		public void Setup()
 		{
-			service = Substitute.For<IUserService>();
-			controller = new UsersController( service );
+			service = new Mock<IUserService>();
+
+			user = new User { Name = "username" };
+			service.Setup( x => x.GetUser( It.IsAny<string>() ) ).Returns( user );
+			service.Setup( x => x.GetFriends( user ) ).Returns( new List<User> { new User { Id = 1 }, new User { Id = 2, Name = "User2" }, new User { Id = 3 } } );
+			currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
+
+			controller = new UsersController( service.Object );
+			SetupRouteData( controller );
 		}
 
-		private void SetupRouteData()
+		private void SetupRouteData( UsersController controller )
 		{
 			var routeData = new RouteData();
 			routeData.Values.Add( "id", "User2" );
@@ -38,12 +47,9 @@ namespace WishList.Tests.Controllers
 		[TestMethod]
 		public void ListFriends_ShouldGetFriendsFromServiceAndReturnPlusCurrentUserInViewModel()
 		{
-			SetupRouteData();
 
-			User user = new User { Name = "username" };
-			service.GetUser( Arg.Any<string>() ).Returns( user );
-			service.GetFriends( Arg.Is<User>( user ) ).Returns( new List<User> { new User { Id = 1 }, new User { Id = 2 }, new User { Id = 3 } } );
-			var currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
+
+			
 
 			var result = controller.ListFriends( currentUser ) as ViewResult;
 
@@ -56,12 +62,12 @@ namespace WishList.Tests.Controllers
 		[TestMethod]
 		public void WhenActionIsShowUser_SelectedUserShouldBeSetToUserShown()
 		{
-			SetupRouteData();
-	
-			User user = new User { Name = "username" };
-			service.GetUser( Arg.Any<string>() ).Returns( user );
-			service.GetFriends( Arg.Is<User>( user ) ).Returns( new List<User> { new User { Id = 1 }, new User { Id = 2, Name = "User2" }, new User { Id = 3 } } );
-			var currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
+
+
+			//User user = new User { Name = "username" };
+			//service.GetUser( Arg.Any<string>() ).Returns( user );
+			//service.GetFriends( Arg.Is<User>( user ) ).Returns(  );
+			//var currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
 
 			var result = controller.ListFriends( currentUser ) as ViewResult;
 

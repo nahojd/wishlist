@@ -22,10 +22,10 @@ namespace WishList.Tests.Helpers
 			var session = new Mock<HttpSessionStateBase>();
 			var server = new Mock<HttpServerUtilityBase>();
 
-			context.Expect( ctx => ctx.Request ).Returns( request.Object );
-			context.Expect( ctx => ctx.Response ).Returns( response.Object );
-			context.Expect( ctx => ctx.Session ).Returns( session.Object );
-			context.Expect( ctx => ctx.Server ).Returns( server.Object );
+			context.Setup( ctx => ctx.Request ).Returns( request.Object );
+			context.Setup( ctx => ctx.Response ).Returns( response.Object );
+			context.Setup( ctx => ctx.Session ).Returns( session.Object );
+			context.Setup( ctx => ctx.Server ).Returns( server.Object );
 
 
 
@@ -33,9 +33,9 @@ namespace WishList.Tests.Helpers
 			var querystring = new NameValueCollection();
 			var cookies = new HttpCookieCollection();
 
-			request.Expect( r => r.Cookies ).Returns( cookies );
-			request.Expect( r => r.Form ).Returns( form );
-			request.Expect( q => q.QueryString ).Returns( querystring );
+			request.Setup( r => r.Cookies ).Returns( cookies );
+			request.Setup( r => r.Form ).Returns( form );
+			request.Setup( q => q.QueryString ).Returns( querystring );
 
 			return context.Object;
 		}
@@ -81,11 +81,11 @@ namespace WishList.Tests.Helpers
 
 			var mock = Mock.Get( request );
 
-			mock.Expect( req => req.QueryString )
+			mock.Setup( req => req.QueryString )
 				.Returns( GetQueryStringParameters( url ) );
-			mock.Expect( req => req.AppRelativeCurrentExecutionFilePath )
+			mock.Setup( req => req.AppRelativeCurrentExecutionFilePath )
 				.Returns( GetUrlFileName( url ) );
-			mock.Expect( req => req.PathInfo )
+			mock.Setup( req => req.PathInfo )
 				.Returns( string.Empty );
 		}
 
@@ -123,7 +123,7 @@ namespace WishList.Tests.Helpers
 		public static void SetHttpMethodResult( this HttpRequestBase request, string httpMethod )
 		{
 			Mock.Get( request )
-				.Expect( req => req.HttpMethod )
+				.Setup( req => req.HttpMethod )
 				.Returns( httpMethod );
 		}
 	}

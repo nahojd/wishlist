@@ -6,7 +6,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deps", "Deps", "{F3149088-1786-4AEE-B29A-A1D34E384605}"
 	ProjectSection(SolutionItems) = preProject
 		Deps\Microsoft.Web.Mvc.dll = Deps\Microsoft.Web.Mvc.dll
-		Deps\Moq.dll = Deps\Moq.dll
 		Deps\MvcContrib.dll = Deps\MvcContrib.dll
 		Deps\MvcContrib.FluentHtml.dll = Deps\MvcContrib.FluentHtml.dll
 		Deps\MvcContrib.FluentHtml.xml = Deps\MvcContrib.FluentHtml.xml

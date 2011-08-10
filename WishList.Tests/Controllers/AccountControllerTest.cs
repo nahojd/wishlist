@@ -9,7 +9,7 @@ using System.Web.Mvc;
 using WishList.Tests.Helpers;
 using System.Security.Principal;
 using WishList.Services;
-using NSubstitute;
+using Moq;
 using WishList.Data;
 
 
@@ -21,28 +21,30 @@ namespace WishList.Tests.Controllers
 	[TestClass]
 	public class AccountControllerTest
 	{
-		IUserService _service;
+		Mock<IUserService> _service;
 		private AccountController controller;
 
 		[TestInitialize]
 		public void SetUp()
 		{
-			_service = Substitute.For<IUserService>();
-			controller = new AccountController( _service );
+			_service = new Mock<IUserService>();
+			controller = new AccountController( _service.Object );
 		}
 
 		[TestMethod]
 		public void AccountController_Can_Edit_User()
 		{
-			User user = new User
-						{
-							Name = "EditTestUser",
-							Email = "test@email.com",
-							Password = "abc123",
-							NotifyOnChange = false
-						};
-			_service.GetUser( Arg.Any<string>() ).Returns( user );
-			_service.UpdateUser( Arg.Any<User>() ).Returns( x => x.Arg<User>() );
+			var user = new User
+									{
+										Name = "EditTestUser",
+										Email = "test@email.com",
+										Password = "abc123",
+										NotifyOnChange = false
+									};
+			_service.Setup( x => x.GetUser( It.IsAny<string>() ) ).Returns( user );
+			_service.Setup( x => x.UpdateUser( It.IsAny<User>() ) ).Returns( ( User x ) => x );
+			_service.Setup( x => x.GetFriends( It.IsAny<User>() ) ).Returns( new List<User>() );
+			_service.Setup( x => x.GetUsers() ).Returns( new List<User>() );
 
 			var editUser = new User
 			{
@@ -51,7 +53,7 @@ namespace WishList.Tests.Controllers
 			};
 			IPrincipal currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
 
-			ViewResult result = controller.Edit( editUser, currentUser ) as ViewResult;
+			var result = controller.Edit( editUser, currentUser ) as ViewResult;
 
 			Assert.IsNotNull( result, "Did not return a ViewResult" );
 			var userData = result.ViewData.Model as AccountController.UserData;
@@ -65,10 +67,10 @@ namespace WishList.Tests.Controllers
 		public void PostToEdit_ShouldReturnModelWithDictionaryOfFriends()
 		{
 			User user = new User { Name = "friendstest" };
-			_service.GetUser( Arg.Any<string>() ).Returns( user );
-			_service.GetUsers().Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" } } );
-			_service.GetFriends( user ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
-			_service.UpdateUser( Arg.Any<User>() ).Returns( x => x.Arg<User>() );
+			_service.Setup( x => x.GetUser( It.IsAny<string>() ) ).Returns( user );
+			_service.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" } } );
+			_service.Setup( x => x.GetFriends( user ) ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
+			_service.Setup( x => x.UpdateUser( It.IsAny<User>() ) ).Returns( ( User x ) => x );
 
 			IPrincipal currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
 
@@ -86,9 +88,9 @@ namespace WishList.Tests.Controllers
 		public void Edit_ShouldReturnModelWithDictionaryOfFriends()
 		{
 			User user = new User { Name = "friendstest" };
-			_service.GetUser( Arg.Any<string>() ).Returns( user );
-			_service.GetUsers().Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" } } );
-			_service.GetFriends( user ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
+			_service.Setup( x => x.GetUser( It.IsAny<string>() ) ).Returns( user );
+			_service.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" } } );
+			_service.Setup( x => x.GetFriends( user ) ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
 
 			IPrincipal currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
 
@@ -106,9 +108,9 @@ namespace WishList.Tests.Controllers
 		public void EditModelFriends_ShouldNotContainCurrentUser()
 		{
 			User user = new User { Name = "friendstest" };
-			_service.GetUser( Arg.Any<string>() ).Returns( user );
-			_service.GetUsers().Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" }, user } );
-			_service.GetFriends( user ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
+			_service.Setup( x => x.GetUser( It.IsAny<string>() ) ).Returns( user );
+			_service.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" }, user } );
+			_service.Setup( x => x.GetFriends( user ) ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
 			IPrincipal currentUser = new GenericPrincipal( new GenericIdentity( user.Name, "Forms" ), null );
 
 			var model = ((ViewResult)controller.Edit( currentUser )).ViewData.Model as AccountController.UserData;
@@ -124,7 +126,7 @@ namespace WishList.Tests.Controllers
 			var result = controller.AddFriend( currentUser, "newFriend" ) as JsonResult;
 
 			Assert.IsNotNull( result );
-			_service.Received().AddFriend( "someuser", "newFriend" );
+			_service.Verify( x => x.AddFriend( "someuser", "newFriend" ), Times.Once() );
 		}
 
 		[TestMethod]
@@ -135,7 +137,7 @@ namespace WishList.Tests.Controllers
 			var result = controller.RemoveFriend( currentUser, "notAFriendAnymore" ) as JsonResult;
 
 			Assert.IsNotNull( result );
-			_service.Received().RemoveFriend( "someuser", "notAFriendAnymore" );
+			_service.Verify( x => x.RemoveFriend( "someuser", "notAFriendAnymore" ), Times.Once() );
 		}
 
 
@@ -163,8 +165,8 @@ namespace WishList.Tests.Controllers
 		[TestMethod]
 		public void AccountController_Authenticate_Action_Redirects_For_User1_To_TestUrl()
 		{
-			_service.ValidateUser( Arg.Any<string>(), Arg.Any<string>() ).Returns( true );
-			AccountController controller = new TestableAccountController( _service );
+			_service.Setup( x => x.ValidateUser( It.IsAny<string>(), It.IsAny<string>() ) ).Returns( true );
+			AccountController controller = new TestableAccountController( _service.Object );
 
 			ActionResult result = controller.Authenticate( "User 1", "pwd1", "testurl" );
 
