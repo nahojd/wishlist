@@ -26,6 +26,7 @@
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
     <UseIISExpress>false</UseIISExpress>
+    <MvcBuildViews>true</MvcBuildViews>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,9 +64,6 @@
     </Reference>
     <Reference Include="MvcContrib">
       <HintPath>..\Deps\MvcContrib.dll</HintPath>
-    </Reference>
-    <Reference Include="MvcContrib.FluentHtml">
-      <HintPath>..\Deps\MvcContrib.FluentHtml.dll</HintPath>
     </Reference>
     <Reference Include="MvcContrib.StructureMap">
       <HintPath>..\Deps\MvcContrib.StructureMap.dll</HintPath>
@@ -203,6 +201,12 @@
     <Content Include="Scripts\MicrosoftMvcAjax.js" />
     <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
+    <Content Include="_bin_deployableAssemblies\Microsoft.Web.Mvc.dll" />
+    <Content Include="_bin_deployableAssemblies\MvcContrib.dll" />
+    <Content Include="_bin_deployableAssemblies\MvcContrib.StructureMap.dll" />
+    <Content Include="_bin_deployableAssemblies\MvcContrib.StructureMap.xml" />
+    <Content Include="_bin_deployableAssemblies\System.Web.Abstractions.dll" />
+    <Content Include="_bin_deployableAssemblies\System.Web.Mvc.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WishList.Model\WishList.Data.csproj">

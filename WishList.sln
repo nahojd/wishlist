@@ -3,22 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test projects", "Test projects", "{AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deps", "Deps", "{F3149088-1786-4AEE-B29A-A1D34E384605}"
-	ProjectSection(SolutionItems) = preProject
-		Deps\Microsoft.Web.Mvc.dll = Deps\Microsoft.Web.Mvc.dll
-		Deps\MvcContrib.dll = Deps\MvcContrib.dll
-		Deps\MvcContrib.FluentHtml.dll = Deps\MvcContrib.FluentHtml.dll
-		Deps\MvcContrib.FluentHtml.xml = Deps\MvcContrib.FluentHtml.xml
-		Deps\MvcContrib.StructureMap.dll = Deps\MvcContrib.StructureMap.dll
-		Deps\MvcContrib.StructureMap.xml = Deps\MvcContrib.StructureMap.xml
-		Deps\MvcContrib.TestHelper.dll = Deps\MvcContrib.TestHelper.dll
-		Deps\MvcContrib.TestHelper.xml = Deps\MvcContrib.TestHelper.xml
-		Deps\MvcContrib.xml = Deps\MvcContrib.xml
-		Deps\System.Web.Abstractions.dll = Deps\System.Web.Abstractions.dll
-		Deps\System.Web.Mvc.dll = Deps\System.Web.Mvc.dll
-		Deps\System.Web.Routing.dll = Deps\System.Web.Routing.dll
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{B0C342E2-FA62-4EDF-9E88-011519CC9459}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{C9AE5A75-05BE-4DC9-89EA-7C8EE4932261}"
