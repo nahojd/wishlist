@@ -10,6 +10,7 @@ using WishList.Services;
 using WishList.Data.Filters;
 using DB = WishList.SqlRepository.Data;
 using System.Configuration;
+using System.Threading;
 
 namespace WishList.IntegrationTests
 {
@@ -257,6 +258,7 @@ namespace WishList.IntegrationTests
 			};
 			wish = rep.SaveWish( wish );
 			DateTime lastChanged = wish.Changed.Value;
+			Thread.Sleep( 20 ); 
 
 			rep.SaveWish( wish );
 			var updatedWish = rep.GetWishes().WithId( wish.Id );
