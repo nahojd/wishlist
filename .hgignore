@@ -4,6 +4,7 @@ syntax: glob
 *.user
 *.dat
 *.vsmdi
+*.ReSharper
 
 WishList.WebUI/bin
 WishList.WebUI/obj
@@ -19,3 +20,4 @@ WishList.Tests/obj
 WishList.Database/bin
 WishList.Database/obj
 TestResults/
+_[Rr]e[Ss]harper*
