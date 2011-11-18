@@ -5,9 +5,11 @@ namespace WishList.Services
 {
 	public interface IUserService
 	{
-		void ApproveUser( string username, Guid ticket );
+		
 		User CreateUser( User user );
 		void DeleteUser( string username );
+
+		void ApproveUser( string username, Guid ticket );
 		Guid? GetApprovalTicket( string username );
 
 
