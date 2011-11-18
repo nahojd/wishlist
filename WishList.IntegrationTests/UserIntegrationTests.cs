@@ -206,7 +206,7 @@ namespace WishList.IntegrationTests
 		}
 
 		[TestMethod]
-		public void WhenUserIsNotValidated_ValidateUserWillReturnFalse()
+		public void ValidateUser_UserIsNotValidated_WillReturnFalse()
 		{
 			var user = CreateUser( "LogOnTestUser", "logontest@example.com", "l0g0nt3st" );
 
@@ -216,7 +216,7 @@ namespace WishList.IntegrationTests
 		}
 
 		[TestMethod]
-		public void WhenPasswordIsWrong_ValidateUserWillReturnFalse()
+		public void ValidateUser_PasswordIsWrong_WillReturnFalse()
 		{
 			var user = CreateUser( "LogOnTestUser", "logontest@example.com", "l0g0nt3st" );
 			rep.ApproveUser( user.Name, rep.GetApprovalTicket( user.Name ).Value );
@@ -227,7 +227,7 @@ namespace WishList.IntegrationTests
 		}
 
 		[TestMethod]
-		public void WhenUsernameDoesNotExist_ValidateUserWillReturnFalse()
+		public void ValidateUser_UsernameDoesNotExist_WillReturnFalse()
 		{
 			var result = rep.ValidateUser( "Badusername", "whateverpassword" );
 
@@ -235,7 +235,7 @@ namespace WishList.IntegrationTests
 		}
 
 		[TestMethod]
-		public void WhenUserIsApprovedAndUsernameAndPasswordAreCorrect_ValidateUserWillReturnTrue()
+		public void ValidateUser_UserIsApprovedAndUsernameAndPasswordAreCorrect_WillReturnTrue()
 		{
 			var user = CreateUser( "LogOnTestUser", "logontest@example.com", "l0g0nt3st" );
 			rep.ApproveUser( user.Name, rep.GetApprovalTicket( user.Name ).Value );
@@ -246,7 +246,7 @@ namespace WishList.IntegrationTests
 		}
 
 		[TestMethod]
-		public void ValidateUserIsNotCaseSensitiveOnUsername()
+		public void ValidateUser_IsNotCaseSensitiveOnUsername()
 		{
 			var user = CreateUser( "LogOnTestUser", "logontest@example.com", "l0g0nt3st" );
 			rep.ApproveUser( user.Name, rep.GetApprovalTicket( user.Name ).Value );
@@ -254,6 +254,14 @@ namespace WishList.IntegrationTests
 			var result = rep.ValidateUser( user.Name.ToUpper(), user.Password );
 
 			Assert.IsTrue( result );
+		}
+
+		[TestMethod]
+		public void ValidateUser_PasswordIsEmpty_ReturnsFalse()
+		{
+			var result = rep.ValidateUser( "test", null );
+
+			Assert.IsFalse( result );
 		}
 
 		//[TestMethod]

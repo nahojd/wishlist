@@ -96,11 +96,8 @@ namespace WishList.Services
 		public bool ValidateUser( string userName, string password )
 		{
 
-			if (string.IsNullOrEmpty( userName ))
-				throw new InvalidOperationException( "Need a user name" );
-
-			if (string.IsNullOrEmpty( password ))
-				throw new InvalidOperationException( "Need a password" );
+			if (string.IsNullOrEmpty( userName ) || string.IsNullOrEmpty( password ))
+				return false;
 
 			return _repository.ValidateUser( userName, password );
 		}
