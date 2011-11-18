@@ -142,17 +142,19 @@ namespace WishList.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( InvalidOperationException ), "Empty password did not cause exception" )]
-		public void Service_Will_Not_Accept_Blank_Password()
+		public void ValidateUser_PasswordIsBlank_ReturnsFalse()
 		{
-			service.ValidateUser( "User 1", string.Empty );
+			var result = service.ValidateUser( "User 1", string.Empty );
+
+			Assert.IsFalse( result );
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( InvalidOperationException ), "Empty username did not cause exception" )]
-		public void Service_Will_Not_Accept_Blank_Username()
+		public void ValidateUser_UsernameIsBlank_ReturnsFalse()
 		{
-			service.ValidateUser( string.Empty, "password" );
+			var result = service.ValidateUser( string.Empty, "password" );
+
+			Assert.IsFalse( result );
 		}
 
 		[TestMethod]
