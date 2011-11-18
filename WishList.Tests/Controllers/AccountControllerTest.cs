@@ -66,7 +66,7 @@ namespace WishList.Tests.Controllers
 		[TestMethod]
 		public void PostToEdit_ShouldReturnModelWithDictionaryOfFriends()
 		{
-			User user = new User { Name = "friendstest" };
+			var user = new User { Name = "friendstest" };
 			_service.Setup( x => x.GetUser( It.IsAny<string>() ) ).Returns( user );
 			_service.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" } } );
 			_service.Setup( x => x.GetFriends( user ) ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
@@ -87,7 +87,7 @@ namespace WishList.Tests.Controllers
 		[TestMethod]
 		public void Edit_ShouldReturnModelWithDictionaryOfFriends()
 		{
-			User user = new User { Name = "friendstest" };
+			var user = new User { Name = "friendstest" };
 			_service.Setup( x => x.GetUser( It.IsAny<string>() ) ).Returns( user );
 			_service.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" } } );
 			_service.Setup( x => x.GetFriends( user ) ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
@@ -107,7 +107,7 @@ namespace WishList.Tests.Controllers
 		[TestMethod]
 		public void EditModelFriends_ShouldNotContainCurrentUser()
 		{
-			User user = new User { Name = "friendstest" };
+			var user = new User { Name = "friendstest" };
 			_service.Setup( x => x.GetUser( It.IsAny<string>() ) ).Returns( user );
 			_service.Setup( x => x.GetUsers() ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User2" }, new User { Name = "User3" }, user } );
 			_service.Setup( x => x.GetFriends( user ) ).Returns( new List<User> { new User { Name = "User1" }, new User { Name = "User3" } } );
@@ -145,20 +145,20 @@ namespace WishList.Tests.Controllers
 		[TestMethod]
 		public void AccountController_Index_Redirects_To_Login()
 		{
-			ActionResult result = controller.Index();
+			var result = controller.Index();
 			Assert.IsInstanceOfType( result, typeof( RedirectToRouteResult ) );
 
-			RedirectToRouteResult renderResult = result as RedirectToRouteResult;
+			var renderResult = result as RedirectToRouteResult;
 			Assert.AreEqual( "Login", renderResult.RouteValues["action"] );
 		}
 
 		[TestMethod]
 		public void AccountController_Has_a_Login_Method_That_Renders_The_LoginView()
 		{
-			ActionResult result = controller.Login();
+			var result = controller.Login();
 			Assert.IsInstanceOfType( result, typeof( ViewResult ) );
 
-			ViewResult renderResult = result as ViewResult;
+			var renderResult = result as ViewResult;
 			Assert.AreEqual( "Login", renderResult.ViewName );
 		}
 
@@ -168,18 +168,18 @@ namespace WishList.Tests.Controllers
 			_service.Setup( x => x.ValidateUser( It.IsAny<string>(), It.IsAny<string>() ) ).Returns( true );
 			AccountController controller = new TestableAccountController( _service.Object );
 
-			ActionResult result = controller.Authenticate( "User 1", "pwd1", "testurl" );
+			var result = controller.Authenticate( "User 1", "pwd1", "testurl" );
 
 			Assert.IsInstanceOfType( result, typeof( RedirectResult ) );
 
-			RedirectResult redirectResult = result as RedirectResult;
+			var redirectResult = result as RedirectResult;
 			Assert.AreEqual( "testurl", redirectResult.Url );
 		}
 
 		[TestMethod]
 		public void AccountController_Authenticate_Redirects_To_Login_For_Bad_Login()
 		{
-			ActionResult result = controller.Authenticate( "User 1", "The wrong password", "testurl" );
+			var result = controller.Authenticate( "User 1", "The wrong password", "testurl" );
 
 			Assert.IsInstanceOfType( result, typeof( RedirectToRouteResult ) );
 			Assert.IsNotNull( controller.TempData["loginmessage"] );
