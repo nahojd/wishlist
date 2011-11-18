@@ -5,6 +5,8 @@ syntax: glob
 *.dat
 *.vsmdi
 *.ReSharper
+*.orig
+*.crunch*
 
 WishList.WebUI/bin
 WishList.WebUI/obj
