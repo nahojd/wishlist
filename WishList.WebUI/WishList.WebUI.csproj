@@ -166,6 +166,7 @@
     <Content Include="Components\UserSession\Views\Summary.aspx" />
     <Content Include="Content\bg_gradient.gif" />
     <Content Include="Content\logo.png" />
+    <Content Include="Content\Smallscreen.css" />
     <Content Include="Content\Themes\Xmas\red-christmas-tree.jpg" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />

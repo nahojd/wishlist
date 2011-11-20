@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<WishList.WebUI.Controllers.LatestActivityViewModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<WishList.WebUI.ViewModels.LatestActivityViewModel>" %>
 
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
 	<h2>Senaste önskningar</h2>

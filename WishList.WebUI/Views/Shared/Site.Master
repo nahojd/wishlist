@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title><%: ViewData["Title"] %></title>
 	<link rel="Stylesheet" type="text/css" href="<%: Url.Content("~/Content/Site.css") %>" />
+	<link rel="Stylesheet" type="text/css" href="<%: Url.Content("~/Content/Smallscreen.css") %>" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 	<script type="text/javascript" src="<%: Url.Content("~/Scripts/jquery.validate.min.js") %>"></script>
     <script type="text/javascript" src="<%: Url.Content("~/Scripts/MicrosoftMvcJQueryValidation.js") %>"></script>
@@ -13,7 +14,7 @@
 </head>
 <body>
     <div class="page">
-        <div id="header">
+        <div id="header" class="fc">
             <div id="logo">
                 <a href="/"><img src="/Content/logo.png" alt="Önskelistemaskinen" /></a>
             </div>

@@ -255,7 +255,7 @@ namespace WishList.WebUI.Controllers
 					user.Name,
 					ticket );
 
-				using (SmtpClient client = new SmtpClient())
+				using (var client = new SmtpClient())
 				{
 					client.Send( string.Format( "{0} <{1}>", user.Name, user.Email ), ConfigurationManager.AppSettings["AdministratorEmail"], "Nytt konto på Wish2", body );
 				}
