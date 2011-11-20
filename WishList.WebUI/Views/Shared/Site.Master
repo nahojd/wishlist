@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta name="viewport" content="initial-scale=1.0">
     <title><%: ViewData["Title"] %></title>
 	<link rel="Stylesheet" type="text/css" href="<%: Url.Content("~/Content/Site.css") %>" />
 	<link rel="Stylesheet" type="text/css" href="<%: Url.Content("~/Content/Smallscreen.css") %>" />
