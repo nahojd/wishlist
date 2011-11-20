@@ -164,17 +164,28 @@ div#logo
 	color: #fff;
 }
 
-a.actionLink
+a.actionLink, a.actionLinkChecked
 {
 	text-decoration: none;
-	background-color: #FD2A97;
 	color: White;
-	padding: 0 10px;
+	padding: 5px 10px;
+	display: inline-block;
 	clear: both;
 }
-a.actionLink:hover
+a.actionLink:hover, a.actionLinkChecked:hover
 {
-	background-color: #DB4652;
+	background-color: #FDA2D1;
+}
+a.actionLink 
+{
+	background-color: #FD2A97;
+}
+a.actionLinkChecked 
+{
+	color:  #FD2A97;
+	border: 1px solid  #FD2A97;
+	background-color: #FDE9F3;
+	padding: 4px 9px;
 }
 
 /* USER LIST
@@ -219,13 +230,24 @@ a.actionLink:hover
 #userlist li, #userlist a
 {
 	color: #fff;
+	line-height: 2em;
 	text-decoration: none;
 	padding: 0 10px;
 }
 
-#userlist li.active, #userlist li:hover
+#userlist a 
+{
+	display: block;
+}
+
+#userlist li.active
 {
 	background-color: #FD2A97;
+}
+
+#userlist li:hover 
+{
+	background-color:  #FDA2D1;
 }
 
 #userlist p 
@@ -336,7 +358,7 @@ div.notify-error
 
 .wishTable th.name
 {
-	width: 150px;
+	width: 200px;
 }
 .wishTable th.description
 {
@@ -348,7 +370,8 @@ div.notify-error
 }
 .wishTable th.calledBy
 {
-	width: 100px;
+	text-align: right;
+    width: 60px;
 }
 .wishTable th.toolCell
 {
@@ -360,6 +383,11 @@ div.notify-error
 {
 	vertical-align: top;
 	padding-bottom: 5px;
+}
+
+.wishTable a.wishLink 
+{
+	display: block;
 }
 
 .wishTable td.toolCell, .wishTable th.toolCell
