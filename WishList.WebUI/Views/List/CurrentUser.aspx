@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<WishList.Data.WishList>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<WishList.WebUI.ViewModels.WishListViewModel>" %>
 
 <asp:Content runat="server" ContentPlaceHolderID="MainContent">
 <table class="wishTable">

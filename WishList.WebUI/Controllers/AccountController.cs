@@ -255,11 +255,10 @@ namespace WishList.WebUI.Controllers
 					user.Name,
 					ticket );
 
-				SmtpClient client = new SmtpClient();
-				client.Send( string.Format( "{0} <{1}>", user.Name, user.Email ),
-							ConfigurationManager.AppSettings["AdministratorEmail"],
-							"Nytt konto på Wish2",
-							body );
+				using (SmtpClient client = new SmtpClient())
+				{
+					client.Send( string.Format( "{0} <{1}>", user.Name, user.Email ), ConfigurationManager.AppSettings["AdministratorEmail"], "Nytt konto på Wish2", body );
+				}
 			}
 			catch
 			{

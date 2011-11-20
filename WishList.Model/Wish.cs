@@ -9,40 +9,20 @@ namespace WishList.Data
 	{
 		private User _calledByUser;
 
-		public int Id
-		{
-			get;
-			set;
-		}
+		public int Id { get; set; }
 
 		[Required( ErrorMessage = "Du måste ange ett namn" )]
 		[StringLength( 100, ErrorMessage = "Namnet får vara max 100 tecken." )]
-		public string Name
-		{
-			get;
-			set;
-		}
+		public string Name { get; set; }
 
 		[Required( ErrorMessage = "Du måste ange en beskrivning" )]
 		[StringLength( 500, ErrorMessage = "Beskrivningen får vara max 500 tecken." )]
-		public string Description
-		{
-			get;
-			set;
-		}
+		public string Description { get; set; }
 
 		[StringLength( 255, ErrorMessage = "Länken får vara max 255 tecken." )]
-		public string LinkUrl
-		{
-			get;
-			set;
-		}
+		public string LinkUrl { get; set; }
 
-		public User Owner
-		{
-			get;
-			set;
-		}
+		public User Owner { get; set; }
 
 		public User CalledByUser
 		{

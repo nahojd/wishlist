@@ -8,7 +8,7 @@ using WishList.WebUI.ModelBinders;
 namespace WishList.WebUI.Controllers
 {
 	[Authorize]
-	public partial class WishController : Controller
+	public class WishController : Controller
 	{
 		private readonly IWishService _wishService;
 		private readonly IUserService _userService;

@@ -2,7 +2,6 @@
 using System.Web;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Collections.Specialized;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -42,7 +41,7 @@ namespace WishList.Tests.Helpers
 
 		public static HttpContextBase FakeHttpContext( string url )
 		{
-			HttpContextBase context = FakeHttpContext();
+			var context = FakeHttpContext();
 			context.Request.SetupRequestUrl( url );
 
 			return context;
@@ -54,7 +53,7 @@ namespace WishList.Tests.Helpers
 		{
 
 			var httpContext = FakeHttpContext();
-			ControllerContext context = new ControllerContext( new RequestContext( httpContext, new RouteData() ), controller );
+			var context = new ControllerContext( new RequestContext( httpContext, new RouteData() ), controller );
 			controller.ControllerContext = context;
 		}
 
@@ -67,7 +66,7 @@ namespace WishList.Tests.Helpers
 			httpContext.Request.Form.Add( "password", password );
 			httpContext.Request.QueryString.Add( "ReturnUrl", returnUrl );
 
-			ControllerContext context = new ControllerContext( new RequestContext( httpContext, new RouteData() ), controller );
+			var context = new ControllerContext( new RequestContext( httpContext, new RouteData() ), controller );
 			controller.ControllerContext = context;
 		}
 
@@ -91,26 +90,23 @@ namespace WishList.Tests.Helpers
 
 		static string GetUrlFileName( string url )
 		{
-			if (url.Contains( "?" ))
-				return url.Substring( 0, url.IndexOf( "?" ) );
-			else
-				return url;
+			return url.Contains( "?" ) ? url.Substring( 0, url.IndexOf( "?" ) ) : url;
 		}
 
 		static NameValueCollection GetQueryStringParameters( string url )
 		{
 			if (url.Contains( "?" ))
 			{
-				NameValueCollection parameters = new NameValueCollection();
+				var parameters = new NameValueCollection();
 
 				string[] parts = url.Split( "?".ToCharArray() );
 				string[] keys = parts[1].Split( "&".ToCharArray() );
 
-				foreach (string key in keys)
+				Array.ForEach( keys, key =>
 				{
 					string[] part = key.Split( "=".ToCharArray() );
 					parameters.Add( part[0], part[1] );
-				}
+				} );
 
 				return parameters;
 			}

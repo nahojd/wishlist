@@ -16,51 +16,55 @@ namespace WishList.Tests
 	/// </summary>
 	public class TestWishListRepository : IWishListRepository
 	{
-		private IList<Wish> _wishes;
-		private IList<User> _users;
+		private readonly IList<Wish> wishes;
+		private readonly IList<User> users;
 
 		public TestWishListRepository()
 		{
 			//Create some users
-			_users = new List<User>();
-			_wishes = new List<Wish>();
+			users = new List<User>();
+			wishes = new List<Wish>();
 
 			for (int userId = 1; userId <= 5; userId++)
 			{
-				_users.Add(
+				users.Add(
 					new User { Id = userId, Name = "User " + userId, Email = "user" + userId + "@example.com", Password = "pwd" + userId }
 					);
 
 				//Create some wishes for each user
 				for (int wishNumber = 1; wishNumber <= 5; wishNumber++)
 				{
-					Wish wish = new Wish() { Id = _wishes.Count + 1, Name = "Wish" + wishNumber, Description = "Description " + wishNumber, Owner = _users.WithId( userId ), Created = DateTime.Now, Changed = DateTime.Now };
+					Wish wish = new Wish() { Id = wishes.Count + 1, Name = "Wish" + wishNumber, Description = "Description " + wishNumber, Owner = users.WithId( userId ), Created = DateTime.Now, Changed = DateTime.Now };
 
 					//Call some wishes for user 1 - but not his own wishes!;
 					if (userId != 1 && wishNumber == 1)
 					{
-						wish.CalledByUser = _users.WithId( 1 );
+						wish.CalledByUser = users.WithId( 1 );
 					}
-					_wishes.Add( wish );
+					wishes.Add( wish );
 				}
 			}
 
 			//And a special one for updating tests
-			_users.Add( new User { Id = 17, Name = "UpdateUser", Email = "updateuser@example.com", Password = "update" } );
+			users.Add( new User { Id = 17, Name = "UpdateUser", Email = "updateuser@example.com", Password = "update" } );
 
 		}
 
+		public IList<Wish> Wishes
+		{
+			get { return wishes; }
+		}
 		#region IWishListRepository Members
 
 		public IQueryable<User> GetUsers()
 		{
-			return _users.AsQueryable<User>();
+			return users.AsQueryable<User>();
 		}
 
 		public IQueryable<WishList.Data.Wish> GetWishes()
 		{
 			List<Wish> wishesToReturn = new List<Wish>();
-			foreach (var wish in _wishes)
+			foreach (var wish in wishes)
 			{
 				wishesToReturn.Add( wish.Clone() as Wish );
 			}
@@ -71,15 +75,15 @@ namespace WishList.Tests
 		{
 			if (wish.Id < 1)
 			{
-				wish.Id = _wishes.Count + 1;
+				wish.Id = wishes.Count + 1;
 				wish.Created = DateTime.Now;
 				wish.Changed = wish.Created;
-				_wishes.Add( wish );
+				wishes.Add( wish );
 				return wish;
 			}
 			else
 			{
-				Wish wishToUpdate = (from w in _wishes where w.Id == wish.Id select w).SingleOrDefault<Wish>();
+				Wish wishToUpdate = (from w in wishes where w.Id == wish.Id select w).SingleOrDefault<Wish>();
 				if (wishToUpdate != null)
 				{
 					//Don't update change date if the wish was called
@@ -106,29 +110,29 @@ namespace WishList.Tests
 
 		public void RemoveWish( Wish wish )
 		{
-			var wishToBeRemoved = (from w in _wishes where w.Id == wish.Id select w).SingleOrDefault<Wish>();
+			var wishToBeRemoved = (from w in wishes where w.Id == wish.Id select w).SingleOrDefault<Wish>();
 			if (wishToBeRemoved != null)
-				_wishes.Remove( wishToBeRemoved );
+				wishes.Remove( wishToBeRemoved );
 		}
 
 		public User CreateUser( User user )
 		{
-			bool exists = (from u in _users where u.Name == user.Name select u).Count<User>() > 0;
+			bool exists = (from u in users where u.Name == user.Name select u).Count<User>() > 0;
 			if (exists)
 			{
 				throw new InvalidOperationException( "Duplicate username" );
 			}
 
 			User newUser = user.Clone();
-			newUser.Id = _users.Count + 1;
-			_users.Add( newUser );
+			newUser.Id = users.Count + 1;
+			users.Add( newUser );
 
 			return newUser;
 		}
 
 		public bool ValidateUser( string userName, string password )
 		{
-			User user = (from u in _users where u.Name == userName select u).SingleOrDefault();
+			User user = (from u in users where u.Name == userName select u).SingleOrDefault();
 
 			if (user == null)
 			{
@@ -158,7 +162,7 @@ namespace WishList.Tests
 
 		public User UpdateUser( User user )
 		{
-			User internalUser = _users.WithId( user.Id );
+			User internalUser = users.WithId( user.Id );
 			internalUser.Email = user.Email;
 			internalUser.NotifyOnChange = user.NotifyOnChange;
 
@@ -168,7 +172,7 @@ namespace WishList.Tests
 
 		public void SetPassword( string username, string password )
 		{
-			User user = _users.WithName( username );
+			User user = users.WithName( username );
 			user.SetPassword( password );
 		}
 
