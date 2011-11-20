@@ -165,6 +165,7 @@ namespace WishList.WebUI.Controllers
 		}
 
 		[Authorize]
+		[HttpPost]
 		public ActionResult AddFriend( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser, string username )
 		{
 			_service.AddFriend( currentUser.Identity.Name, username );
@@ -173,6 +174,7 @@ namespace WishList.WebUI.Controllers
 		}
 
 		[Authorize]
+		[HttpPost]
 		public ActionResult RemoveFriend( [ModelBinder( typeof( IPrincipalModelBinder ) )] IPrincipal currentUser, string username )
 		{
 			_service.RemoveFriend( currentUser.Identity.Name, username );

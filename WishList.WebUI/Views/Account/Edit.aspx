@@ -39,15 +39,16 @@
 	
 	<% if (false) { %><script type="text/javascript" src="~/Scripts/jquery-1.3.2-vsdoc.js"></script><% } %>
 	<script type="text/javascript">
-		function saveFriend(name, addFriend) {
+		function saveFriend(name, input) {
+			var addFriend = input.checked;
 			var url;
 			if (addFriend)
 				url = '<%: Url.Action("AddFriend") %>?username=' + name;
 			else
 				url = '<%: Url.Action("RemoveFriend") %>?username=' + name;
 
-			$.getJSON(url, function (data) {
-				alert(data.status);
+			$.post(url, function (data) {
+				$(input).parent().fadeOut("fast").fadeIn("fast");
 			});
 		}
 	</script>
@@ -58,7 +59,7 @@
 	<ul>
 	<% foreach (var item in Model.Friends) { %>
 		<li>
-			<input type="checkbox" name="friend_<%: item.Key  %>" <%: item.Value ? "checked=checked" : "" %> onclick="saveFriend('<%: item.Key %>', this.checked);" />
+			<input type="checkbox" name="friend_<%: item.Key  %>" <%: item.Value ? "checked=checked" : "" %> onclick="saveFriend('<%: item.Key %>', this);" />
 			<%: item.Key %>
 		</li>
 	<% } %>
