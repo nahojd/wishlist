@@ -16,7 +16,7 @@
                 <td>
 					<%= wish.Description %>
 					 <% if (!string.IsNullOrEmpty( wish.LinkUrl )) { %>
-                        <p><a href="<%= wish.LinkUrl %>" title="<%= wish.LinkUrl %>" target="_blank"><%= AppHelper.ShortUrl(wish.LinkUrl) %></a></p>
+                        <a class="wishLink" href="<%= wish.LinkUrl %>" title="<%= wish.LinkUrl %>" target="_blank"><%= AppHelper.ShortUrl(wish.LinkUrl) %></a>
                     <% } %>
                 </td>
                 <td class="toolCell">
@@ -26,7 +26,7 @@
                     <% }
                        else
                        { %>
-                           <a href="#" id="<%: "link" + wish.Id %>" class="actionLink"></a>
+                           <a href="#" id="<%: "link" + wish.Id %>" class="<%= wish.IsCalled ? "actionLinkChecked" : "actionLink" %>"></a>
                            <script type="text/javascript">
                                $(document).ready(
                                 function () {
@@ -51,7 +51,7 @@
         function call(id, linkUrl, newLinkUrl) {
             $.get(linkUrl, { wishId: id }, function () {
                 $("#link" + id).unbind('click');
-                $("#link" + id).text("Ta bort").click(function () {
+                $("#link" + id).text("Ta bort").attr("class", "actionLinkChecked").click(function () {
                     uncall(id, newLinkUrl, linkUrl);
                 });
             }, "text");
@@ -59,7 +59,7 @@
         function uncall(id, linkUrl, newLinkUrl) {
             $.get(linkUrl, { wishId: id }, function () {
                 $("#link" + id).unbind('click');
-                $("#link" + id).text("Tjinga").click(function () {
+                $("#link" + id).text("Tjinga").attr("class", "actionLink").click(function () {
                     call(id, newLinkUrl, linkUrl);
                 });
             }, "text");

@@ -61,13 +61,23 @@
 {
 	#logo img
     {
-    	width: 300px;
+    	width: 340px;
     }
+    
+    ul#menu li a
+	{
+		padding: 7px 7px;
+	}
 	
 	.page 
 	{
 		width: 95%;
-		max-width: 95%;
-		min-width: 365px;
+		max-width: 480px;
+		min-width: 320px;
+	}
+	
+	input[type=text], input[type=password] 
+	{
+		width: 100%;
 	}
 }
