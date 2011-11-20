@@ -319,14 +319,14 @@ div.notify-error
 
 /* Wish table
 ----------------------------------------------------------*/
-table.wishTable
+.wishTable
 {
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 20px;
 }
 
-table.wishTable th
+.wishTable th
 {
 	background-color: #aaa;
 	text-align: left;
@@ -334,35 +334,35 @@ table.wishTable th
 	white-space: nowrap;
 }
 
-table.wishTable th.name
+.wishTable th.name
 {
 	width: 150px;
 }
-table.wishTable th.description
+.wishTable th.description
 {
 	width: 200px;
 }
-table.wishTable th.link
+.wishTable th.link
 {
 	width: 100px;
 }
-table.wishTable th.calledBy
+.wishTable th.calledBy
 {
 	width: 100px;
 }
-table.wishTable th.toolCell
+.wishTable th.toolCell
 {
 	background-color: Transparent;
 	text-align: center;
 }
 
-table.wishTable td
+.wishTable td
 {
 	vertical-align: top;
 	padding-bottom: 5px;
 }
 
-table.wishTable td.toolCell, table.wishTable th.toolCell
+.wishTable td.toolCell, .wishTable th.toolCell
 {
 	text-align: right;
 }
