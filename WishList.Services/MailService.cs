@@ -10,8 +10,10 @@ namespace WishList.Services
 	{
 		public void SendMail( MailMessage mail )
 		{
-			var client = new SmtpClient();
-			client.Send( mail );
+			using (var client = new SmtpClient())
+			{
+				client.Send( mail );
+			}
 		}
 	}
 }

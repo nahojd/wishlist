@@ -3,9 +3,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using System.Web.Mvc;
 using WishList.Data.DataAccess;
+using System.Linq;
 using System.Security.Principal;
 using System.Collections.Generic;
 using WishList.Services;
+using WishList.WebUI.ViewModels;
+using WishList.Data.Filters;
 
 namespace WishList.Tests.Controllers
 {
@@ -18,130 +21,85 @@ namespace WishList.Tests.Controllers
 	[TestClass()]
 	public class ListControllerTest
 	{
-		IWishListRepository _repository;
-		WishService _wishService;
-		UserService _userService;
+		private ListController controller;
+        TestWishListRepository repository;
+		WishService wishService;
+		UserService userService;
 
 		[TestInitialize]
 		public void Setup()
 		{
-			_repository = new TestWishListRepository();
-			_wishService = new WishService( _repository, null );
-			_userService = new UserService( _repository );
-			_userService.ClearCache();
+			repository = new TestWishListRepository();
+			wishService = new WishService( repository, null );
+			userService = new UserService( repository );
+			userService.ClearCache();
+			controller = new ListController( wishService, userService );
 		}
 
-
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
-		public TestContext TestContext
+		[TestCleanup]
+		public void TearDown()
 		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
+			if (controller != null)
+				controller.Dispose();
 		}
 
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
+
+		public TestContext TestContext { get; set; }
 
 
-		/// <summary>
-		///A test for Show
-		///</summary>
-		// TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
-		// http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
-		// whether you are testing a page, web service, or a WCF service.
-		[TestMethod()]
-		//[HostType( "ASP.NET" )]
-		//[AspNetDevelopmentServerHost( "D:\\Users\\Johan\\Documents\\Visual Studio 2008\\Projects\\WishList2\\WishList.WebUI", "/" )]
-		//[UrlToTest( "http://localhost:49472/" )]
+		[TestMethod]
 		public void ListController_Can_Show_WishList()
 		{
-			ListController lc = new ListController( _wishService, _userService );
-			string username = "User 1";
-			IPrincipal user = new GenericPrincipal( new GenericIdentity( username, "Forms" ), null );
+			var username = "User 1";
+			var user = GetPrincipal( username );
 
-			ActionResult result = lc.Show( username, user );
-			Assert.IsInstanceOfType( result, typeof( ViewResult ) );
+			var result = controller.Show( username, user );
 
-			ViewResult viewResult = result as ViewResult;
-
-			Assert.IsInstanceOfType( viewResult.ViewData.Model, typeof( WishList.Data.WishList ), "Model was not a WishList" );
-			WishList.Data.WishList model = viewResult.ViewData.Model as WishList.Data.WishList;
+			var viewResult = result as ViewResult;
+			Assert.IsNotNull( viewResult );
+			Assert.IsInstanceOfType( viewResult.ViewData.Model, typeof( WishListViewModel ), "Model was not a WishList" );
+			var model = viewResult.ViewData.Model as WishListViewModel;
 			Assert.AreEqual( model.UserId, 1, "User id was wrong" );
+			Assert.AreEqual( 5, model.Wishes.Count );
 		}
 
-		//[TestMethod]
+		[TestMethod]
+		public void Show_WishWithLinkWithoutHttp_AddsHttp()
+		{
+			repository.Wishes.Where( x => x.Owner.Id == 1 ).First().LinkUrl = "www.test.com";
+			var user = GetPrincipal( "Any user" );
+
+			var result = controller.Show( "User 1", user );
+
+			var wish = ((WishListViewModel)((ViewResult)result).ViewData.Model).Wishes.First();
+
+			Assert.AreEqual( "http://www.test.com", wish.LinkUrl );
+		}
+
+		[TestMethod]
+		[Ignore]
 		public void ListController_Can_Show_ShoppingList()
 		{
-			//Cannot currently test this - depends on AppHelper, which depends on HttpContext.
-		}
-
-		/// <summary>
-		///A test for ListController Constructor
-		///</summary>
-		// TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
-		// http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
-		// whether you are testing a page, web service, or a WCF service.
-		[TestMethod()]
-		//[HostType( "ASP.NET" )]
-		//[AspNetDevelopmentServerHost( "D:\\Users\\Johan\\Documents\\Visual Studio 2008\\Projects\\WishList2\\WishList.WebUI", "/" )]
-		//[UrlToTest( "http://localhost:49472/" )]
-		public void ListControllerConstructorTest()
-		{
-			ListController lc = new ListController( _wishService, _userService );
-			Assert.IsNotNull( lc );
+			Assert.Inconclusive();
 		}
 
 		[TestMethod]
 		public void Can_Get_Latest_Activity_List()
 		{
-			var controller = new ListController( _wishService, _userService );
-			IPrincipal user = new GenericPrincipal( new GenericIdentity( "User 1", "Forms" ), null );
+			var user = GetPrincipal( "User 1" );
 
-            var result = controller.LatestActivity( user );
+			var result = controller.LatestActivity( user );
 
 			Assert.IsInstanceOfType( result, typeof( ViewResult ) );
-			ViewResult viewResult = result as ViewResult;
-			Assert.IsInstanceOfType( viewResult.ViewData.Model, typeof( WishList.WebUI.Controllers.LatestActivityViewModel ), "Model was not an IList of Wishes" );
-			Assert.AreEqual( ((WishList.WebUI.Controllers.LatestActivityViewModel)viewResult.ViewData.Model).Wishes.Count, 10, "Wrong number of wishes" );
+			var viewResult = result as ViewResult;
+			Assert.IsInstanceOfType( viewResult.ViewData.Model, typeof( LatestActivityViewModel ), "Model was not an IList of Wishes" );
+			Assert.AreEqual( ((LatestActivityViewModel)viewResult.ViewData.Model).Wishes.Count, 10, "Wrong number of wishes" );
 
+		}
+
+		private static IPrincipal GetPrincipal( string username )
+		{
+			return new GenericPrincipal( new GenericIdentity( username, "Forms" ), null );
 		}
 	}
 }

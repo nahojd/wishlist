@@ -36,7 +36,7 @@ namespace WishList.Tests.Controllers
 			SetupRouteData( controller );
 		}
 
-		private void SetupRouteData( UsersController controller )
+		private static void SetupRouteData( UsersController controller )
 		{
 			var routeData = new RouteData();
 			routeData.Values.Add( "id", "User2" );

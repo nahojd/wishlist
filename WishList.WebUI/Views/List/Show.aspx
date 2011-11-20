@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<WishList.Data.WishList>" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<WishList.WebUI.ViewModels.WishListViewModel>" %>
 
 <asp:Content runat="server" ContentPlaceHolderID="MainContent">
     <table class="wishTable">
@@ -20,9 +20,9 @@
                     <% } %>
                 </td>
                 <td class="toolCell">
-                    <% if (wish.IsCalled && !AppHelper.IsCurrentUserId( wish.CalledByUser.Id ))
+                    <% if (wish.IsCalled && !AppHelper.IsCurrentUserId( wish.CalledByUserId.Value ))
                        { %>
-                           <%= wish.CalledByUser.Name%>
+                           <%= wish.CalledByUserName%>
                     <% }
                        else
                        { %>
@@ -46,7 +46,6 @@
             </tr>
         <% } %>
     </table>
-    <a id="test" href="#">test</a>
     
     <script type="text/javascript">
         function call(id, linkUrl, newLinkUrl) {

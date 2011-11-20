@@ -101,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTest.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\UsersControllerTests.cs" />
     <Compile Include="Helpers\MvcMockHelpers.cs" />
     <Compile Include="Helpers\TestMailService.cs" />

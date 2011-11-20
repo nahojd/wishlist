@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WishList.Data.DataAccess;
 using WishList.WebUI.Controllers;
 using System.Web.Mvc;
-using WishList.Tests.Helpers;
 using System.Security.Principal;
 using WishList.Services;
 using Moq;
@@ -22,13 +19,13 @@ namespace WishList.Tests.Controllers
 	public class AccountControllerTest
 	{
 		Mock<IUserService> _service;
-		private AccountController controller;
+		private TestableAccountController controller;
 
 		[TestInitialize]
 		public void SetUp()
 		{
 			_service = new Mock<IUserService>();
-			controller = new AccountController( _service.Object );
+			controller = new TestableAccountController( _service.Object );
 		}
 
 		[TestMethod]
@@ -139,9 +136,7 @@ namespace WishList.Tests.Controllers
 			Assert.IsNotNull( result );
 			_service.Verify( x => x.RemoveFriend( "someuser", "notAFriendAnymore" ), Times.Once() );
 		}
-
-
-		#region Login
+		
 		[TestMethod]
 		public void AccountController_Index_Redirects_To_Login()
 		{
@@ -166,7 +161,6 @@ namespace WishList.Tests.Controllers
 		public void AccountController_Authenticate_Action_Redirects_For_User1_To_TestUrl()
 		{
 			_service.Setup( x => x.ValidateUser( It.IsAny<string>(), It.IsAny<string>() ) ).Returns( true );
-			AccountController controller = new TestableAccountController( _service.Object );
 
 			var result = controller.Authenticate( "User 1", "pwd1", "testurl" );
 
@@ -186,21 +180,22 @@ namespace WishList.Tests.Controllers
 
 		}
 
-		#endregion
+		class TestableAccountController : AccountController
+		{
+			internal TestableAccountController( IUserService service )
+				: base( service )
+			{
+			}
+
+			internal TestableAccountController() : base() { }
+
+			protected override void PerformFormsAuthentication( string userName )
+			{
+				//Do nothing - we can't test FormsAuthentication anyway.
+			}
+		}
+		
 	}
 
-	internal class TestableAccountController : AccountController
-	{
-		internal TestableAccountController( IUserService service )
-			: base( service )
-		{
-		}
-
-		internal TestableAccountController() : base() { }
-
-		protected override void PerformFormsAuthentication( string userName )
-		{
-			//Do nothing - we can't test FormsAuthentication anyway.
-		}
-	}
+	
 }
