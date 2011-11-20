@@ -1,15 +1,10 @@
-﻿@media screen and (max-width:1024px) 
+﻿@media screen and (max-width:1000px) 
 {
-	#logo img
-	{
-		width: 300px;
-	}
-	
 	.page 
 	{
-		max-width: 95%;
+		max-width: 85%;
 		min-width: 300px;
-		width: auto;
+		width: 85%;
 	}
 	
 	#header
@@ -62,8 +57,13 @@
 	}
 }
 
-@media screen and (max-width:480px) 
+@media screen and (max-width:600px) 
 {
+	#logo img
+    {
+    	width: 300px;
+    }
+	
 	body 
 	{
 		background-color: Lime;
@@ -71,8 +71,6 @@
 	
 	.page 
 	{
-		max-width: 100%;
-		min-width: 250px;
-		width: 100%;
+		width: 365px;
 	}
 }
