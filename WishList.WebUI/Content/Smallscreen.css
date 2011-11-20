@@ -1,5 +1,12 @@
 ﻿@media screen and (max-width:1024px) 
 {
+	.page 
+	{
+		max-width: 500px;
+		min-width: 300px;
+		width: 95%;
+	}
+	
 	#header
 	{
 		height: auto;
