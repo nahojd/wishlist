@@ -1,10 +1,15 @@
 ﻿@media screen and (max-width:1024px) 
 {
+	#logo img
+	{
+		width: 300px;
+	}
+	
 	.page 
 	{
-		max-width: 500px;
+		max-width: 95%;
 		min-width: 300px;
-		width: 95%;
+		width: auto;
 	}
 	
 	#header
@@ -49,5 +54,25 @@
 		width: auto;
 		float: none;
 		clear: both;
+	}
+	
+	.wishTable th.name, .wishTable th.description, .wishTable th.link 
+	{
+		width: auto;
+	}
+}
+
+@media screen and (max-width:480px) 
+{
+	body 
+	{
+		background-color: Lime;
+	}
+	
+	.page 
+	{
+		max-width: 100%;
+		min-width: 250px;
+		width: 100%;
 	}
 }
