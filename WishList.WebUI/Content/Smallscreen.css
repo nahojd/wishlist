@@ -1,0 +1,46 @@
+﻿@media screen and (max-width:1024px) 
+{
+	#header
+	{
+		height: auto;
+	}
+	
+	div#userpanel 
+	{
+		clear: left;
+		float: left;
+		margin-bottom: 10px;
+		position: inherit;
+		top: auto;
+		right: auto;
+	}
+	
+	ul#menu 
+	{
+		float: left;
+		clear: both;
+		position: inherit;
+		text-align: left;
+		top: 0;
+	}
+	
+	#userlist 
+	{
+		float: none;
+		margin-bottom: 20px;
+		margin-right: 0;
+		width: auto;
+	}
+	
+	#userlist li 
+	{
+		width: auto;
+	}
+	
+	#content 
+	{
+		width: auto;
+		float: none;
+		clear: both;
+	}
+}
