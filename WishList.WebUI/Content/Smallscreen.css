@@ -64,13 +64,10 @@
     	width: 300px;
     }
 	
-	body 
-	{
-		background-color: Lime;
-	}
-	
 	.page 
 	{
-		width: 365px;
+		width: 400px;
+		max-width: 400px;
+		margin: 0 40px;
 	}
 }
