@@ -6,7 +6,7 @@ syntax: glob
 *.vsmdi
 *.ReSharper
 *.orig
-*.crunch*
+*.ncrunch*
 
 WishList.WebUI/bin
 WishList.WebUI/obj
