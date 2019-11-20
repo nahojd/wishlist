@@ -136,7 +136,7 @@ namespace WishList.Tests.Controllers
 			Assert.IsNotNull( result );
 			_service.Verify( x => x.RemoveFriend( "someuser", "notAFriendAnymore" ), Times.Once() );
 		}
-		
+
 		[TestMethod]
 		public void AccountController_Index_Redirects_To_Login()
 		{
@@ -187,15 +187,13 @@ namespace WishList.Tests.Controllers
 			{
 			}
 
-			internal TestableAccountController() : base() { }
-
 			protected override void PerformFormsAuthentication( string userName )
 			{
 				//Do nothing - we can't test FormsAuthentication anyway.
 			}
 		}
-		
+
 	}
 
-	
+
 }

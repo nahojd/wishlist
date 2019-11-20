@@ -31,7 +31,7 @@ namespace WishList.Tests.Controllers
 		{
 			repository = new TestWishListRepository();
 			wishService = new WishService( repository, null );
-			userService = new UserService( repository );
+			userService = new UserService( repository, null );
 			userService.ClearCache();
 			controller = new ListController( wishService, userService );
 		}

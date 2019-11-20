@@ -61,7 +61,7 @@ namespace WishList.IntegrationTests
 			var transaction = dataContext.Connection.BeginTransaction();
 			dataContext.Transaction = transaction;
 			rep = new SqlWishListRepository( dataContext );
-			service = new UserService( rep );
+			service = new UserService( rep, new MailService());
 			wishService = new WishService( rep, new TestMailService() );
 
 

@@ -14,7 +14,7 @@ namespace WishList.WebUI.Components.UserSession.Controllers
 			if (currentPrincipal != null)
 			{
 				IWishListRepository repository = new SqlWishListRepository();
-				UserService service = new UserService( repository );
+				UserService service = new UserService( repository, new MailService() );
 				User user = service.GetUser( currentPrincipal.Identity.Name );
 
 				View( "Summary", user );
