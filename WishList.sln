@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test projects", "Test projects", "{AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{B0C342E2-FA62-4EDF-9E88-011519CC9459}"
@@ -19,9 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.Data", "WishList.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.Services", "WishList.Services\WishList.Services.csproj", "{048DA3E0-43E7-4059-A5AB-65F7E021F493}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.WebUI", "WishList.WebUI\WishList.WebUI.csproj", "{99E34800-8855-439A-9158-3942EB15369F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.IntegrationTests", "WishList.IntegrationTests\WishList.IntegrationTests.csproj", "{C5962727-C3C6-4B0C-82E7-9BE911032CC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishList.WebUI", "WishList.WebUI\WishList.WebUI.csproj", "{733D65D3-6F48-44BD-9F00-A7C763D32285}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,24 +43,27 @@ Global
 		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{048DA3E0-43E7-4059-A5AB-65F7E021F493}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99E34800-8855-439A-9158-3942EB15369F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99E34800-8855-439A-9158-3942EB15369F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99E34800-8855-439A-9158-3942EB15369F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99E34800-8855-439A-9158-3942EB15369F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5962727-C3C6-4B0C-82E7-9BE911032CC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{733D65D3-6F48-44BD-9F00-A7C763D32285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{733D65D3-6F48-44BD-9F00-A7C763D32285}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{733D65D3-6F48-44BD-9F00-A7C763D32285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{733D65D3-6F48-44BD-9F00-A7C763D32285}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A15AC291-6B57-4860-A3B3-8507193D0920} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
-		{C5962727-C3C6-4B0C-82E7-9BE911032CC8} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
 		{04B593B9-B7AA-4848-98BB-C32B709C000C} = {B0C342E2-FA62-4EDF-9E88-011519CC9459}
 		{048DA3E0-43E7-4059-A5AB-65F7E021F493} = {B0C342E2-FA62-4EDF-9E88-011519CC9459}
-		{99E34800-8855-439A-9158-3942EB15369F} = {C9AE5A75-05BE-4DC9-89EA-7C8EE4932261}
+		{C5962727-C3C6-4B0C-82E7-9BE911032CC8} = {AB2F30AB-89C4-4BA2-9FCF-752A36FD4E83}
+		{733D65D3-6F48-44BD-9F00-A7C763D32285} = {C9AE5A75-05BE-4DC9-89EA-7C8EE4932261}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10B49628-2EA0-4C7C-A94F-26DCBD2BA313}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
