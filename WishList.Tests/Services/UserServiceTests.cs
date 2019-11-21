@@ -25,7 +25,7 @@ namespace WishList.Tests
 		public void Setup()
 		{
 			rep = new Mock<IWishListRepository>();
-			service = new UserService( rep.Object );
+			service = new UserService( rep.Object, new Mock<IMailService>().Object );
 			service.ClearCache();
 		}
 

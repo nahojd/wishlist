@@ -18,7 +18,7 @@ namespace WishList.WebUI.Controllers
 	{
 		private IUserService service;
 
-		public UsersController() : this( new UserService() ) { }
+		//public UsersController() : this( new UserService() ) { }
 
 		public UsersController( IUserService service )
 		{

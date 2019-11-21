@@ -29,7 +29,7 @@ namespace WishList.Tests.Controllers
 		{
 			repository = new TestWishListRepository();
 			wishService = new WishService( repository, new TestMailService() );
-			userService = new UserService( repository );
+			userService = new UserService( repository, new TestMailService());
 			controller = new WishController( wishService, userService );
 		}
 

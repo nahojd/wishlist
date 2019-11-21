@@ -32,14 +32,14 @@ namespace WishList.IntegrationTests
 		{
 #if DEBUG
 			dataContext = new SqlRepository.LinqWishListDataContext( ConfigurationManager.ConnectionStrings["LocalTestDb"].ConnectionString );
-#else 
+#else
 			dataContext = new SqlRepository.LinqWishListDataContext();
 #endif
 			dataContext.Connection.Open();
 			var transaction = dataContext.Connection.BeginTransaction();
 			dataContext.Transaction = transaction;
 			rep = new SqlWishListRepository( dataContext );
-			service = new UserService( rep );
+			service = new UserService( rep, new MailService() );
 
 			PopulateDB();
 		}
@@ -86,7 +86,7 @@ namespace WishList.IntegrationTests
 		// [ClassCleanup()]
 		// public static void MyClassCleanup() { }
 		//
-		// Use TestInitialize to run code before running each test 
+		// Use TestInitialize to run code before running each test
 		// [TestInitialize()]
 		// public void MyTestInitialize() { }
 		//

@@ -31,7 +31,7 @@ namespace WishList.WebUI.DependencyResolution {
 				assemblyScanner.WithDefaultConventions();
 				assemblyScanner.With(new ControllerConvention()); //Ensures a new Controller instance is created each time
 			});
-
+			For<Services.IUserService>().Use<Services.UserService>();
 			For<WishList.Data.DataAccess.IWishListRepository>().Use(() => new WishList.Data.DataAccess.SqlWishListRepository());
 		}
 

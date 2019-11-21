@@ -32,10 +32,10 @@ namespace WishList.WebUI.Controllers
 
 		private IUserService _service;
 
-		public AccountController()
-			: this( new UserService() )
-		{
-		}
+		//public AccountController()
+		//	: this( new UserService() )
+		//{
+		//}
 
 		public AccountController( IUserService service )
 		{
@@ -112,6 +112,29 @@ namespace WishList.WebUI.Controllers
 
 			return View( "Create", result );
 		}
+
+		public ActionResult ForgotPassword()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult ForgotPassword(string username, string email)
+		{
+			var user = _service.GetUser(username);
+			if (user is null || user.Email != email)
+			{
+				ViewBag.ErrorMessage = "Jag kan inte hitta dig, är du säker på att du skrev rätt?";
+			}
+			else
+			{
+				_service.GenerateNewPassword(user.Id);
+				ViewBag.SuccessMessage = $"Ditt nya lösenord har skickats till <strong>{user.Email}</strong>.";
+			}
+
+			return View();
+		}
+
 
 		[HttpGet]
 		[Authorize]

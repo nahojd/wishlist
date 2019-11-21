@@ -5,7 +5,7 @@ namespace WishList.Services
 {
 	public interface IUserService
 	{
-		
+
 		User CreateUser( User user );
 		void DeleteUser( string username );
 
@@ -16,8 +16,9 @@ namespace WishList.Services
 		User GetUser( int userId );
 		User GetUser( string username );
 		IList<User> GetUsers();
-		
+
         void UpdatePassword( string username, string newPassword );
+		void GenerateNewPassword(int userId);
 		User UpdateUser( User user );
 		bool ValidateUser( string userName, string password );
 
