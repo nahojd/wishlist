@@ -124,12 +124,12 @@ namespace WishList.WebUI.Controllers
 			var user = _service.GetUser(username);
 			if (user is null || user.Email != email)
 			{
-				ViewBag.ErrorMessage = "No such user found";
+				ViewBag.ErrorMessage = "Jag kan inte hitta dig, är du säker på att du skrev rätt?";
 			}
 			else
 			{
 				_service.GenerateNewPassword(user.Id);
-				ViewBag.SuccessMessage = $"New password sent to <strong>{user.Email}</strong>.";
+				ViewBag.SuccessMessage = $"Ditt nya lösenord har skickats till <strong>{user.Email}</strong>.";
 			}
 
 			return View();

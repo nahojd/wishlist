@@ -15,7 +15,7 @@ namespace WishList.Services
 		private static readonly string _userListCacheKey = "UserList";
 
 		//public UserService()
-		//	: this(new SqlWishListRepository()) { }
+		//	: this(new SqlWishListRepository(), new MailService()) { }
 
 		public UserService(IWishListRepository wishListRepository, IMailService mailService)
 		{
@@ -161,16 +161,35 @@ namespace WishList.Services
 		public void GenerateNewPassword(int userId)
 		{
 			var user = GetUser(userId);
+			var password = GeneratePassword();
 
-			var password = "abc123"; //TODO: Random password
 			UpdatePassword(user.Name, password);
 
 			mailService.SendMail(new System.Net.Mail.MailMessage("no-reply@wish.driessen.se", user.Email)
 			{
 				Subject = "Ditt nya lösenord till Önskelistemaskinen",
 				BodyEncoding = System.Text.Encoding.UTF8,
-				Body = $"Hej, {user.Name}!\r\n\r\nDitt nya lösenord till Önskelistemaskinen är: {password}\r\n\r\nEfter du loggat in kan du byta till vilket lösenord du vill!"
+				Body = $"Hej, {user.Name}!\r\n\r\nDitt nya lösenord till Önskelistemaskinen är:\r\n\r\n {password}\r\n\r\nEfter du loggat in kan du byta till vilket lösenord du vill!"
 			});
 		}
+
+		static string GeneratePassword()
+		{
+			var words = new List<string>();
+			const int length = 3;
+			for (var i = 0; i < length; i++)
+			{
+				var word = Words[random.Next(0, Words.Length - 1)];
+				if (words.Contains(word))
+				{
+					i--;
+					continue;
+				}
+				words.Add(word);
+			}
+			return string.Join(" ", words);
+		}
+		readonly static Random random = new Random();
+		readonly static string[] Words = new[] { "Advent", "Angels", "Announcement", "Bells", "Bethlehem", "Blitzen", "Candles", "Candy", "Candy canes", "Cards", "Cedar", "Celebrate", "Ceremonies", "Chimney", "Christmas cookies", "Christmas tree", "Cold", "Comet", "Cranberry sauce", "Crowds", "Cupid", "Dancer", "Dasher", "December", "Decorations", "Dolls", "Donner", "Dressing", "Eggnog", "Elves", "Family reunion", "Festival", "Fir", "Frosty", "Fruitcake", "Gift boxes", "Gifts", "Goodwill", "Greetings", "Ham", "Happy", "Holiday", "Holly", "Holy", "Icicles", "Jolly", "Lights", "Lists", "Merry", "Miracle", "Mistletoe", "New Year", "Noel", "North Pole", "Pageant", "Parades", "Party", "Pie", "Pine", "Plum pudding", "Poinsettia", "Prancer", "Presents", "Pumpkin pie", "Punch", "Regreen", "Reindeer", "Ribbon", "Rudolph", "Sacred", "Sales", "Sauce", "Scrooge", "Season", "Sled", "Sleighbells", "Snowflakes", "Spirit", "St. Nick", "Stand", "Star", "Stickers", "Stocking stuffers", "Sweet potato", "Tidings", "Tinsel", "Togetherness", "Toys", "Tradition", "Traffic", "Trips", "Turkey", "Vacation", "Vixen", "Winter", "Worship", "Wrapping paper", "Wreath", "Yule", "Yuletide" };
 	}
 }

@@ -42,7 +42,8 @@ namespace WishList.WebUI.Helpers
 			if (UserIsLoggedIn())
 			{
 				string userName = GetUserName();
-				var svc = StructureMap.ObjectFactory.GetInstance<IUserService>();
+				//var svc = StructureMap.ObjectFactory.GetInstance<IUserService>();
+				var svc = DependencyResolver.Current.GetService<IUserService>();
 				var user = svc.GetUser( userName );
 				if (user != null)
 				{

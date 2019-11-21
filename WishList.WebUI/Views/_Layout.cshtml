@@ -1,0 +1,57 @@
+﻿@using WishList.WebUI.Helpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewBag.Titlte</title>
+    <link rel="Stylesheet" type="text/css" href="@Url.Content("~/Content/Site.css")" />
+    <link rel="Stylesheet" type="text/css" href="@Url.Content(" ~/Content/Smallscreen.css")" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/jquery.validate.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/MicrosoftMvcJQueryValidation.js")"></script>
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/utils.js")"></script>
+    <link rel="shortcut icon" href="/favicon.ico" />
+</head>
+<body>
+    <div class="page">
+        <div id="header" class="fc">
+            <div id="logo">
+                <a href="/"><img src="/Content/logo.png" alt="Önskelistemaskinen" /></a>
+            </div>
+            @{ Html.RenderPartial("/Views/Shared/UserPanel.ascx"); }
+            @if (AppHelper.UserIsLoggedIn())
+            {
+                Html.RenderPartial("/Views/Shared/UserTabs.ascx");
+            }
+        </div>
+        <div id="main" class="fc">
+            <div id="userlist">
+                @if (AppHelper.UserIsLoggedIn())
+                {
+                    Html.RenderAction("ListFriends", "Users");
+                }
+                </div>
+            <div id="content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        try {
+            var pageTracker = _gat._getTracker("UA-909814-2");
+            pageTracker._trackPageview();
+
+        } catch (err) { }
+    </script>
+</body>
+</html>
