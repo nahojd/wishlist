@@ -7,7 +7,7 @@ namespace WishList.Api.DataAccess;
 public class DbMigrations
 {
 	//Bumpas varje gång någon databasändring görs
-	public const int CurrentVersion = 1;
+	public const int CurrentVersion = 2;
 
 	public static void Run(ILogger<DbMigrations> logger, string? connectionString)
 	{
@@ -88,6 +88,18 @@ public class DbMigrations
 								Name VARCHAR(255) NOT NULL,
 								Description VARCHAR(1000) NULL,
 								LinkUrl VARCHAR(255) NULL
+								)", transaction: trans);
+			}
+
+			if (dbVersion < 2)
+			{
+				//Skapa User-tabellen
+				conn.Execute(@"CREATE TABLE IF NOT EXISTS User (
+								Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+								Name VARCHAR(50) NOT NULL,
+								Email VARCHAR(255) NOT NULL,
+								Password VARCHAR(255) NOT NULL,
+								Verified BIT NULL
 								)", transaction: trans);
 			}
 
