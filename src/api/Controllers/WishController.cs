@@ -1,7 +1,9 @@
 using System.Data.SqlClient;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using MySqlConnector;
 using WishList.Api.Model;
+using Db = WishList.Api.DataAccess.Entities;
 
 namespace WishList.Api.Controllers;
 
@@ -21,12 +23,12 @@ public class WishController : ControllerBase
 	[HttpGet, Route("list/{userId:int}")]
 	public async Task<IEnumerable<Wish>> GetWishes(int userId)
 	{
-		using var conn = new SqlConnection(config.GetConnectionString("WishDB"));
+		using var conn = new MySqlConnection(config.GetConnectionString("WishList"));
 		conn.Open();
 
-		var wishes = await conn.QueryAsync<Wish>("select * from Wish where OwnerId = @userId", new { userId });
+		var wishes = await conn.QueryAsync<Db.Wish>("select * from Wish"); // where OwnerId = @userId", new { userId });
 
-		return wishes;
+		return wishes.Select(Wish.Create);
 	}
 
 	//Needed operations
