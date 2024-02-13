@@ -1,29 +1,34 @@
+global using WishList.Api.Extensions;
+using WishList.Api;
 using WishList.Api.DataAccess;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
+if (args.Any(x => x == "--generatetoken")) {
+	WishList.Api.Security.JwtHelper.GenerateApiToken(args);
+	return;
+}
+if (args.Any(x => x == "--generatekeypair")) {
+	WishList.Api.Security.JwtHelper.GenerateKeyPair();
+	return;
 }
 
-DbMigrations.Run(app.Services.GetService<ILogger<DbMigrations>>()!, builder.Configuration.GetConnectionString("WishList"));
 
-app.UseHttpsRedirection();
+Host.CreateDefaultBuilder(args)
+	.ConfigureWebHostDefaults(webBuilder =>
+	{
+		webBuilder.UseStartup<Startup>();
+	})
+	.Build()
+	.UpgradeDatabase()
+	.Run();
 
-app.UseAuthorization();
+public static class HostExtensions {
+	public static IHost UpgradeDatabase(this IHost host)
+	{
+		var configuration = host.Services.GetService<IConfiguration>();
+		var logger = host.Services.GetService<ILogger<DbMigrations>>();
 
-app.MapControllers();
+		DbMigrations.Run(logger!, configuration?.WishListConnectionString());
 
-app.Run();
+		return host;
+	}
+}

@@ -7,7 +7,7 @@ namespace WishList.Api.DataAccess;
 public class DbMigrations
 {
 	//Bumpas varje gång någon databasändring görs
-	public const int CurrentVersion = 2;
+	public const int CurrentVersion = 3;
 
 	public static void Run(ILogger<DbMigrations> logger, string? connectionString)
 	{
@@ -101,6 +101,13 @@ public class DbMigrations
 								Password VARCHAR(255) NOT NULL,
 								Verified BIT NULL
 								)", transaction: trans);
+			}
+
+			if (dbVersion < 3)
+			{
+				//Lägg till OwnerId och TjingadBy i Wish
+				conn.Execute(@"ALTER TABLE Wish ADD COLUMN IF NOT EXISTS OwnerId INT NOT NULL;
+							   ALTER TABLE Wish ADD COLUMN IF NOT EXISTS TjingadBy INT NULL;", transaction: trans);
 			}
 
 			trans.Commit();
