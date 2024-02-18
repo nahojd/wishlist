@@ -76,14 +76,15 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 	}
 
 	[HttpPost("refreshlogin")]
+	[Authorize]
 	public ActionResult RefreshLogin()
 	{
 		var userId = User.GetUserId();
-		if (userId is null)
+		if (userId <= 0)
 			return Unauthorized();
 
 		var expires = DateTime.Now.AddSeconds(1800);
-		var (_, accessToken) = JwtHelper.GenerateToken(config, userId.Value, expires);
+		var (_, accessToken) = JwtHelper.GenerateToken(config, userId, expires);
 		return Json(new Oauth2AuthResponse(accessToken, 1800));
 	}
 }

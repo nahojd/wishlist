@@ -6,6 +6,7 @@ public partial class Wish
 	public string? Name { get; set; }
 	public string? Description { get; set; }
 	public string? LinkUrl { get; set; }
+	public int OwnerId { get; set; }
 }
 
 public partial class Wish
@@ -16,7 +17,8 @@ public partial class Wish
 			Id = dbObj.Id,
 			Description = dbObj.Description,
 			LinkUrl = dbObj.LinkUrl,
-			Name = dbObj.Name
+			Name = dbObj.Name,
+			OwnerId = dbObj.OwnerId
 		};
 	}
 }
