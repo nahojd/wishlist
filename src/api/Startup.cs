@@ -1,7 +1,5 @@
-using System.Security.Claims;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using System.Text.Json;
+using Microsoft.OpenApi.Models;
 using WishList.Api.Security;
 
 namespace WishList.Api;
@@ -16,11 +14,39 @@ public class Startup(IConfiguration configuration, IWebHostEnvironment environme
 		services.SetupAuthentication(configuration);
 		services.AddAuthorization();
 
-		services.AddControllers();
+		services.AddControllers()
+			.AddJsonOptions(options => {
+				options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+				options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+				options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+			});
 
 		// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 		services.AddEndpointsApiExplorer();
-		services.AddSwaggerGen();
+		services.AddSwaggerGen(c => {
+			c.SwaggerDoc("v1", new OpenApiInfo
+			{
+				Title = "WishList API",
+				Version = "v1"
+			});
+
+			c.AddSecurityDefinition("BearerAuth", new OpenApiSecurityScheme {
+				Scheme = "bearer",
+				BearerFormat = "JWT",
+				Type = SecuritySchemeType.Http,
+				In = ParameterLocation.Header
+			});
+
+			c.AddSecurityRequirement(new OpenApiSecurityRequirement
+			{
+				{
+					new OpenApiSecurityScheme {
+						Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "BearerAuth"}
+					},
+					Array.Empty<string>()
+				}
+			});
+		});
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

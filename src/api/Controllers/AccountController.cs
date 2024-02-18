@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
+using WishList.Api.Model;
 using WishList.Api.Security;
 using Db = WishList.Api.DataAccess.Entities;
 
@@ -15,9 +16,13 @@ namespace WishList.Api.Controllers;
 //Register account
 //Forgot password
 //Login
-//Logout (doesn't need to be authorized)
+
+//Account (authorized)
+//Update password
+//Update profile
 [ApiController]
 [Route("account")]
+[Produces("application/json")]
 public class AccountController(IConfiguration config, ILogger<AccountController> logger) : Controller
 {
 	private readonly IConfiguration config = config;
@@ -50,7 +55,7 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 
 	[HttpPost("login")]
 	[AllowAnonymous]
-	public async Task<ActionResult> Login([FromBody]LoginParameters parameters)
+	public async Task<ActionResult<LoginResponse>> Login([FromBody]LoginParameters parameters)
 	{
 		//Hämta användaren
 		using var conn = new MySqlConnection(config.WishListConnectionString());
@@ -69,7 +74,7 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 		var expires = DateTime.Now.AddSeconds(1800);
 		var (_, accessToken) = JwtHelper.GenerateToken(config, dbUser.Id, expires);
 
-		return Json(new {
+		return Json(new LoginResponse {
 			Auth = new Oauth2AuthResponse(accessToken, 1800),
 			User = Model.User.Create(dbUser)
 		});
@@ -77,7 +82,7 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 
 	[HttpPost("refreshlogin")]
 	[Authorize]
-	public ActionResult RefreshLogin()
+	public ActionResult<Oauth2AuthResponse> RefreshLogin()
 	{
 		var userId = User.GetUserId();
 		if (userId <= 0)
@@ -106,3 +111,11 @@ public class RegisterUserParameters
 	[Required]
 	public string? Password { get; set; }
 }
+
+#nullable disable
+public class LoginResponse
+{
+	public Oauth2AuthResponse Auth { get; set; }
+	public User User { get; set; }
+}
+#nullable enable

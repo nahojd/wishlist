@@ -5,19 +5,19 @@ using MySqlConnector;
 using System.ComponentModel.DataAnnotations;
 using WishList.Api.Model;
 using WishList.Api.Model.Extensions;
-using Db = WishList.Api.DataAccess.Entities;
 
 namespace WishList.Api.Controllers;
 
 [ApiController]
 [Route("wish")]
+[Produces("application/json")]
 [Authorize]
 public class WishController(IConfiguration config) : Controller
 {
 	private readonly IConfiguration config = config;
 
 	[HttpGet("list/{userId:int}")]
-	public async Task<ActionResult> GetWishesForUser(int userId)
+	public async Task<ActionResult<IReadOnlyList<Wish>>> GetWishesForUser(int userId)
 	{
 		if (userId == User.GetUserId())
 			return BadRequest(new ProblemDetails { Detail = "Invalid userId!. Just call /wish/list to get your own wishes"});
@@ -30,19 +30,19 @@ public class WishController(IConfiguration config) : Controller
 	}
 
 	[HttpGet("list")]
-	public async Task<ActionResult> GetMyWishes()
+	public async Task<ActionResult<IReadOnlyList<Wish>>> GetMyWishes()
 	{
 		using var conn = new MySqlConnection(config.WishListConnectionString());
 		conn.Open();
 
 		var userId = User.GetUserId();
 
-		var wishes = await conn.GetWishesForUser(userId);
+		var wishes = await conn.GetMyWishes(userId);
 		return Json(wishes);
 	}
 
 	[HttpPost("")]
-	public async Task<ActionResult> AddWish([FromBody]WishParameters wish)
+	public async Task<ActionResult<Wish>> AddWish([FromBody]WishParameters wish)
 	{
 		using var conn = new MySqlConnection(config.WishListConnectionString());
 		conn.Open();
@@ -65,7 +65,7 @@ public class WishController(IConfiguration config) : Controller
 		if (wish is null)
 			return NotFound();
 
-		if (wish.OwnerId != userId)
+		if (wish.Owner?.Id != userId)
 			return BadRequest(new ProblemDetails { Detail = "That's not your wish to delete!"});
 
 		await conn.DeleteWish(wishId);
@@ -89,24 +89,13 @@ public class WishParameters
 	public string? LinkUrl { get; set; }
 }
 
-//Users
-//GET friends
-//GET users
-//Befriend user
-//Unfriend user
-
-//Account (authorized)
-//Update password
-//Update profile
 
 //Admin
 //Pending applications
 //Approve application
 //Deny application
 
-//Account (authorized)
-//Update password
-//Update profile
+
 
 //Admin
 //Pending applications
