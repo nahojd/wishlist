@@ -40,7 +40,7 @@ TestResults/
 ############
 # Packages #
 ############
-# itÎ better to unpack these files and commit the raw source
+# itï¿½ better to unpack these files and commit the raw source
 # git has its own built in compression methods
 *.7z
 *.dmg
@@ -79,3 +79,10 @@ _[Ss]cripts
 
 # Other stuff
 *.un~
+
+
+# Client scripts
+.parcel-cache
+dist/
+node_modules/
+yarn-error.log

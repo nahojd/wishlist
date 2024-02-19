@@ -9,8 +9,28 @@ public class Startup(IConfiguration configuration, IWebHostEnvironment environme
 	private readonly IConfiguration configuration = configuration;
 	private readonly IWebHostEnvironment environment = environment;
 
+	readonly string DefaultCorsPolicy = "VeryRelaxedCorsPolicy";
+
 	public void ConfigureServices(IServiceCollection services)
 	{
+		services.AddCors(options =>
+			{
+				options.AddPolicy(DefaultCorsPolicy,
+				builder =>
+				{
+					builder
+// #if DEBUG
+						.AllowAnyOrigin()
+// #else
+// 						.WithOrigins(appSettings.AllowedOrigins)
+// #endif
+						.SetIsOriginAllowedToAllowWildcardSubdomains()
+						.AllowAnyHeader()
+						.AllowAnyMethod();
+				});
+			});
+
+
 		services.SetupAuthentication(configuration);
 		services.AddAuthorization();
 
@@ -57,6 +77,8 @@ public class Startup(IConfiguration configuration, IWebHostEnvironment environme
 			app.UseSwagger();
 			app.UseSwaggerUI();
 		}
+
+		app.UseCors(DefaultCorsPolicy);
 
 		app.UseRouting();
 
