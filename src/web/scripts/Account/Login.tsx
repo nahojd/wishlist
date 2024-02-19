@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "./Actions";
+import { Button, Card, Form } from "react-bootstrap";
+import { PageHeader } from "../app";
 
 export const LoginPage = () => {
 
@@ -13,15 +15,25 @@ export const LoginPage = () => {
 		dispatch(login(email, password));
 	};
 
-	return <div>
-		<h1>Logga in</h1>
+	return <div className="container">
+		<PageHeader />
 
-		<label>Epost</label>
-		<input type="email" onChange={e => setEmail(e.target.value)} value={email} />
-		<br />
-		<label>Lösenord</label>
-		<input type="password" onChange={e => setPassword(e.target.value)} value={password} />
-		<br />
-		<button type="submit" onClick={submit}>Logga in</button>
+		<Card>
+			<Card.Header><Card.Title>Logga in</Card.Title></Card.Header>
+			<Card.Body>
+				<Form.Group>
+					<Form.Label>E-post</Form.Label>
+					<Form.Control type="email" onChange={e => setEmail(e.target.value)} value={email} />
+				</Form.Group>
+
+				<Form.Group>
+					<Form.Label>Lösenord</Form.Label>
+					<Form.Control type="email" onChange={e => setPassword(e.target.value)} value={password} />
+				</Form.Group>
+			</Card.Body>
+			<Card.Footer>
+				<Button variant="primary" type="submit" onClick={submit}>Logga in</Button>
+			</Card.Footer>
+		</Card>
 	</div>
 };

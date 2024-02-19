@@ -1,0 +1,18 @@
+$white: #ffffff;
+
+$theme-colors: (
+    "light":      #c2edff,
+    "dark":       #15110f,
+    "primary":    #2a4189,
+    "secondary":  #854b66,
+    "info":       #438e82,
+    "success":    #29985d,
+    "warning":    #dec82c,
+    "danger":     #e92417,
+);
+
+$enable-rounded: false;
+// $font-size-base: .9rem;
+
+
+@import '~bootstrap/scss/bootstrap';

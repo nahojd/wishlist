@@ -9,6 +9,7 @@ import { useGenericSelector } from './Utils/Redux';
 import { IWishlistAppState } from './Model';
 import { useDispatch } from 'react-redux';
 import { logout } from './Account/Actions';
+import { Button } from "react-bootstrap";
 
 
 
@@ -17,15 +18,21 @@ const App = () => {
 	const user = useStateSelector(state => state.account.user);
 	const dispatch = useDispatch();
 
-	return <>
-		<h1>Önskelistemaskinen v3</h1>
+	if (!user)
+		return <LoginPage />;
 
-		{!user && <LoginPage />}
-		{user && <>
-			<p>Du är inloggad som {user.name}!</p>
-			<button type="button" onClick={() => dispatch(logout())}>Logga ut</button>
-		</>}
-	</>
+	return <div className="container">
+		<PageHeader />
+
+		<p>Du är inloggad som {user.name}!</p>
+		<Button variant="outline-primary" type="button" onClick={() => dispatch(logout())}>Logga ut</Button>
+	</div>
+};
+
+export const PageHeader = () => {
+	return <div className="page-header">
+		<h1>Önskelistemaskinen v3</h1>
+	</div>
 };
 
 export function useStateSelector<T>(selectorFunc: (state: IWishlistAppState) => T) { return useGenericSelector((state :IWishlistAppState) => selectorFunc(state)); }
