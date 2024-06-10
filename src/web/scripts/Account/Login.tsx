@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "./Actions";
-import { Button, Card, Form } from "react-bootstrap";
 import { PageHeader } from "../app";
 
 export const LoginPage = () => {
@@ -15,25 +14,23 @@ export const LoginPage = () => {
 		dispatch(login(email, password));
 	};
 
-	return <div className="container">
+	return <>
 		<PageHeader />
 
-		<Card>
-			<Card.Header><Card.Title>Logga in</Card.Title></Card.Header>
-			<Card.Body>
-				<Form.Group>
-					<Form.Label>E-post</Form.Label>
-					<Form.Control type="email" onChange={e => setEmail(e.target.value)} value={email} />
-				</Form.Group>
+		<article>
+			<header>Logga in</header>
+				<form>
+					<fieldset>
+						<label htmlFor="email">E-post</label>
+						<input type="email" id="email"  onChange={e => setEmail(e.target.value)} value={email} />
 
-				<Form.Group>
-					<Form.Label>Lösenord</Form.Label>
-					<Form.Control type="email" onChange={e => setPassword(e.target.value)} value={password} />
-				</Form.Group>
-			</Card.Body>
-			<Card.Footer>
-				<Button variant="primary" type="submit" onClick={submit}>Logga in</Button>
-			</Card.Footer>
-		</Card>
-	</div>
+						<label htmlFor="password">Lösenord</label>
+						<input type="password" id="password" onChange={e => setPassword(e.target.value)} value={password} />
+					</fieldset>
+				</form>
+			<footer>
+				<button type="submit" onClick={submit}>Logga in</button>
+			</footer>
+		</article>
+	</>
 };
