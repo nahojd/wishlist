@@ -1,6 +1,12 @@
 export interface IWishlistAppState
 {
 	account: IAccountState;
+	wishlist: IWishlistState;
+}
+
+export interface IWishlistState
+{
+	users?: IUser[];
 }
 
 export interface IAccountState

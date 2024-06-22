@@ -1,22 +1,45 @@
+@use "sass:map";
 @use "../node_modules/@picocss/pico/scss/pico" with (
     $theme-color: "lime"
 );
+@import "../node_modules/@picocss/pico/scss/_settings.scss";
 
-// $white: #ffffff;
+#approot {
+    margin: 0 auto;
+    max-width: map.get(map.get($breakpoints, "lg"), "viewport");
 
-// $theme-colors: (
-//     "light":      #c2edff,
-//     "dark":       #15110f,
-//     "primary":    #2a4189,
-//     "secondary":  #854b66,
-//     "info":       #438e82,
-//     "success":    #29985d,
-//     "warning":    #dec82c,
-//     "danger":     #e92417,
-// );
+    > main {
+        display: grid;
 
-// $enable-rounded: false;
-// // $font-size-base: .9rem;
+        grid-template-areas:
+            "head"
+            "nav"
+            "main"
+            "foot";
+        grid-template-rows: auto;
 
+        @media screen and (min-width: map.get(map.get($breakpoints, "lg"), "breakpoint")) {
+            grid-template-areas:
+                "head head"
+                "nav  main"
+                "foot foot";
+            grid-template-columns: 1fr 2fr;
+        }
 
-// @import '~bootstrap/scss/bootstrap';
+        > header {
+            grid-area: head;
+        }
+
+        > aside {
+            grid-area: nav;
+        }
+
+        > section {
+            grid-area: main;
+        }
+
+        > footer {
+            grid-area: foot;
+        }
+    }
+}

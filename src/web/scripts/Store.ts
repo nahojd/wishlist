@@ -13,9 +13,11 @@ import {
   } from 'redux-persist';
 import { createAccountReducer } from "./Account/AccountReducer";
 import storageSession from 'redux-persist/lib/storage/session';
+import { createWishlistReducer } from "./Reducer";
 
 const reducer = combineReducers({
-	account: createAccountReducer()
+	account: createAccountReducer(),
+	wishlist: createWishlistReducer()
 });
 
 //https://blog.logrocket.com/persist-state-redux-persist-redux-toolkit-react/

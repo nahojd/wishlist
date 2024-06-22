@@ -77,12 +77,14 @@ public class Startup(IConfiguration configuration, IWebHostEnvironment environme
 			app.UseSwagger();
 			app.UseSwaggerUI();
 		}
+		if (env.IsProduction())
+		{
+			app.UseHttpsRedirection();
+		}
 
 		app.UseCors(DefaultCorsPolicy);
-
 		app.UseRouting();
 
-		app.UseHttpsRedirection();
 		app.UseAuthentication();
 		app.UseAuthorization();
 
