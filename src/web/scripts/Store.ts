@@ -14,8 +14,10 @@ import {
 import { createAccountReducer } from "./Account/AccountReducer";
 import storageSession from 'redux-persist/lib/storage/session';
 import { createWishlistReducer } from "./Reducer";
+import { createApiCallReducer } from "./ApiCalls/ApiCallReducer";
 
 const reducer = combineReducers({
+	apicalls: createApiCallReducer(),
 	account: createAccountReducer(),
 	wishlist: createWishlistReducer()
 });
@@ -26,6 +28,7 @@ const reducer = combineReducers({
 const persistConfig = {
 	key: 'root',
 	storage: storageSession,
+	blacklist: ["apicalls"] //Vi vill inte persistera apicalls, för det ska inte behövas
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
 
@@ -36,6 +39,8 @@ export const store = configureStore({
 			ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
 		}
 	}).prepend(apiMiddleware)
-})
+});
 
+
+export const getStore = () => store;
 export const persistor = persistStore(store);

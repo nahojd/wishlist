@@ -1,5 +1,5 @@
 import React from "react";
-import { useStateSelector } from "../app";
+import { useStateSelector } from "../Model";
 
 export const PageHeader = () => {
 	const user = useStateSelector(state => state.account.user);

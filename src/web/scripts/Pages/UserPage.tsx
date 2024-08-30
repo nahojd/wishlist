@@ -1,7 +1,7 @@
 import React from "react";
 import { Userlist } from "../Components/Userlist";
 import { Navigate, useParams } from "react-router-dom";
-import { useStateSelector } from "../app";
+import { useStateSelector } from "../Model";
 
 export const UserPage = () => {
 	const { id } = useParams<{ id: string }>();

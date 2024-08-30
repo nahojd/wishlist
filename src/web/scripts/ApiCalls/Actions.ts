@@ -1,0 +1,1 @@
+export const clearApiCallState = (type: string) => ({ type: `${type}Clear` });

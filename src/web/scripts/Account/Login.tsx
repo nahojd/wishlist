@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "./Actions";
 import { PageHeader } from "../Components/PageHeader";
-import { useStateSelector } from "../app";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { useStateSelector } from "../Model";
 
 export const LoginPage = () => {
 

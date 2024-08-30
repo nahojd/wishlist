@@ -1,8 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { useGenericSelector } from './Utils/Redux';
-import { IWishlistAppState } from './Model';
+import { useStateSelector } from './Model';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './Store';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -28,7 +27,6 @@ const App = () => {
 	// return <Home />;
 };
 
-export function useStateSelector<T>(selectorFunc: (state: IWishlistAppState) => T) { return useGenericSelector((state :IWishlistAppState) => selectorFunc(state)); }
 
 export const getDefaultHeaders = () => {
 

@@ -1,7 +1,16 @@
+import { IApiCallState } from "./ApiCalls/Models";
+import { hydrateApiCallState } from "./ApiCalls/Utils";
+import { useGenericSelector } from "./Utils/Redux";
+
+export const getApiCallState = () => hydrateApiCallState(useStateSelector(state => state.apicalls));
+export function useStateSelector<T>(selectorFunc: (state: IWishlistAppState) => T) { return useGenericSelector((state :IWishlistAppState) => selectorFunc(state)); }
+
+
 export interface IWishlistAppState
 {
 	account: IAccountState;
 	wishlist: IWishlistState;
+	apicalls: IApiCallState;
 }
 
 export interface IWishlistState
