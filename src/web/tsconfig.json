@@ -11,6 +11,7 @@
 		"jsx": "react",
 		"moduleResolution": "node",
 		"skipLibCheck": true,
+		"lib": ["ES2023", "DOM"],
 		"typeRoots": [
 			"./node_modules/@types"
 		]

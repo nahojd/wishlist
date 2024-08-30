@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useStateSelector } from "../app";
 import { getUsers } from "../Actions";
+import { NavLink } from "react-router-dom";
 
-export const Userlist = () => {
+export const Userlist = (props: { selectedUser?: number }) => {
 	const dispatch = useDispatch();
 
 	const users = useStateSelector(state => state.wishlist.users);
@@ -16,7 +17,9 @@ export const Userlist = () => {
 	return <aside>
 		<nav>
 		{users && <ul>
-			{users.map(x => <li key={x.id}>{x.name}</li>)}
+			{users.map(x => x.id === props.selectedUser ? 
+				<li key={x.id} className="selected">{x.name}</li> : 
+				<li key={x.id}><NavLink to={`/user/${x.id}`}>{x.name}</NavLink></li>)}
 		</ul>}
 		</nav>
 	</aside>;

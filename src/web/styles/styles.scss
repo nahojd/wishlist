@@ -42,4 +42,12 @@
             grid-area: foot;
         }
     }
+
+    fieldset {
+        input {
+            &:user-invalid {
+                border-color: red;
+            }
+        }
+    }
 }
