@@ -2,6 +2,7 @@
 @use "../node_modules/@picocss/pico/scss/pico" with (
     $theme-color: "lime"
 );
+// @use "colors" as *;
 @use "../node_modules/@picocss//pico/scss/colors/index" as *;
 @import "../node_modules/@picocss/pico/scss/_settings.scss";
 
@@ -54,9 +55,24 @@
     }
 }
 
+ul.plain {
+    padding-left: 0;
+    > li {
+        list-style: none;
+    }
+}
+
 .alert {
     &.danger {
         background-color: $red-450;
+        color: white;
+    }
+    &.warning {
+        background-color: $amber-250;
+        color: white;
+    }
+    &.info {
+        background-color: $cyan-400;
         color: white;
     }
     &.success {

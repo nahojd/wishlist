@@ -43,4 +43,13 @@ export interface IUser
 	id: number;
 	name: string;
 	email: string;
+	wishes?: IUserWish[]
+}
+
+export interface IUserWish {
+	id: number;
+	name?: string;
+	description?: string;
+	linkUrl?: string;
+	tjingadBy?: IUser;
 }

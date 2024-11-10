@@ -20,7 +20,8 @@ public class WishController(IConfiguration config) : Controller
 	public async Task<ActionResult<IReadOnlyList<Wish>>> GetWishesForUser(int userId)
 	{
 		if (userId == User.GetUserId())
-			return BadRequest(new ProblemDetails { Detail = "Invalid userId!. Just call /wish/list to get your own wishes"});
+			return await GetMyWishes();
+			//return BadRequest(new ProblemDetails { Detail = "Invalid userId!. Just call /wish/list to get your own wishes"});
 
 		using var conn = new MySqlConnection(config.WishListConnectionString());
 		conn.Open();
