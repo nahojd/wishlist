@@ -43,6 +43,7 @@ export interface IUser
 	id: number;
 	name: string;
 	email: string;
+	theme?: "dark"|"light";
 	wishes?: IUserWish[]
 }
 

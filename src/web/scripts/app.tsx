@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { useStateSelector } from './Model';
@@ -18,6 +18,11 @@ const App = () => {
 		isAuthenticated ? privateRoute : {},
 		...publicRoutes
 	]);
+
+	useEffect(() => {
+		const theme = user?.theme || "light";
+		document.documentElement.setAttribute("data-theme", theme);
+	}, [user?.theme])
 
 	return <RouterProvider router={router} />;
 

@@ -3,7 +3,8 @@ import { getDefaultHeaders } from "../app";
 
 export type AccountActionType = "logout" |
 	"loginStarted" | "loginComplete" | "loginFailed" |
-	"registerStarted" | "registerComplete" | "registerFailed";
+	"registerStarted" | "registerComplete" | "registerFailed" |
+	"setTheme";
 
 export const login = (email: string, password: string) => {
 
@@ -45,3 +46,5 @@ export const registerUser = (registerData: { name: string, email: string, passwo
 
 
 export const logout = () => ({ type: "logout" });
+
+export const setTheme = (theme: "light"|"dark") => ({ type: "setTheme", theme});
