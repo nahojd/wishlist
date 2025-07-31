@@ -1,9 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
+using System.Text;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
+using WishList.Api.DataAccess;
 using WishList.Api.Model;
 using WishList.Api.Security;
 using Db = WishList.Api.DataAccess.Entities;
@@ -45,8 +49,7 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 
 
 		//Spara till databas
-		using var conn = new MySqlConnection(config.WishListConnectionString());
-		conn.Open();
+		using var conn = DbExtensions.OpenConnection(config);
 		await conn.ExecuteAsync("insert into User (Name, Email, Password) values (@Name, @Email, @hash)", new { parameters.Name, parameters.Email, hash });
 		logger.LogInformation("Registered user {Name} with email {Email}", parameters.Name, parameters.Email);
 
@@ -58,9 +61,8 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 	public async Task<ActionResult<LoginResponse>> Login([FromBody]LoginParameters parameters)
 	{
 		//Hämta användaren
-		using var conn = new MySqlConnection(config.WishListConnectionString());
-		conn.Open();
-		var dbUser = await conn.QuerySingleOrDefaultAsync<Db.User>("select * from User where Email = @Email", new { parameters.Email });
+		using var conn = DbExtensions.OpenConnection(config);
+		var dbUser = await conn.GetUserByEmail(parameters.Email);
 		if (dbUser is null || !dbUser.Verified)
 			return BadRequest(new ProblemDetails { Detail = "Invalid email or password"});
 
@@ -92,6 +94,66 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 		var (_, accessToken) = JwtHelper.GenerateToken(config, userId, expires);
 		return Json(new Oauth2AuthResponse(accessToken, 1800));
 	}
+
+	[HttpPost("resetpwd/{email}")]
+	[AllowAnonymous]
+	public async Task<ActionResult> ResetPassword(string email)
+	{
+		using var conn = DbExtensions.OpenConnection(config);
+		var dbUser = await conn.GetUserByEmail(email);
+		if (dbUser is null || !dbUser.Verified)
+			return BadRequest(new ProblemDetails { Detail = "No such user"});
+
+		//Create token by hashing a guid and onverting to base64 string
+		var guid = Guid.NewGuid();
+		var token = Convert.ToBase64String(SHA1.HashData(Encoding.UTF8.GetBytes(guid.ToString())));
+		token = token.Replace('+', '-'); //Pga url...
+		await conn.ExecuteAsync("update User set PwdResetToken = @token, PwdResetExpires = @expires where Id = @Id",
+								new { token, expires = DateTime.Now.AddHours(24), dbUser.Id });
+
+		//TODO: Skicka email istället
+		Console.WriteLine($"/resetpassword?token={token}");
+
+		logger.LogInformation("User {userId} ({email}) requested as password reset from IP {ipAdress}", dbUser.Id, dbUser.Email, Request.HttpContext.Connection.RemoteIpAddress);
+
+		return Ok();
+	}
+
+	[HttpPost("validateresettoken")]
+	[AllowAnonymous]
+	public async Task<ActionResult> ValidateResetToken([FromQuery]string token)
+	{
+		//Hämta user på token
+		using var conn = DbExtensions.OpenConnection(config);
+		var dbUser = await conn.GetUserByResetPwdToken(token);
+		if (dbUser is null || dbUser.PwdResetExpires is null || dbUser.PwdResetExpires < DateTime.Now)
+			return BadRequest(new ProblemDetails { Detail = "Invalid token"});
+
+		return Ok();
+	}
+
+	[HttpPost("resetpwd")]
+	[AllowAnonymous]
+	public async Task<ActionResult> ResetPasswordWithToken([FromBody]ResetPasswordParameters parameters)
+	{
+		//Hämta user på token
+		using var conn = DbExtensions.OpenConnection(config);
+		var dbUser = await conn.GetUserByResetPwdToken(parameters.Token);
+		if (dbUser is null || dbUser.PwdResetExpires is null || dbUser.PwdResetExpires < DateTime.Now)
+			return BadRequest(new ProblemDetails { Detail = "Invalid token"});
+
+		if (!parameters.Password.IsValidPassword())
+			return BadRequest(new ProblemDetails { Detail = "Invalid password"});
+
+		//Uppdatera lösenord
+		var passwordHasher = new PasswordHasher<string>();
+		var hash = passwordHasher.HashPassword(dbUser.Email!, parameters.Password!);
+		await conn.ExecuteAsync("update User set Password = @hash, PwdResetToken = null, PwdResetExpires = null where Id = @Id", new { dbUser.Id, hash });
+
+		logger.LogInformation("Password for user {userId} ({email}) was reset from IP {ipAdress}", dbUser.Id, dbUser.Email, Request.HttpContext.Connection.RemoteIpAddress);
+
+		return Ok();
+	}
 }
 
 public class LoginParameters
@@ -108,6 +170,14 @@ public class RegisterUserParameters
 	public string? Name { get; set; }
 	[Required]
 	public string? Email { get; set; }
+	[Required]
+	public string? Password { get; set; }
+}
+
+public class ResetPasswordParameters
+{
+	[Required]
+	public string? Token { get; set; }
 	[Required]
 	public string? Password { get; set; }
 }
