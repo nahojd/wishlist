@@ -25,11 +25,6 @@ const App = () => {
 	}, [user?.theme])
 
 	return <RouterProvider router={router} />;
-
-	// if (!user)
-	// 	return <LoginPage />;
-
-	// return <Home />;
 };
 
 

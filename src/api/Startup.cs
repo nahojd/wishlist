@@ -47,7 +47,7 @@ public class Startup(IConfiguration configuration, IWebHostEnvironment environme
 			c.SwaggerDoc("v1", new OpenApiInfo
 			{
 				Title = "WishList API",
-				Version = "v1"
+				Version = "1.0"
 			});
 
 			c.AddSecurityDefinition("BearerAuth", new OpenApiSecurityScheme {

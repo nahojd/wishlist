@@ -6,10 +6,13 @@ import { Layout } from "./Components/Layout";
 import { Navigate } from "react-router-dom";
 import { RegisterPage } from "./Account/Register";
 import { UserPage } from "./Pages/UserPage";
+import { ForgotPasswordPage, ResetPasswordPage } from "./Account/ForgotPassword";
 
 export const publicRoutes = [
 	{ path: "/login", element: <LoginPage /> },
 	{ path: "/register", element: <RegisterPage /> },
+	{ path: "/forgotpassword", element: <ForgotPasswordPage /> },
+	{ path: "/resetpassword", element: <ResetPasswordPage /> },
 	{ path: "*", element: <Navigate to="/login" replace /> }
 ];
 

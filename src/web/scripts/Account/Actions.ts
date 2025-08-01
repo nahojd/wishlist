@@ -4,7 +4,8 @@ import { getDefaultHeaders } from "../app";
 export type AccountActionType = "logout" |
 	"loginStarted" | "loginComplete" | "loginFailed" |
 	"registerStarted" | "registerComplete" | "registerFailed" |
-	"setTheme";
+	"resetPasswordForEmailStarted" | "resetPasswordForEmailComplete" | "resetPasswordForEmailFailed" |
+ 	"setTheme";
 
 export const login = (email: string, password: string) => {
 
@@ -39,6 +40,60 @@ export const registerUser = (registerData: { name: string, email: string, passwo
 				"registerStarted",
 				"registerComplete",
 				"registerFailed"
+			]
+		}
+	};
+};
+
+export const resetPasswordForEmail = (email: string) => {
+
+	return {
+		type: "resetPasswordForEmail",
+		[RSAA]: {
+			endpoint: `/api/account/resetpwd/${email}`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			types: [
+				"resetPasswordForEmailStarted",
+				"resetPasswordForEmailComplete",
+				"resetPasswordForEmailFailed"
+			]
+		}
+	};
+};
+
+export const validatePwdResetToken = (token: string) => {
+
+	return {
+		type: "validatePwdResetToken",
+		[RSAA]: {
+			endpoint: `/api/account/validateresettoken?token=${token}`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			types: [
+				"validatePwdResetTokenStarted",
+				"validatePwdResetTokenComplete",
+				"validatePwdResetTokenFailed"
+			]
+		}
+	};
+};
+
+export const resetPassword = (token: string, password: string) => {
+
+	const payload = { token, password };
+
+	return {
+		type: "resetPassword",
+		[RSAA]: {
+			endpoint: `/api/account/resetpwd`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			body: JSON.stringify(payload),
+			types: [
+				"resetPasswordStarted",
+				"resetPasswordComplete",
+				"resetPasswordFailed"
 			]
 		}
 	};

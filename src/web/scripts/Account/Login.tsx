@@ -24,7 +24,7 @@ export const LoginPage = () => {
 	useEffect(() => {
 		if (isAuthenticated)
 			navigate("/");
-	}, [isAuthenticated])
+	}, [isAuthenticated]);
 
 	return <>
 		<PageHeader />
@@ -41,7 +41,8 @@ export const LoginPage = () => {
 					</fieldset>
 				</form>
 
-				<NavLink to="/register">Registrera konto</NavLink>
+				<NavLink to="/register">Registrera konto</NavLink><br />
+				<NavLink to="/forgotpassword">Glömt lösenord</NavLink>
 			<footer>
 				<button type="submit" onClick={submit}>Logga in</button>
 			</footer>
