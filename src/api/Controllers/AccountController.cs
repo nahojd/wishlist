@@ -5,15 +5,12 @@ using Dapper;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
-using MySqlConnector;
 using WishList.Api.DataAccess;
 using WishList.Api.Model;
 using WishList.Api.Model.Extensions;
 using WishList.Api.Security;
-using Db = WishList.Api.DataAccess.Entities;
 
 namespace WishList.Api.Controllers;
 
@@ -76,7 +73,7 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 			return BadRequest(new ProblemDetails { Detail = "Invalid email or password"});
 
 		//Generera och returnera JWT-token
-		var expires = DateTime.Now.AddSeconds(1800);
+		var expires = DateTime.Now.AddSeconds(1800); //Bra att den bara är giltig i 30 sek!
 		var (_, accessToken) = JwtHelper.GenerateToken(config, dbUser.Id, expires);
 
 		return Json(new LoginResponse {

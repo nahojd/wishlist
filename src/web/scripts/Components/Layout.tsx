@@ -5,13 +5,13 @@ import React from "react";
 import { Footer } from "./Footer";
 
 export const Layout = () => {
-  return (
-	<main className="container">
-		<PageHeader />
-		<Suspense fallback={<div>Loading...</div>}>
-			<Outlet />
-		</Suspense>
-		<Footer />
-	</main>
-  );
-}
+	return <>
+		<main className="container">
+			<PageHeader />
+			<Suspense fallback={<div aria-busy="true">Loading...</div>}>
+				<Outlet />
+			</Suspense>
+			<Footer />
+		</main>
+	</>;
+};

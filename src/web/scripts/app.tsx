@@ -7,6 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './Store';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { privateRoute, publicRoutes } from './Router';
+import { RefreshLogin } from './Components/RefreshLogin';
 
 
 
@@ -23,9 +24,12 @@ const App = () => {
 	useEffect(() => {
 		const theme = user?.theme || "light";
 		document.documentElement.setAttribute("data-theme", theme);
-	}, [user?.theme])
+	}, [user?.theme]);
 
-	return <RouterProvider router={router} />;
+	return <>
+		<RouterProvider router={router} />
+		<RefreshLogin />
+	</>;
 };
 
 

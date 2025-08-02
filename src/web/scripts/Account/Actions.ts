@@ -3,6 +3,7 @@ import { getDefaultHeaders } from "../app";
 
 export type AccountActionType = "logout" |
 	"loginStarted" | "loginComplete" | "loginFailed" |
+	"refreshLoginStarted" | "refreshLoginComplete" | "refreshLoginFailed" |
 	"registerStarted" | "registerComplete" | "registerFailed" |
 	"resetPasswordForEmailStarted" | "resetPasswordForEmailComplete" | "resetPasswordForEmailFailed" |
  	"setTheme";
@@ -22,6 +23,22 @@ export const login = (email: string, password: string) => {
 				"loginStarted",
 				"loginComplete",
 				"loginFailed"
+			]
+		}
+	};
+};
+
+export const refreshLogin = () => {
+	return {
+		type: "refreshLogin",
+		[RSAA]: {
+			endpoint: "/api/account/refreshlogin",
+			headers: getDefaultHeaders(),
+			method: "POST",
+			types: [
+				"refreshLoginStarted",
+				"refreshLoginComplete",
+				"refreshLoginFailed"
 			]
 		}
 	};

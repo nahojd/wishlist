@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers } from "redux";
+import { Action, combineReducers, Middleware } from "redux";
 import { apiMiddleware } from "redux-api-middleware";
 import {
 	persistStore,
@@ -15,6 +15,16 @@ import { createAccountReducer } from "./Account/AccountReducer";
 import storageSession from 'redux-persist/lib/storage/session';
 import { createWishlistReducer } from "./Reducer";
 import { createApiCallReducer } from "./ApiCalls/ApiCallReducer";
+import { logout } from "./Account/Actions";
+
+const authMiddleware: Middleware = store => next => async (action: Action) => {
+	if (action.type.endsWith("Failed") && (action as any).payload?.status === 401) {
+		console.debug("Got 401 from API -- logging out user");
+		store.dispatch(logout());
+	}
+
+	next(action);
+};
 
 const reducer = combineReducers({
 	apicalls: createApiCallReducer(),
@@ -37,14 +47,13 @@ export const store = configureStore({
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware({
 		serializableCheck: {
 			ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,
-							"resetPasswordForEmailFailed", "loginFailed", "registerFailed",
+							"resetPasswordForEmailFailed", "loginFailed", "registerFailed", "refreshLoginFailed",
 							"validatePwdResetTokenFailed", "resetPasswordFailed",
 							"getUsersFailed", "getUserWishesFailed", "addWishFailed", "deleteWishFailed"
 			],
 		}
-	}).prepend(apiMiddleware)
+	}).prepend(apiMiddleware, authMiddleware)
 });
-
 
 export const getStore = () => store;
 export const persistor = persistStore(store);
