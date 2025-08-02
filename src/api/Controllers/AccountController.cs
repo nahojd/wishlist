@@ -11,6 +11,7 @@ using MimeKit;
 using MySqlConnector;
 using WishList.Api.DataAccess;
 using WishList.Api.Model;
+using WishList.Api.Model.Extensions;
 using WishList.Api.Security;
 using Db = WishList.Api.DataAccess.Entities;
 
@@ -51,7 +52,7 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 
 
 		//Spara till databas
-		using var conn = DbExtensions.OpenConnection(config);
+		using var conn = DbHelper.OpenConnection(config);
 		await conn.ExecuteAsync("insert into User (Name, Email, Password) values (@Name, @Email, @hash)", new { parameters.Name, parameters.Email, hash });
 		logger.LogInformation("Registered user {Name} with email {Email}", parameters.Name, parameters.Email);
 
@@ -63,8 +64,8 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 	public async Task<ActionResult<LoginResponse>> Login([FromBody]LoginParameters parameters)
 	{
 		//Hämta användaren
-		using var conn = DbExtensions.OpenConnection(config);
-		var dbUser = await conn.GetUserByEmail(parameters.Email);
+		using var conn = DbHelper.OpenConnection(config);
+		var dbUser = await conn.GetDbUserByEmail(parameters.Email);
 		if (dbUser is null || !dbUser.Verified)
 			return BadRequest(new ProblemDetails { Detail = "Invalid email or password"});
 
@@ -101,8 +102,8 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 	[AllowAnonymous]
 	public async Task<ActionResult> ResetPassword(string email)
 	{
-		using var conn = DbExtensions.OpenConnection(config);
-		var dbUser = await conn.GetUserByEmail(email);
+		using var conn = DbHelper.OpenConnection(config);
+		var dbUser = await conn.GetDbUserByEmail(email);
 		if (dbUser is null || !dbUser.Verified)
 			return BadRequest(new ProblemDetails { Detail = "No such user"});
 
@@ -147,8 +148,8 @@ Om du inte begärt en återställning av lösenordet, bortse från detta mail.";
 	public async Task<ActionResult> ValidateResetToken([FromQuery]string token)
 	{
 		//Hämta user på token
-		using var conn = DbExtensions.OpenConnection(config);
-		var dbUser = await conn.GetUserByResetPwdToken(token);
+		using var conn = DbHelper.OpenConnection(config);
+		var dbUser = await conn.GetDbUserByResetPwdToken(token);
 		if (dbUser is null || dbUser.PwdResetExpires is null || dbUser.PwdResetExpires < DateTime.Now)
 			return BadRequest(new ProblemDetails { Detail = "Invalid token"});
 
@@ -160,8 +161,8 @@ Om du inte begärt en återställning av lösenordet, bortse från detta mail.";
 	public async Task<ActionResult> ResetPasswordWithToken([FromBody]ResetPasswordParameters parameters)
 	{
 		//Hämta user på token
-		using var conn = DbExtensions.OpenConnection(config);
-		var dbUser = await conn.GetUserByResetPwdToken(parameters.Token);
+		using var conn = DbHelper.OpenConnection(config);
+		var dbUser = await conn.GetDbUserByResetPwdToken(parameters.Token);
 		if (dbUser is null || dbUser.PwdResetExpires is null || dbUser.PwdResetExpires < DateTime.Now)
 			return BadRequest(new ProblemDetails { Detail = "Invalid token"});
 

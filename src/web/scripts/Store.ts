@@ -38,7 +38,8 @@ export const store = configureStore({
 		serializableCheck: {
 			ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,
 							"resetPasswordForEmailFailed", "loginFailed", "registerFailed",
-							"validatePwdResetTokenFailed", "resetPasswordFailed"
+							"validatePwdResetTokenFailed", "resetPasswordFailed",
+							"getUsersFailed", "getUserWishesFailed", "addWishFailed"
 			],
 		}
 	}).prepend(apiMiddleware)

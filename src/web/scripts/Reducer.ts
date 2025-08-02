@@ -9,6 +9,8 @@ export const createWishlistReducer = () => {
 				return { ...state, ...{ users: (action as any).payload }};
 			case "getUserWishesComplete":
 				return userWishesLoaded(state, action as any);
+			case "addWishComplete":
+				return wishAdded(state, action as any);
 			case "logout":
 				return {}; //Clear state on logout
 			default:
@@ -25,6 +27,33 @@ function userWishesLoaded(state: IWishlistState, action: { meta: { userId: numbe
 	const index = users.findIndex(x => x.id === action.meta.userId);
 	const user = {...users[index]};
 	user.wishes = action.payload;
+	users[index] = user;
+
+	return { ...state, ...{ users } };
+}
+
+interface IAddedWish {
+	id: number;
+	name: string;
+	description?: string;
+	linkUrl?: string;
+	owner: { id: number }
+}
+function wishAdded(state: IWishlistState, action: { payload: IAddedWish }) : IWishlistState {
+	const users = [...state.users];
+	const index = users.findIndex(x => x.id === action.payload.owner.id);
+	const user = {...users[index]};
+
+	const wishes = [...user.wishes];
+	const wish = {
+		id: action.payload.id,
+		name: action.payload.name,
+		description: action.payload.description,
+		linkUrl: action.payload.linkUrl
+	}
+	wishes.push(wish);
+
+	user.wishes = wishes;
 	users[index] = user;
 
 	return { ...state, ...{ users } };

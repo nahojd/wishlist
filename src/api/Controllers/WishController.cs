@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using System.ComponentModel.DataAnnotations;
+using WishList.Api.DataAccess;
 using WishList.Api.Model;
 using WishList.Api.Model.Extensions;
 
@@ -21,10 +22,8 @@ public class WishController(IConfiguration config) : Controller
 	{
 		if (userId == User.GetUserId())
 			return await GetMyWishes();
-			//return BadRequest(new ProblemDetails { Detail = "Invalid userId!. Just call /wish/list to get your own wishes"});
 
-		using var conn = new MySqlConnection(config.WishListConnectionString());
-		conn.Open();
+		using var conn = DbHelper.OpenConnection(config);
 
 		var wishes = await conn.GetWishesForUser(userId);
 		return Json(wishes);
@@ -33,8 +32,7 @@ public class WishController(IConfiguration config) : Controller
 	[HttpGet("list")]
 	public async Task<ActionResult<IReadOnlyList<Wish>>> GetMyWishes()
 	{
-		using var conn = new MySqlConnection(config.WishListConnectionString());
-		conn.Open();
+		using var conn = DbHelper.OpenConnection(config);
 
 		var userId = User.GetUserId();
 
@@ -45,8 +43,7 @@ public class WishController(IConfiguration config) : Controller
 	[HttpPost("")]
 	public async Task<ActionResult<Wish>> AddWish([FromBody]WishParameters wish)
 	{
-		using var conn = new MySqlConnection(config.WishListConnectionString());
-		conn.Open();
+		using var conn = DbHelper.OpenConnection(config);
 
 		var userId = User.GetUserId();
 
@@ -58,8 +55,7 @@ public class WishController(IConfiguration config) : Controller
 	[HttpDelete("{wishId:int}")]
 	public async Task<ActionResult> DeleteWish(int wishId)
 	{
-		using var conn = new MySqlConnection(config.WishListConnectionString());
-		conn.Open();
+		using var conn = DbHelper.OpenConnection(config);
 
 		var userId = User.GetUserId();
 		var wish = await conn.GetWish(wishId);

@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { Userlist } from "../Components/Userlist";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { getApiCallState, IUser, useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
 import { getUserWishes } from "../Actions";
+import { NavLink } from "react-router-dom";
 
 export const UserPage = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const { id } = useParams<{ id: string }>();
 	const currentUser = useStateSelector(state => state.account.user);
@@ -30,29 +32,36 @@ export const UserPage = () => {
 		<section>
 			<h1>{user.name} {isMyPage ? "(jag själv)" : ""}</h1>
 
-			{ getWishesState === "started" && <span aria-busy="true">Hämtar önskningar...</span> }
+			{ isMyPage && <button onClick={() => navigate("/wish/add")}>Ny önskning</button>}
 
-			<WishList user={user} />
+			{ (!user.wishes || user.wishes.length === 0) && getWishesState === "started" && <span aria-busy="true">Hämtar önskningar...</span> }
+
+			<WishList user={user} allowEdit={isMyPage} />
 		</section>
 	</>;
 }
 
-export const WishList = (props: { user: IUser }) => {
+const WishList = (props: { user: IUser, allowEdit?: boolean }) => {
 	if (!props.user.wishes)
 		return null;
 
 	if (props.user.wishes.length === 0)
 		return <article className="alert info">Det finns inga önskningar!</article>
 
-	return <ul className="plain">
-		{ props.user.wishes.map(x => <li key={x.id}>
-			<article>
-				<header>{x.name}</header>
-				{x.description && <p>{x.description}</p>}
-				{x.linkUrl && <a href={x.linkUrl} target="_blank">{x.linkUrl}</a>}
-				<footer></footer>
-			</article>
+	return <>
+		<ul className="plain">
+			{ props.user.wishes.map(x => <li key={x.id}>
+				<article>
+					<header>{props.allowEdit ? <NavLink to={`/wish/${x.id}`} title="Ändra önskning">{x.name}</NavLink> : x.name}</header>
+					{x.description && <p>{x.description}</p>}
+					{x.linkUrl && <a href={x.linkUrl} target="_blank">{x.linkUrl}</a>}
+					{ props.allowEdit && <footer>
+						<button className="secondary" onClick={() => alert("Inte klart!")}>Ta bort</button>
+					</footer> }
 
-		</li>)}
-	</ul>
+				</article>
+
+			</li>)}
+		</ul>
+	</>;
 }

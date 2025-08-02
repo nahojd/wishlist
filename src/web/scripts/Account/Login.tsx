@@ -17,8 +17,9 @@ export const LoginPage = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const submit = () => {
+	const submit = (e: React.FormEvent) => {
 		dispatch(login(email, password));
+		e.preventDefault();
 	};
 
 	useEffect(() => {
@@ -31,7 +32,7 @@ export const LoginPage = () => {
 
 		<article>
 			<header>Logga in</header>
-				<form>
+				<form onSubmit={submit}>
 					<fieldset>
 						<label htmlFor="email">E-post</label>
 						<input type="email" id="email" required onChange={e => setEmail(e.target.value)} value={email} />
@@ -39,12 +40,12 @@ export const LoginPage = () => {
 						<label htmlFor="password">Lösenord</label>
 						<input type="password" id="password" required onChange={e => setPassword(e.target.value)} value={password} />
 					</fieldset>
-				</form>
 
+					<button type="submit">Logga in</button>
+				</form>
+			<footer>
 				<NavLink to="/register">Registrera konto</NavLink><br />
 				<NavLink to="/forgotpassword">Glömt lösenord</NavLink>
-			<footer>
-				<button type="submit" onClick={submit}>Logga in</button>
 			</footer>
 		</article>
 	</>

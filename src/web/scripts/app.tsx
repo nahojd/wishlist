@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import domready from "domready";
 import { Provider } from 'react-redux';
 import { useStateSelector } from './Model';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -39,17 +40,16 @@ export const getDefaultHeaders = () => {
 	};
 };
 
+domready(() => {
+	const root = createRoot(document.getElementById("approot"));
 
-
-const root = createRoot(document.getElementById("approot"));
-
-
-root.render(
-	<React.StrictMode>
-		<Provider store={store}>
-			<PersistGate loading={null} persistor={persistor}>
-				<App />
-			</PersistGate>
-		</Provider>
-	</React.StrictMode>
-);
+	root.render(
+		<React.StrictMode>
+			<Provider store={store}>
+				<PersistGate loading={null} persistor={persistor}>
+					<App />
+				</PersistGate>
+			</Provider>
+		</React.StrictMode>
+	);
+})

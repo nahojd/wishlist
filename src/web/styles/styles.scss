@@ -31,6 +31,10 @@
 
         > header {
             grid-area: head;
+
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid $green-800;
         }
 
         > aside {
@@ -43,6 +47,10 @@
 
         > footer {
             grid-area: foot;
+
+            padding-top: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid $green-800;
         }
     }
 

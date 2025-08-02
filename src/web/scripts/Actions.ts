@@ -2,7 +2,8 @@ import { RSAA } from "redux-api-middleware";
 import { getDefaultHeaders } from "./app";
 
 export type WishlistActionType = "getUsersStarted" | "getUsersComplete" | "getUsersFailed" |
-"getUserWishesStarted" | "getUserWishesComplete" | "getUserWishesFailed";
+"getUserWishesStarted" | "getUserWishesComplete" | "getUserWishesFailed" |
+"addWishStarted" | "addWishComplete" | "addWishFailed";
 
 export const getUsers = () => {
 
@@ -23,7 +24,7 @@ export const getUsers = () => {
 
 export const getUserWishes = (userId: number) => {
 
-	const meta= { userId };
+	const meta = { userId };
 
 	return {
 		type: "getUserWishes",
@@ -35,6 +36,24 @@ export const getUserWishes = (userId: number) => {
 				{ meta, type: "getUserWishesStarted" },
 				{ meta, type: "getUserWishesComplete" },
 				{ meta, type: "getUserWishesFailed" }
+			]
+		}
+	};
+};
+
+export const addWish = (data: { name: string, description?: string, linkUrl?: string }) => {
+
+	return {
+		type: "addWish",
+		[RSAA]: {
+			endpoint: `/api/wish`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			body: JSON.stringify(data),
+			types: [
+				"addWishStarted",
+				"addWishComplete",
+				"addWishFailed"
 			]
 		}
 	};
