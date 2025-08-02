@@ -11,6 +11,8 @@ export const createWishlistReducer = () => {
 				return userWishesLoaded(state, action as any);
 			case "addWishComplete":
 				return wishAdded(state, action as any);
+			case "deleteWishComplete":
+				return wishDeleted(state, action as any);
 			case "logout":
 				return {}; //Clear state on logout
 			default:
@@ -52,6 +54,24 @@ function wishAdded(state: IWishlistState, action: { payload: IAddedWish }) : IWi
 		linkUrl: action.payload.linkUrl
 	}
 	wishes.push(wish);
+
+	user.wishes = wishes;
+	users[index] = user;
+
+	return { ...state, ...{ users } };
+}
+
+function wishDeleted(state: IWishlistState, action: { meta: { id: number, userId: number } }) : IWishlistState {
+	const users = [...state.users];
+	const index = users.findIndex(x => x.id === action.meta.userId);
+	const user = {...users[index]};
+
+	const wishes = [...user.wishes];
+	const wishIndex = wishes.findIndex(x => x.id === action.meta.id);
+	if (wishIndex < 0)
+		return state;
+
+	wishes.splice(wishIndex, 1);
 
 	user.wishes = wishes;
 	users[index] = user;

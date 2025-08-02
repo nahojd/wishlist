@@ -3,7 +3,8 @@ import { getDefaultHeaders } from "./app";
 
 export type WishlistActionType = "getUsersStarted" | "getUsersComplete" | "getUsersFailed" |
 "getUserWishesStarted" | "getUserWishesComplete" | "getUserWishesFailed" |
-"addWishStarted" | "addWishComplete" | "addWishFailed";
+"addWishStarted" | "addWishComplete" | "addWishFailed" |
+"deleteWishStarted" | "deleteWishComplete" | "deleteWishFailed";
 
 export const getUsers = () => {
 
@@ -54,6 +55,25 @@ export const addWish = (data: { name: string, description?: string, linkUrl?: st
 				"addWishStarted",
 				"addWishComplete",
 				"addWishFailed"
+			]
+		}
+	};
+};
+
+export const deleteWish = (id: number, userId: number) => {
+
+	const meta = { id, userId };
+
+	return {
+		type: "deleteWish",
+		[RSAA]: {
+			endpoint: `/api/wish/${id}`,
+			headers: getDefaultHeaders(),
+			method: "DELETE",
+			types: [
+				{ meta, type: "deleteWishStarted" },
+				{ meta, type: "deleteWishComplete" },
+				{ meta, type: "deleteWishFailed" }
 			]
 		}
 	};

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Userlist } from "../Components/Userlist";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { getApiCallState, IUser, useStateSelector } from "../Model";
+import { getApiCallState, IUser, IUserWish, useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
-import { getUserWishes } from "../Actions";
+import { deleteWish, getUserWishes } from "../Actions";
 import { NavLink } from "react-router-dom";
 
 export const UserPage = () => {
@@ -42,6 +42,14 @@ export const UserPage = () => {
 }
 
 const WishList = (props: { user: IUser, allowEdit?: boolean }) => {
+
+	const dispatch = useDispatch();
+
+	const deleteClicked = (wish: IUserWish) => {
+		if (confirm(`Vill du ta bort önskningen "${wish.name}"`))
+			dispatch(deleteWish(wish.id, props.user.id));
+	};
+
 	if (!props.user.wishes)
 		return null;
 
@@ -56,7 +64,7 @@ const WishList = (props: { user: IUser, allowEdit?: boolean }) => {
 					{x.description && <p>{x.description}</p>}
 					{x.linkUrl && <a href={x.linkUrl} target="_blank">{x.linkUrl}</a>}
 					{ props.allowEdit && <footer>
-						<button className="secondary" onClick={() => alert("Inte klart!")}>Ta bort</button>
+						<button className="secondary" onClick={() => deleteClicked(x)}>Ta bort</button>
 					</footer> }
 
 				</article>

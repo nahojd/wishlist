@@ -39,7 +39,7 @@ export const store = configureStore({
 			ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,
 							"resetPasswordForEmailFailed", "loginFailed", "registerFailed",
 							"validatePwdResetTokenFailed", "resetPasswordFailed",
-							"getUsersFailed", "getUserWishesFailed", "addWishFailed"
+							"getUsersFailed", "getUserWishesFailed", "addWishFailed", "deleteWishFailed"
 			],
 		}
 	}).prepend(apiMiddleware)

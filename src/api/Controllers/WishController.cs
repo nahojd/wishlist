@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using WishList.Api.DataAccess;
 using WishList.Api.Model;
 using WishList.Api.Model.Extensions;
@@ -63,7 +64,7 @@ public class WishController(IConfiguration config) : Controller
 			return NotFound();
 
 		if (wish.Owner?.Id != userId)
-			return BadRequest(new ProblemDetails { Detail = "That's not your wish to delete!"});
+			return StatusCode((int)HttpStatusCode.Forbidden, new ProblemDetails { Detail = "That's not your wish to delete!"});
 
 		await conn.DeleteWish(wishId);
 		return NoContent();
