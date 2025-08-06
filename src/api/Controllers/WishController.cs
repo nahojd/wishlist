@@ -53,6 +53,20 @@ public class WishController(IConfiguration config) : Controller
 		return Json(await conn.GetWish(wishId));
 	}
 
+	[HttpPatch("{wishId:int}")]
+	public async Task<ActionResult<Wish>> UpdateWish(int wishId, [FromBody]WishParameters wish)
+	{
+		using var conn = DbHelper.OpenConnection(config);
+
+		// var userId = User.GetUserId();
+
+		// var wishId = await conn.AddWish(userId, wish.Name!, wish.Description, wish.LinkUrl);
+
+		await Task.Delay(1000);
+
+		return Json(await conn.GetWish(wishId));
+	}
+
 	[HttpDelete("{wishId:int}")]
 	public async Task<ActionResult> DeleteWish(int wishId)
 	{

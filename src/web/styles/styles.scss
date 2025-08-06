@@ -71,6 +71,8 @@ ul.plain {
 }
 
 .alert {
+    margin-top: 1rem;
+
     &.danger {
         background-color: $red-450;
         color: white;

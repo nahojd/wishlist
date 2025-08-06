@@ -4,6 +4,7 @@ import { getDefaultHeaders } from "./app";
 export type WishlistActionType = "getUsersStarted" | "getUsersComplete" | "getUsersFailed" |
 "getUserWishesStarted" | "getUserWishesComplete" | "getUserWishesFailed" |
 "addWishStarted" | "addWishComplete" | "addWishFailed" |
+"updateWishStarted" | "updateWishComplete" | "updateWishFailed" |
 "deleteWishStarted" | "deleteWishComplete" | "deleteWishFailed";
 
 export const getUsers = () => {
@@ -55,6 +56,24 @@ export const addWish = (data: { name: string, description?: string, linkUrl?: st
 				"addWishStarted",
 				"addWishComplete",
 				"addWishFailed"
+			]
+		}
+	};
+};
+
+export const updateWish = (id: number, data: { name: string, description?: string, linkUrl?: string }) => {
+
+	return {
+		type: "updateWish",
+		[RSAA]: {
+			endpoint: `/api/wish/${id}`,
+			headers: getDefaultHeaders(),
+			method: "PATCH",
+			body: JSON.stringify(data),
+			types: [
+				"updateWishStarted",
+				"updateWishComplete",
+				"updateWishFailed"
 			]
 		}
 	};
