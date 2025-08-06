@@ -3,7 +3,7 @@ import { Userlist } from "../Components/Userlist";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { getApiCallState, IUser, IUserWish, useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
-import { deleteWish, getUserWishes } from "../Actions";
+import { avtjinga, deleteWish, getUserWishes, tjinga } from "../Actions";
 import { NavLink } from "react-router-dom";
 
 export const UserPage = () => {
@@ -36,18 +36,31 @@ export const UserPage = () => {
 
 			{ (!user.wishes || user.wishes.length === 0) && getWishesState === "started" && <span aria-busy="true">Hämtar önskningar...</span> }
 
-			<WishList user={user} allowEdit={isMyPage} />
+			<WishList user={user} isOwnWish={isMyPage} />
 		</section>
 	</>;
 }
 
-const WishList = (props: { user: IUser, allowEdit?: boolean }) => {
+const WishList = (props: { user: IUser, isOwnWish?: boolean }) => {
+
+	const currentUser = useStateSelector(state => state.account.user);
 
 	const dispatch = useDispatch();
 
 	const deleteClicked = (wish: IUserWish) => {
+		if (!props.isOwnWish)
+			return;
+
 		if (confirm(`Vill du ta bort önskningen "${wish.name}"`))
 			dispatch(deleteWish(wish.id, props.user.id));
+	};
+
+	const tjingaClicked = (wish: IUserWish) => {
+		dispatch(tjinga(wish.id));
+	};
+
+	const avtjingaClicked = (wish: IUserWish) => {
+		dispatch(avtjinga(wish.id));
 	};
 
 	if (!props.user.wishes)
@@ -60,12 +73,18 @@ const WishList = (props: { user: IUser, allowEdit?: boolean }) => {
 		<ul className="plain">
 			{ props.user.wishes.map(x => <li key={x.id}>
 				<article>
-					<header>{props.allowEdit ? <NavLink to={`/wish/${x.id}`} title="Ändra önskning">{x.name}</NavLink> : x.name}</header>
+					<header>{props.isOwnWish ? <NavLink to={`/wish/${x.id}`} title="Ändra önskning">{x.name}</NavLink> : x.name}</header>
 					{x.description && <p>{x.description}</p>}
 					{x.linkUrl && <a href={x.linkUrl} target="_blank">{x.linkUrl}</a>}
-					{ props.allowEdit && <footer>
-						<button className="secondary" onClick={() => deleteClicked(x)}>Ta bort</button>
-					</footer> }
+
+					<footer>
+						{ props.isOwnWish && <button className="secondary" onClick={() => deleteClicked(x)}>Ta bort</button> }
+						{ !props.isOwnWish && <>
+							{ !x.tjingadBy && <button onClick={() => tjingaClicked(x)}>Tjinga</button> }
+							{ x.tjingadBy?.id === currentUser.id && <button className="outline" onClick={() => avtjingaClicked(x)}>Ta bort tjingning</button> }
+							{ x.tjingadBy && x.tjingadBy.id !== currentUser.id && <>Tjingad av {x.tjingadBy.name}</>}
+						</> }
+					</footer>
 
 				</article>
 

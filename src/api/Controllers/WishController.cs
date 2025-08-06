@@ -85,6 +85,46 @@ public class WishController(IConfiguration config) : Controller
 
 	}
 
+	[HttpPost("{wishId:int}/tjinga")]
+	public async Task<ActionResult> TjingaWish(int wishId)
+	{
+		using var conn = DbHelper.OpenConnection(config);
+
+		var userId = User.GetUserId();
+		var wish = await conn.GetWish(wishId);
+		if (wish is null)
+			return NotFound();
+
+		if (wish.Owner?.Id == userId)
+			return StatusCode((int)HttpStatusCode.Forbidden, new ProblemDetails { Detail = "Du kan inte tjinga din egen önskning!"});
+		if (wish.TjingadBy != null)
+			return BadRequest(new ProblemDetails { Detail = "Önskningen är redan tjingad!" });
+
+		await conn.TjingaWish(userId, wishId);
+
+		return Json(await conn.GetWish(wishId));
+	}
+
+	[HttpPost("{wishId:int}/avtjinga")]
+	public async Task<ActionResult> AvtjingaWish(int wishId)
+	{
+		using var conn = DbHelper.OpenConnection(config);
+
+		var userId = User.GetUserId();
+		var wish = await conn.GetWish(wishId);
+		if (wish is null)
+			return NotFound();
+
+		if (wish.Owner?.Id == userId)
+			return StatusCode((int)HttpStatusCode.Forbidden, new ProblemDetails { Detail = "Du kan inte tjnga din egen önskning!"});
+		if (wish.TjingadBy?.Id != userId)
+			return BadRequest(new ProblemDetails { Detail = "Du har inte tjingat önskningen." });
+
+		await conn.AvtjingaWish(wishId);
+
+		return Json(await conn.GetWish(wishId));
+	}
+
 	//Needed operations
 	//CRUD for wishes
 	//Call dibs on a wish

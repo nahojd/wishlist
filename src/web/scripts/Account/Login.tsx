@@ -4,12 +4,17 @@ import { login } from "./Actions";
 import { PageHeader } from "../Components/PageHeader";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { useStateSelector } from "../Model";
+import { getApiCallState, useStateSelector } from "../Model";
+import { Alert } from "../Components/Alert";
+import { clearApiCallState } from "../ApiCalls/Actions";
 
 export const LoginPage = () => {
 
 	const user = useStateSelector(state => state.account.user);
 	const isAuthenticated = !!user;
+
+	const apicalls = getApiCallState();
+	const submitState = apicalls.getLoadingState("login");
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -21,6 +26,12 @@ export const LoginPage = () => {
 		dispatch(login(email, password));
 		e.preventDefault();
 	};
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearApiCallState("login"));
+		};
+	}, []);
 
 	useEffect(() => {
 		if (isAuthenticated)
@@ -41,7 +52,9 @@ export const LoginPage = () => {
 						<input type="password" id="password" required onChange={e => setPassword(e.target.value)} value={password} />
 					</fieldset>
 
-					<button type="submit">Logga in</button>
+					<Alert type="danger" show={submitState === "failed"}>Fel e-post eller lösenord!</Alert>
+
+					<button type="submit" aria-busy={submitState === "started"}>Logga in</button>
 				</form>
 			<footer>
 				<NavLink to="/register">Registrera konto</NavLink><br />

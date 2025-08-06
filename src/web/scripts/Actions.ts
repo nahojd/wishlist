@@ -5,7 +5,9 @@ export type WishlistActionType = "getUsersStarted" | "getUsersComplete" | "getUs
 "getUserWishesStarted" | "getUserWishesComplete" | "getUserWishesFailed" |
 "addWishStarted" | "addWishComplete" | "addWishFailed" |
 "updateWishStarted" | "updateWishComplete" | "updateWishFailed" |
-"deleteWishStarted" | "deleteWishComplete" | "deleteWishFailed";
+"deleteWishStarted" | "deleteWishComplete" | "deleteWishFailed" |
+"tjingaStarted" | "tjingaComplete" | "tjingaFailed" |
+"avtjingaStarted" | "avtjingaComplete" | "avtjingaFailed";
 
 export const getUsers = () => {
 
@@ -97,3 +99,35 @@ export const deleteWish = (id: number, userId: number) => {
 		}
 	};
 };
+
+export const tjinga = (id: number) => {
+	return {
+		type: "tjinga",
+		[RSAA]: {
+			endpoint: `/api/wish/${id}/tjinga`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			types: [
+				"tjingaStarted",
+				"tjingaComplete",
+				"tjingaFailed"
+			]
+		}
+	};
+};
+
+export const avtjinga = (id: number) => {
+	return {
+		type: "avtjinga",
+		[RSAA]: {
+			endpoint: `/api/wish/${id}/avtjinga`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			types: [
+				"avtjingaStarted",
+				"avtjingaComplete",
+				"avtjingaFailed"
+			]
+		}
+	};
+}

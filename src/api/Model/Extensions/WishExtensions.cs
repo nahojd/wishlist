@@ -52,4 +52,10 @@ public static class WishExtensions
 	{
 		await conn.ExecuteAsync("delete from Wish where Id = @wishId", new { wishId });
 	}
+
+	public static Task TjingaWish(this IDbConnection conn, int userId, int wishId) =>
+		conn.ExecuteAsync("update Wish set TjingadBy = @userId where Id = @wishId", new { userId, wishId });
+
+	public static Task AvtjingaWish(this IDbConnection conn, int wishId) =>
+		conn.ExecuteAsync("update Wish set TjingadBy = null where Id = @wishId", new { wishId });
 }

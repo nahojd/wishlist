@@ -1,6 +1,6 @@
 import { AccountActionType } from "./Account/Actions";
 import { WishlistActionType } from "./Actions";
-import { IUserWish, IWishlistState } from "./Model";
+import { IUserWish, IWish, IWishlistState } from "./Model";
 
 export const createWishlistReducer = () => {
 	return (state: IWishlistState = {}, action: { type: WishlistActionType|AccountActionType }) : IWishlistState => {
@@ -11,6 +11,10 @@ export const createWishlistReducer = () => {
 				return userWishesLoaded(state, action as any);
 			case "addWishComplete":
 				return wishAdded(state, action as any);
+			case "updateWishComplete":
+			case "tjingaComplete":
+			case "avtjingaComplete":
+				return wishUpdated(state, action as any);
 			case "deleteWishComplete":
 				return wishDeleted(state, action as any);
 			case "logout":
@@ -34,14 +38,7 @@ function userWishesLoaded(state: IWishlistState, action: { meta: { userId: numbe
 	return { ...state, ...{ users } };
 }
 
-interface IAddedWish {
-	id: number;
-	name: string;
-	description?: string;
-	linkUrl?: string;
-	owner: { id: number }
-}
-function wishAdded(state: IWishlistState, action: { payload: IAddedWish }) : IWishlistState {
+function wishAdded(state: IWishlistState, action: { payload: IWish }) : IWishlistState {
 	const users = [...state.users];
 	const index = users.findIndex(x => x.id === action.payload.owner.id);
 	const user = {...users[index]};
@@ -72,6 +69,30 @@ function wishDeleted(state: IWishlistState, action: { meta: { id: number, userId
 		return state;
 
 	wishes.splice(wishIndex, 1);
+
+	user.wishes = wishes;
+	users[index] = user;
+
+	return { ...state, ...{ users } };
+}
+
+function wishUpdated(state: IWishlistState, action: { payload: IWish }) : IWishlistState {
+	const users = [...state.users];
+	const index = users.findIndex(x => x.id === action.payload.owner.id);
+	const user = {...users[index]};
+
+	const wishes = [...user.wishes];
+	const wishIndex = wishes.findIndex(x => x.id === action.payload.id);
+	if (wishIndex < 0)
+		return state;
+
+	wishes[wishIndex] = {
+		id: action.payload.id,
+		name: action.payload.name,
+		description: action.payload.description,
+		linkUrl: action.payload.linkUrl,
+		tjingadBy: action.payload.tjingadBy
+	};
 
 	user.wishes = wishes;
 	users[index] = user;

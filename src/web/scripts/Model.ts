@@ -54,3 +54,7 @@ export interface IUserWish {
 	linkUrl?: string;
 	tjingadBy?: IUser;
 }
+
+export interface IWish extends IUserWish {
+	owner: IUser;
+}
