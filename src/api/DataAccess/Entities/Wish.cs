@@ -8,4 +8,6 @@ public class Wish
 	public string? Description { get; set; }
 	public string? LinkUrl { get; set; }
 	public int? TjingadBy { get; set; }
+	public DateTime Created { get; set; }
+	public DateTime? Updated { get; set; }
 }

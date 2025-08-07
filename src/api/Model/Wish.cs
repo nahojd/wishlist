@@ -9,6 +9,8 @@ public partial class Wish
 	public string? LinkUrl { get; set; }
 	public User? Owner { get; set; }
 	public User? TjingadBy { get; set; }
+	public DateTime Created { get; set; }
+	public DateTime? Updated { get; set; }
 }
 
 public partial class Wish
@@ -21,7 +23,9 @@ public partial class Wish
 			LinkUrl = dbObj.LinkUrl,
 			Name = dbObj.Name,
 			Owner = owner != null ? User.Create(owner) : null,
-			TjingadBy = tjingadBy != null ? User.Create(tjingadBy) : null
+			TjingadBy = tjingadBy != null ? User.Create(tjingadBy) : null,
+			Created = dbObj.Created,
+			Updated = dbObj.Updated
 		};
 	}
 }

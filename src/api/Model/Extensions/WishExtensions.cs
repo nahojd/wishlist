@@ -42,16 +42,18 @@ public static class WishExtensions
 
 	public static async Task<int> AddWish(this IDbConnection conn, int userId, string name, string? description, string? linkUrl)
 	{
-		var wishId = await conn.QuerySingleAsync<int>(@"insert into Wish (Name, Description, LinkUrl, OwnerId) values (@name, @description, @linkUrl, @userId);
+		var wishId = await conn.QuerySingleAsync<int>(@"insert into Wish (Name, Description, LinkUrl, OwnerId, Created) values (@name, @description, @linkUrl, @userId, @Now);
 														select last_insert_id()",
-												new { name, description, linkUrl, userId });
+												new { name, description, linkUrl, userId, DateTime.Now });
 		return wishId;
 	}
 
-	public static async Task DeleteWish(this IDbConnection conn, int wishId)
-	{
-		await conn.ExecuteAsync("delete from Wish where Id = @wishId", new { wishId });
-	}
+	public static Task UpdateWish(this IDbConnection conn, int wishId, string name, string? description, string? linkUrl) =>
+		conn.ExecuteAsync("update Wish set Name = @name, Description = @description, LinkUrl = @linkUrl, Updated = @Now where Id = @wishId",
+									new { wishId, name, description, linkUrl, DateTime.Now });
+
+	public static Task DeleteWish(this IDbConnection conn, int wishId) =>
+		conn.ExecuteAsync("delete from Wish where Id = @wishId", new { wishId });
 
 	public static Task TjingaWish(this IDbConnection conn, int userId, int wishId) =>
 		conn.ExecuteAsync("update Wish set TjingadBy = @userId where Id = @wishId", new { userId, wishId });

@@ -48,21 +48,26 @@ public class WishController(IConfiguration config) : Controller
 
 		var userId = User.GetUserId();
 
-		var wishId = await conn.AddWish(userId, wish.Name!, wish.Description, wish.LinkUrl);
+		var wishId = await conn.AddWish(userId, wish.Name, wish.Description, wish.LinkUrl);
 
 		return Json(await conn.GetWish(wishId));
 	}
 
 	[HttpPatch("{wishId:int}")]
-	public async Task<ActionResult<Wish>> UpdateWish(int wishId, [FromBody]WishParameters wish)
+	public async Task<ActionResult<Wish>> UpdateWish(int wishId, [FromBody]WishParameters updatedWish)
 	{
 		using var conn = DbHelper.OpenConnection(config);
 
-		// var userId = User.GetUserId();
+		var userId = User.GetUserId();
+		var wish = await conn.GetWish(wishId);
+		if (wish is null)
+			return NotFound();
 
-		// var wishId = await conn.AddWish(userId, wish.Name!, wish.Description, wish.LinkUrl);
+		if (wish.Owner?.Id != userId)
+			return StatusCode((int)HttpStatusCode.Forbidden, new ProblemDetails { Detail = "Du kan inte uppdatera någon annans önskning!"});
 
-		await Task.Delay(1000);
+
+		await conn.UpdateWish(wishId, updatedWish.Name, updatedWish.Description, updatedWish.LinkUrl);
 
 		return Json(await conn.GetWish(wishId));
 	}
@@ -78,7 +83,7 @@ public class WishController(IConfiguration config) : Controller
 			return NotFound();
 
 		if (wish.Owner?.Id != userId)
-			return StatusCode((int)HttpStatusCode.Forbidden, new ProblemDetails { Detail = "That's not your wish to delete!"});
+			return StatusCode((int)HttpStatusCode.Forbidden, new ProblemDetails { Detail = "Du kan inte radera någon annans önskning!"});
 
 		await conn.DeleteWish(wishId);
 		return NoContent();
@@ -136,7 +141,7 @@ public class WishController(IConfiguration config) : Controller
 public class WishParameters
 {
 	[Required]
-	public string? Name { get; set; }
+	public string Name { get; set; } = string.Empty;
 	public string? Description { get; set; }
 	public string? LinkUrl { get; set; }
 }

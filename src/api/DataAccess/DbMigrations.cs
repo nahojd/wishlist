@@ -7,7 +7,7 @@ namespace WishList.Api.DataAccess;
 public class DbMigrations
 {
 	//Bumpas varje gång någon databasändring görs
-	public const int CurrentVersion = 4;
+	public const int CurrentVersion = 5;
 
 	public static void Run(ILogger<DbMigrations> logger, string? connectionString)
 	{
@@ -115,6 +115,13 @@ public class DbMigrations
 				//Lägg till kolumner för reset password
 				conn.Execute(@"ALTER TABLE User ADD COLUMN IF NOT EXISTS PwdResetToken VARCHAR(255) NULL;
 							   ALTER TABLE User ADD COLUMN IF NOT EXISTS PwdResetExpires DATETIME NULL", transaction: trans);
+			}
+
+			if (dbVersion < 5)
+			{
+				//Lägg till created och updated på Wish
+				conn.Execute(@"ALTER TABLE Wish ADD COLUMN IF NOT EXISTS Created DATETIME NOT NULL;
+							   ALTER TABLE Wish ADD COLUMN IF NOT EXISTS Updated DATETIME NULL", transaction: trans);
 			}
 
 			trans.Commit();
