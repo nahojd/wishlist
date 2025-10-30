@@ -6,7 +6,9 @@ export type AccountActionType = "logout" |
 	"refreshLoginStarted" | "refreshLoginComplete" | "refreshLoginFailed" |
 	"registerStarted" | "registerComplete" | "registerFailed" |
 	"resetPasswordForEmailStarted" | "resetPasswordForEmailComplete" | "resetPasswordForEmailFailed" |
- 	"setTheme";
+ 	"setTheme" |
+	"updateUserSettingsStarted" | "updateUserSettingsComplete" | "updateUserSettingsFailed" |
+	"updatePasswordStarted" | "updatePasswordComplete" | "updatePasswordFailed";
 
 export const login = (email: string, password: string) => {
 
@@ -120,3 +122,37 @@ export const resetPassword = (token: string, password: string) => {
 export const logout = () => ({ type: "logout" });
 
 export const setTheme = (theme: "light"|"dark") => ({ type: "setTheme", theme});
+
+export const updateUserSettings = (settings: { name: string, email: string, notify: boolean }) => {
+	return {
+		type: "updateUserSettings",
+		[RSAA]: {
+			endpoint: `/api/account/settings`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			body: JSON.stringify(settings),
+			types: [
+				"updateUserSettingsStarted",
+				"updateUserSettingsComplete",
+				"updateUserSettingsFailed"
+			]
+		}
+	};
+};
+
+export const updatePassword = (password: string) => {
+	return {
+		type: "updatePassword",
+		[RSAA]: {
+			endpoint: `/api/account/password`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			body: JSON.stringify({ password }),
+			types: [
+				"updatePasswordStarted",
+				"updatePasswordComplete",
+				"updatePasswordFailed"
+			]
+		}
+	};
+}

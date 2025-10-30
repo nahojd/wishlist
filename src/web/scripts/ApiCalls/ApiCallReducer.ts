@@ -2,7 +2,7 @@ import { IApiCallState, LoadingState } from "./Models";
 
 export interface IErrorDictionary
 {
-	[field: number]: string[]
+	[field: string]: string[]
 }
 
 export const createApiCallReducer = () => {

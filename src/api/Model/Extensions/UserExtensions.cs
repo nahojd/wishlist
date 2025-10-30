@@ -18,4 +18,7 @@ public static class UserExtensions
 
 	public static Task<Db.User?> GetDbUserByResetPwdToken(this IDbConnection conn, string? token)
 		=> conn.QuerySingleOrDefaultAsync<Db.User>("select * from User where PwdResetToken = @token", new { token });
+
+	public static Task<Db.User?> GetDbUserById(this IDbConnection conn, int id)
+		=> conn.QuerySingleOrDefaultAsync<Db.User>("select * from User where Id = @id", new { id });
 }

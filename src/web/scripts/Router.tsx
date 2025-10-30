@@ -9,6 +9,7 @@ import { UserPage } from "./Pages/UserPage";
 import { ForgotPasswordPage, ResetPasswordPage } from "./Account/ForgotPassword";
 import { AddWishPage } from "./Pages/AddWish";
 import { EditWishPage } from "./Pages/EditWish";
+import { ProfilePage } from "./Pages/Profile";
 
 export const publicRoutes = [
 	{ path: "/login", element: <LoginPage /> },
@@ -25,7 +26,7 @@ export const privateRoute = {
 		{ "path": "/user/:id", "element": <UserPage /> },
 		{ "path": "/wish/add", "element": <AddWishPage /> },
 		{ "path": "/wish/:id", "element": <EditWishPage /> },
-		{ "path": "/profile", "element": <div>Profile path</div> },
+		{ "path": "/profile", "element": <ProfilePage /> },
 		{ path: "*", element: <Navigate to="/" replace /> }
 	]
 }

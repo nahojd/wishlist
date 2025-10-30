@@ -5,6 +5,7 @@ public partial class User
 	public int Id { get; set; }
 	public string? Name { get; set; }
 	public string? Email { get; set; }
+	public bool Notify { get; set; }
 }
 
 public partial class User
@@ -14,7 +15,8 @@ public partial class User
 		return new() {
 			Id = dbObj.Id,
 			Name = dbObj.Name,
-			Email = dbObj.Email
+			Email = dbObj.Email,
+			Notify = dbObj.Notify
 		};
 	}
 }

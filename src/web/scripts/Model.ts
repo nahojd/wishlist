@@ -22,6 +22,7 @@ export interface IAccountState
 {
 	auth?: IOAuth2AuthResponse;
 	user?: IUser;
+	theme?: "dark"|"light";
 }
 
 
@@ -43,7 +44,7 @@ export interface IUser
 	id: number;
 	name: string;
 	email: string;
-	theme?: "dark"|"light";
+	notify: boolean;
 	wishes?: IUserWish[]
 }
 

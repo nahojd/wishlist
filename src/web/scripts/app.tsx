@@ -14,7 +14,8 @@ import { RefreshLogin } from './Components/RefreshLogin';
 
 const App = () => {
 
-	const user = useStateSelector(state => state.account.user);
+	const accountState = useStateSelector(state => state.account);
+	const user = accountState.user;
 	const isAuthenticated = !!user;
 
 	const router = createBrowserRouter([
@@ -23,9 +24,9 @@ const App = () => {
 	]);
 
 	useEffect(() => {
-		const theme = user?.theme || "light";
+		const theme = accountState?.theme || "light";
 		document.documentElement.setAttribute("data-theme", theme);
-	}, [user?.theme]);
+	}, [accountState?.theme]);
 
 	return <>
 		<RouterProvider router={router} />

@@ -10,7 +10,7 @@ export const RefreshLogin = () => {
 
 	const dispatch = useDispatch();
 	const authState = useStateSelector(state => state.account.auth);
-	const intervalRef = useRef<number>();
+	const intervalRef = useRef<number>(0);
 
 	useEffect(() => {
 		if (authState?.access_token) {

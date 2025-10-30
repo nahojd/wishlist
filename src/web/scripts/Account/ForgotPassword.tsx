@@ -6,7 +6,7 @@ import { NavLink, useNavigate } from "react-router";
 import { getApiCallState, useStateSelector } from "../Model";
 import { Alert } from "../Components/Alert";
 import { clearApiCallState } from "../ApiCalls/Actions";
-import { isValidEmail, isValidPassword } from "../Utils/Validation";
+import { isValidEmail, isValidPassword, MinPwdLength } from "../Utils/Validation";
 
 export const ForgotPasswordPage = () => {
 
@@ -127,7 +127,7 @@ export const ResetPasswordPage = () => {
 
 			{ validateTokenState === "complete" && <>
 
-			<Alert type="info" show>Ange nytt lösenord. Lösenordet måste vara minst 12 tecken långt.</Alert>
+			<Alert type="info" show><>Ange nytt lösenord. Lösenordet måste vara minst {MinPwdLength} tecken långt.</></Alert>
 
 			<form onSubmit={submit}>
 				<fieldset>

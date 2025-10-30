@@ -9,7 +9,7 @@
 
 #approot {
     margin: 0 auto;
-    max-width: map.get(map.get($breakpoints, "lg"), "viewport");
+    max-width: map.get(map.get($breakpoints, "xl"), "viewport");
 
     > main {
         display: grid;
@@ -27,6 +27,7 @@
                 "nav  main"
                 "foot foot";
             grid-template-columns: 1fr 2fr;
+            column-gap: 1rem;
         }
 
         > header {
@@ -89,4 +90,16 @@ ul.plain {
         background-color: $green-350;
         color: white;
     }
+}
+
+button.link {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--pico-primary);
+}
+
+small > button {
+    font-size: .875em;
+    padding: calc(var(--pico-form-element-spacing-vertical) / 2) calc(var(--pico-form-element-spacing-horizontal) / 2);
 }

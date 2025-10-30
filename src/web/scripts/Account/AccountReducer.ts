@@ -9,11 +9,11 @@ export const createAccountReducer = () => {
 			case "refreshLoginComplete":
 				return { ...state, ...{ auth: (action as any).payload }};
 			case "setTheme":
-				return { ...state, ...{
-					user: { ...state.user, ...{ theme: (action as any).theme }}
-				}};
+				return { ...state, ...{ theme: (action as any).theme } };
 			case "logout":
-				return {};
+				return { theme: state.theme };
+			case "updateUserSettingsComplete":
+				return { ...state, ...{ user: { ...state.user, ...(action as any).payload }}};
 			default:
 				return state;
 		};
