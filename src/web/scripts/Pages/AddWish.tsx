@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router"
 import { getApiCallState, useStateSelector } from "../Model";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";

@@ -3,7 +3,7 @@ import { Home } from "./Pages/Home";
 import React from "react";
 import { LoginPage } from "./Account/Login";
 import { Layout } from "./Components/Layout";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 import { RegisterPage } from "./Account/Register";
 import { UserPage } from "./Pages/UserPage";
 import { ForgotPasswordPage, ResetPasswordPage } from "./Account/ForgotPassword";

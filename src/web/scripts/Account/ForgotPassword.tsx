@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { resetPassword, resetPasswordForEmail, validatePwdResetToken } from "./Actions";
 import { PageHeader } from "../Components/PageHeader";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router";
 import { getApiCallState, useStateSelector } from "../Model";
 import { Alert } from "../Components/Alert";
 import { clearApiCallState } from "../ApiCalls/Actions";

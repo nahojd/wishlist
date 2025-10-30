@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { Userlist } from "../Components/Userlist";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams, NavLink } from "react-router";
 import { getApiCallState, IUser, IUserWish, useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
 import { avtjinga, deleteWish, getUserWishes, tjinga } from "../Actions";
-import { NavLink } from "react-router-dom";
 
 export const UserPage = () => {
 	const dispatch = useDispatch();

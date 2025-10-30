@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../Actions";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { useStateSelector } from "../Model";
 
 export const Userlist = (props: { selectedUser?: number }) => {

@@ -5,7 +5,8 @@ import { Provider } from 'react-redux';
 import { useStateSelector } from './Model';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './Store';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router';
 import { privateRoute, publicRoutes } from './Router';
 import { RefreshLogin } from './Components/RefreshLogin';
 
