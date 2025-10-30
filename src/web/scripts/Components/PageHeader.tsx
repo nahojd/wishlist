@@ -3,6 +3,7 @@ import { useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
 import { setTheme } from "../Account/Actions";
 import { Link } from "react-router";
+import logoImage from "url:../../images/logo.png";
 
 export const PageHeader = () => {
 	const dispatch = useDispatch();
@@ -10,10 +11,9 @@ export const PageHeader = () => {
 	const user = state.user;
 
 	return <header>
+
 		<nav>
-			<ul>
-				<li><strong><Link to="/">Önskelistemaskinen v3</Link></strong></li>
-			</ul>
+			<Link to="/"><img className="logo" src={logoImage} alt="Önskelistemaskinen v3" /></Link>
 			<ul>
 				{ user && <>
 					<li><Link to="/profile">Mitt konto</Link></li>
