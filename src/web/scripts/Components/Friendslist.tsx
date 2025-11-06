@@ -4,10 +4,12 @@ import { getUsers } from "../Actions";
 import { NavLink } from "react-router";
 import { useStateSelector } from "../Model";
 
-export const Userlist = (props: { selectedUser?: number }) => {
+export const Friendslist = (props: { selectedUser?: number }) => {
 	const dispatch = useDispatch();
 
 	const users = useStateSelector(state => state.wishlist.users);
+
+	const friends = users?.filter(x => x.isFriend);
 
 	useEffect(() => {
 		if (!users)
@@ -16,8 +18,8 @@ export const Userlist = (props: { selectedUser?: number }) => {
 
 	return <aside>
 		<nav>
-		{users && <ul>
-			{users.map(x => x.id === props.selectedUser ?
+		{friends && <ul>
+			{friends.map(x => x.id === props.selectedUser ?
 				<li key={x.id} className="selected">{x.name}</li> :
 				<li key={x.id}><NavLink to={`/user/${x.id}`}>{x.name}</NavLink></li>)}
 		</ul>}

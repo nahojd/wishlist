@@ -46,6 +46,7 @@ export interface IUser
 	email: string;
 	notify: boolean;
 	wishes?: IUserWish[]
+	isFriend?: boolean;
 }
 
 export interface IUserWish {

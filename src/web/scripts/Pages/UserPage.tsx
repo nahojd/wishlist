@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Userlist } from "../Components/Userlist";
+import { Friendslist } from "../Components/Friendslist";
 import { Navigate, useNavigate, useParams, NavLink } from "react-router";
 import { getApiCallState, IUser, IUserWish, useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
@@ -27,7 +27,7 @@ export const UserPage = () => {
 		return <Navigate to="/" />
 
 	return <>
-		<Userlist selectedUser={parseInt(id)} />
+		<Friendslist selectedUser={parseInt(id)} />
 		<section>
 			<h1>{user.name} {isMyPage ? "(jag själv)" : ""}</h1>
 

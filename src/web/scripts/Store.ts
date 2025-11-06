@@ -50,7 +50,8 @@ export const store = configureStore({
 							"resetPasswordForEmailFailed", "loginFailed", "registerFailed", "refreshLoginFailed",
 							"validatePwdResetTokenFailed", "resetPasswordFailed",
 							"getUsersFailed", "getUserWishesFailed", "addWishFailed", "deleteWishFailed", "updateWishFailed",
-							"updateUserSettingsFailed", "updatePasswordFailed"
+							"updateUserSettingsFailed", "updatePasswordFailed",
+							"toggleFriendStatusFailed"
 			],
 		}
 	}).prepend(apiMiddleware, authMiddleware)

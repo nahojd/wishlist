@@ -10,7 +10,14 @@ public static class UserExtensions
 	{
 		var users = await conn.QueryAsync<Db.User>("select * from User where Verified = 1 order by Name");
 
-		return [.. users.Select(User.Create)];
+		return [.. users.Select(x => new User { Id = x.Id, Name = x.Name })];
+	}
+
+	public static async Task<IReadOnlyList<int>> GetFriends(this IDbConnection conn, int userId)
+	{
+		var users = await conn.QueryAsync<int>("select FriendId from Friend where UserId = @userId", new { userId });
+
+		return [.. users];
 	}
 
 	public static Task<Db.User?> GetDbUserByEmail(this IDbConnection conn, string? email)

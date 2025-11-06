@@ -7,7 +7,8 @@ export type WishlistActionType = "getUsersStarted" | "getUsersComplete" | "getUs
 "updateWishStarted" | "updateWishComplete" | "updateWishFailed" |
 "deleteWishStarted" | "deleteWishComplete" | "deleteWishFailed" |
 "tjingaStarted" | "tjingaComplete" | "tjingaFailed" |
-"avtjingaStarted" | "avtjingaComplete" | "avtjingaFailed";
+"avtjingaStarted" | "avtjingaComplete" | "avtjingaFailed" |
+"toggleFriendStatusStarted" | "toggleFriendStatusComplete" | "toggleFriendStatusFailed";
 
 export const getUsers = () => {
 
@@ -21,6 +22,25 @@ export const getUsers = () => {
 				"getUsersStarted",
 				"getUsersComplete",
 				"getUsersFailed"
+			]
+		}
+	};
+};
+
+export const toggleFriendStatus = (userId: number) => {
+
+	const meta = { userId };
+
+	return {
+		type: "toggleFriendStatus",
+		[RSAA]: {
+			endpoint: `/api/user/${userId}/toggleFriend`,
+			headers: getDefaultHeaders(),
+			method: "POST",
+			types: [
+				{ meta, type: "toggleFriendStatusStarted" },
+				{ meta, type: "toggleFriendStatusComplete" },
+				{ meta, type: "toggleFriendStatusFailed" }
 			]
 		}
 	};

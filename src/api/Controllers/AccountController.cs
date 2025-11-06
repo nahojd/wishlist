@@ -121,7 +121,7 @@ För att återställa lösenordet, gå till {resetUrl}
 
 Om du inte begärt en återställning av lösenordet, bortse från detta mail.";
 
-		// Console.WriteLine(textBody);
+		Console.WriteLine(textBody);
 
 
 		//TODO: Bryt ut detta till något återanvändbart

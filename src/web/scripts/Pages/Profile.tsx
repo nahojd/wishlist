@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form";
-import { getApiCallState, useStateSelector } from "../Model";
+import { getApiCallState, IUser, useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
 import { Alert } from "../Components/Alert";
 import { clearApiCallState } from "../ApiCalls/Actions";
 import { updatePassword, updateUserSettings } from "../Account/Actions";
 import { isInvalidField, isValidEmail, isValidPassword, MinPwdLength } from "../Utils/Validation";
+import { getUsers, toggleFriendStatus } from "../Actions";
 
 
 export const ProfilePage = () => {
@@ -14,9 +15,7 @@ export const ProfilePage = () => {
 
 	return <>
 		<aside>
-			<article>
-			Här ska användarlistan synas, eller åtminstone vänlistan
-			</article>
+			<UserList />
 		</aside>
 		<section>
 			<UserSettings />
@@ -24,6 +23,34 @@ export const ProfilePage = () => {
 
 		</section>
 	</>
+}
+
+const UserList = () => {
+
+	const dispatch = useDispatch();
+
+	const currentUser = useStateSelector(state => state.account.user);
+	const users = useStateSelector(state => state.wishlist.users);
+
+	const submitState = getApiCallState().getLoadingState("toggleFriendStatus");
+
+	useEffect(() => {
+		if (!users)
+			dispatch(getUsers());
+	}, []);
+
+	const toggleFriend = (user: IUser) => {
+		dispatch(toggleFriendStatus(user.id));
+	};
+
+	return <article>
+		{ users?.length > 0 && <fieldset>
+			{users.filter(x => x.id != currentUser.id).map(x => <label key={x.id}>
+				<input type="checkbox" name={`cbUser${x.id}`} checked={x.isFriend} onChange={() => toggleFriend(x)} disabled={submitState === "started"} aria-busy={submitState === "started"} />
+				{x.name}
+			</label>)}
+		</fieldset>}
+	</article>
 }
 
 const ChangePassword = () => {

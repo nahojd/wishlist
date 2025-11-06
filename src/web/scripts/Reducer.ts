@@ -7,6 +7,9 @@ export const createWishlistReducer = () => {
 		switch(action.type) {
 			case "getUsersComplete":
 				return { ...state, ...{ users: (action as any).payload }};
+			case "toggleFriendStatusStarted":
+			case "toggleFriendStatusFailed":
+				return toggleFriend(state, action as any);
 			case "getUserWishesComplete":
 				return userWishesLoaded(state, action as any);
 			case "addWishComplete":
@@ -95,6 +98,19 @@ function wishUpdated(state: IWishlistState, action: { payload: IWish }) : IWishl
 	};
 
 	user.wishes = wishes;
+	users[index] = user;
+
+	return { ...state, ...{ users } };
+}
+
+function toggleFriend(state: IWishlistState, action: { meta: { userId: number } }) : IWishlistState {
+	const users = [...state.users];
+	const index = users.findIndex(x => x.id === action.meta.userId);
+	if (index < 0)
+		return state;
+
+	const user = {...users[index]};
+	user.isFriend = !user.isFriend; //Toggle!
 	users[index] = user;
 
 	return { ...state, ...{ users } };

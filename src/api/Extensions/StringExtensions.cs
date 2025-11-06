@@ -8,5 +8,5 @@ public static partial class StringExtensions
 	public static partial Regex ValidEmailExpression();
 	public static bool IsValidEmail(this string? email) => !string.IsNullOrWhiteSpace(email) && ValidEmailExpression().IsMatch(email);
 
-	public static bool IsValidPassword(this string? pwd) => !string.IsNullOrEmpty(pwd) && pwd.Length >= 12;
+	public static bool IsValidPassword(this string? pwd) => !string.IsNullOrEmpty(pwd) && pwd.Length >= 8;
 }

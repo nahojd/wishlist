@@ -7,7 +7,7 @@ namespace WishList.Api.DataAccess;
 public class DbMigrations
 {
 	//Bumpas varje gång någon databasändring görs
-	public const int CurrentVersion = 6;
+	public const int CurrentVersion = 7;
 
 	public static void Run(ILogger<DbMigrations> logger, string? connectionString)
 	{
@@ -128,6 +128,16 @@ public class DbMigrations
 			{
 				//Lägg till kolumn för notifiering
 				conn.Execute(@"ALTER TABLE User ADD COLUMN IF NOT EXISTS Notify BIT NULL", transaction: trans);
+			}
+
+			if (dbVersion < 7)
+			{
+				//Skapa Friend-tabellen
+				conn.Execute(@"CREATE TABLE IF NOT EXISTS Friend (
+								UserId INT NOT NULL,
+								FriendId INT NOT NULL,
+								PRIMARY KEY (UserId, FriendId)
+								)", transaction: trans);
 			}
 
 			trans.Commit();
