@@ -1,4 +1,5 @@
 global using WishList.Api.Extensions;
+using CommandLine;
 using WishList.Api;
 using WishList.Api.DataAccess;
 
@@ -8,6 +9,24 @@ if (args.Any(x => x == "--generatetoken")) {
 }
 if (args.Any(x => x == "--generatekeypair")) {
 	WishList.Api.Security.JwtHelper.GenerateKeyPair();
+	return;
+}
+if (args.Contains("--importdata"))
+{
+	DataImportOptions? options = null;
+	Parser.Default.ParseArguments<DataImportOptions>(args)
+		.WithParsed(opts => {
+				options = opts;
+		});
+
+	if (options is null)
+	{
+		Console.WriteLine("Options missing?");
+		return;
+	}
+
+	var importer = new DataImporter(options);
+	importer.ImportData();
 	return;
 }
 
