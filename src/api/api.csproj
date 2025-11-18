@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>8294f153-14c0-4865-b5b5-1f3e564081bc</UserSecretsId>
     <RootNamespace>WishList.Api</RootNamespace>
+    <AssemblyName>wishlist.api</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
