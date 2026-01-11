@@ -16,6 +16,7 @@ export interface IWishlistAppState
 export interface IWishlistState
 {
 	users?: IUser[];
+	shoppingList?: IWish[];
 }
 
 export interface IAccountState

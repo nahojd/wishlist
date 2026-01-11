@@ -8,6 +8,7 @@ export type WishlistActionType = "getUsersStarted" | "getUsersComplete" | "getUs
 "deleteWishStarted" | "deleteWishComplete" | "deleteWishFailed" |
 "tjingaStarted" | "tjingaComplete" | "tjingaFailed" |
 "avtjingaStarted" | "avtjingaComplete" | "avtjingaFailed" |
+"getShoppingListStarted" | "getShoppingListComplete" | "getShoppingListFailed" |
 "toggleFriendStatusStarted" | "toggleFriendStatusComplete" | "toggleFriendStatusFailed";
 
 export const getUsers = () => {
@@ -41,6 +42,23 @@ export const toggleFriendStatus = (userId: number) => {
 				{ meta, type: "toggleFriendStatusStarted" },
 				{ meta, type: "toggleFriendStatusComplete" },
 				{ meta, type: "toggleFriendStatusFailed" }
+			]
+		}
+	};
+};
+
+export const getShoppingList = () => {
+
+	return {
+		type: "getShoppingList",
+		[RSAA]: {
+			endpoint: `/api/wish/shoppinglist`,
+			headers: getDefaultHeaders(),
+			method: "GET",
+			types: [
+				{ type: "getShoppingListStarted" },
+				{ type: "getShoppingListComplete" },
+				{ type: "getShoppingListFailed" }
 			]
 		}
 	};

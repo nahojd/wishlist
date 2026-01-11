@@ -1,10 +1,9 @@
 @use "sass:map";
-@use "../node_modules/@picocss/pico/scss/pico" with (
+@use "@picocss/pico/scss/pico" with (
     $theme-color: "lime"
 );
-// @use "colors" as *;
-@use "../node_modules/@picocss/pico/scss/colors/index" as *;
-@import "../node_modules/@picocss/pico/scss/_settings.scss";
+@use "@picocss/pico/scss/colors/index" as *;
+@import "@picocss/pico/scss/_settings.scss";
 
 html[data-theme=light] img.logo {
     filter: invert(1) hue-rotate(78deg) saturate(4);
@@ -39,6 +38,26 @@ html[data-theme=light] img.logo {
             padding-bottom: 1rem;
             margin-bottom: 1rem;
             border-bottom: 1px solid $green-800;
+
+            > nav {
+                @media screen and (max-width: map.get(map.get($breakpoints, "md"), "breakpoint")) {
+                    display: grid;
+                    grid-template-areas:
+                        "logo"
+                        "menu";
+                    justify-content: normal;
+
+                    > a {
+                        grid-area: logo;
+                    }
+
+                    > ul {
+                        grid-area: menu;
+                        display: flex;
+                        justify-content: end;
+                    }
+                }
+            }
         }
 
         > aside {
@@ -100,6 +119,17 @@ button.link {
     border: none;
     background: none;
     color: var(--pico-primary);
+}
+
+button.icon {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--pico-primary);
+
+    &:focus, &:focus-visible {
+        box-shadow: none;
+    }
 }
 
 small > button {

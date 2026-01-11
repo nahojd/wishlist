@@ -50,6 +50,7 @@ export const store = configureStore({
 							"resetPasswordForEmailFailed", "loginFailed", "registerFailed", "refreshLoginFailed",
 							"validatePwdResetTokenFailed", "resetPasswordFailed",
 							"getUsersFailed", "getUserWishesFailed", "addWishFailed", "deleteWishFailed", "updateWishFailed",
+							"getShoppingListFailed",
 							"updateUserSettingsFailed", "updatePasswordFailed",
 							"toggleFriendStatusFailed"
 			],

@@ -12,9 +12,22 @@ public static class WishExtensions
 		return wishes.Select(w => Wish.Create(w, null, null)).ToList();
 	}
 
+	public static async Task<IReadOnlyList<Wish>> GetShoppinglist(this IDbConnection conn, int userId)
+	{
+		var wishes = await conn.QueryAsync<Db.Wish, Db.User, Wish>(
+			@"select * from Wish
+			  inner join User on Wish.OwnerId = User.Id
+			  where TjingadBy = @userId",
+			(w, u) => Wish.Create(w, u, null),
+			new { userId },
+			splitOn: "Id");
+
+		return [.. wishes];
+	}
+
 	public static async Task<IReadOnlyList<Wish>> GetWishesForUser(this IDbConnection conn, int userId)
 	{
-		var wishes = await conn.QueryAsync<Db.Wish, Db.User, Db.User?, Model.Wish>(
+		var wishes = await conn.QueryAsync<Db.Wish, Db.User, Db.User?, Wish>(
 			@"select * from Wish
 			  inner join User Owner on Wish.OwnerId = Owner.Id
 			  left outer join User TjingadBy on Wish.TjingadBy = TjingadBy.Id
@@ -28,7 +41,7 @@ public static class WishExtensions
 
 	public static async Task<Wish?> GetWish(this IDbConnection conn, int wishId)
 	{
-		var wishes = await conn.QueryAsync<Db.Wish, Db.User, Db.User?, Model.Wish>(
+		var wishes = await conn.QueryAsync<Db.Wish, Db.User, Db.User?, Wish>(
 			@"select * from Wish
 			  inner join User Owner on Wish.OwnerId = Owner.Id
 			  left outer join User TjingadBy on Wish.TjingadBy = TjingadBy.Id

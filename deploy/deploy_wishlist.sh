@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+# Detta är mest taget från https://medium.com/@sixpeteunder/step-by-step-automating-asp-net-9-deployment-with-github-actions-3a78ebdc763d
+
 # Usage: deploy_wishlist.sh /home/johan/wishlist/versions/<NEW_RELEASE_DIR>
 if [ -z "$1" ]; then
   echo "Usage: $0 <new_release_directory>"

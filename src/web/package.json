@@ -21,6 +21,8 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@mdi/react": "^1.6.1",
     "@picocss/pico": "^2.1.1",
     "@reduxjs/toolkit": "^2.11.2",
     "domready": "^1.0.8",

@@ -8,6 +8,10 @@ export interface IErrorDictionary
 export const createApiCallReducer = () => {
 	return (state: IApiCallState = createInitialState(), action: { type: string, payload?: any }) : IApiCallState => {
 
+		//Töm allt state vid logout
+		if (action.type === "logout")
+			return createInitialState();
+
 		const match = action.type.match(/^([\S]+)(Started|Complete|Failed|Clear)$/);
 		if (!match || match.length !== 3)
 			return state;

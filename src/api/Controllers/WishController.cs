@@ -41,6 +41,17 @@ public class WishController(IConfiguration config) : Controller
 		return Json(wishes);
 	}
 
+	[HttpGet("shoppinglist")]
+	public async Task<ActionResult<IReadOnlyList<Wish>>> GetShoppingList()
+	{
+		using var conn = DbHelper.OpenConnection(config);
+
+		var userId = User.GetUserId();
+
+		var wishes = await conn.GetShoppinglist(userId);
+		return Json(wishes);
+	}
+
 	[HttpPost("")]
 	public async Task<ActionResult<Wish>> AddWish([FromBody]WishParameters wish)
 	{

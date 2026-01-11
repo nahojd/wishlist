@@ -20,6 +20,8 @@ export const createWishlistReducer = () => {
 				return wishUpdated(state, action as any);
 			case "deleteWishComplete":
 				return wishDeleted(state, action as any);
+			case "getShoppingListComplete":
+				return { ...state, ...{ shoppingList: (action as any).payload }};
 			case "logout":
 				return {}; //Clear state on logout
 			default:

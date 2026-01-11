@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { setTheme } from "../Account/Actions";
 import { Link } from "react-router";
 import logoImage from "url:../../images/logo.png";
+import Icon from "@mdi/react";
+import { mdiWeatherNight, mdiWeatherSunny } from "@mdi/js";
 
 export const PageHeader = () => {
 	const dispatch = useDispatch();
@@ -20,8 +22,8 @@ export const PageHeader = () => {
 				</>}
 				<li>
 					{ state?.theme === "dark" ?
-						<button className="link" onClick={() => dispatch(setTheme("light"))}>Light</button> :
-						<button className="link" onClick={() => dispatch(setTheme("dark"))}>Dark</button>}
+						<button className="icon" onClick={() => dispatch(setTheme("light"))} title="Växla till ljust läge"><Icon path={mdiWeatherSunny} size={1} /></button> :
+						<button className="icon" onClick={() => dispatch(setTheme("dark"))} title="Växla till mörkt läge"><Icon path={mdiWeatherNight} size={1} /></button>}
 				</li>
 			</ul>
 		</nav>
