@@ -1,0 +1,64 @@
+name: Deploy wishlist to production
+
+on:
+  push:
+    tags:
+      - '*-release'
+
+env:
+  DOTNET_VERSION: 10.0.x
+  API_DIR: "./src/api"
+  WEB_DIR: "./src/web"
+  API_PUBLISH_DIR: "./publish/api"
+  WEB_PUBLISH_DIR: "./src/web/dist"
+
+jobs:
+  build-and-deploy-api:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.API_DIR }} -r linux-x64
+    - name: Build
+      run: dotnet build ${{ env.API_DIR }} -r linux-x64 --no-restore
+    #- name: Test
+    #  run: dotnet test --no-build --verbosity normal
+    - name: Publish api app
+      run: dotnet publish ${{ env.API_DIR }} -o '${{ env.API_PUBLISH_DIR }}' -c Release -r linux-x64 --no-restore
+    - name: Publish to server
+      uses: burnett01/rsync-deployments@v8
+      with:
+        switches: -avzr --delete
+        path: ${{ env.API_PUBLISH_DIR }}
+        remote_path: /home/johan/wishlist/${{ github.run_number }}/api
+        remote_host: eris.approach.se
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
+
+  build-and-deploy-web:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install node
+      uses: actions/setup-node@v3.5.0
+      with:
+        node-version: 20.x
+    - name: Install yarn packages
+      run: yarn --cwd ./src/web
+    - name: Build and check client scripts and css
+      run: yarn --cwd ./src/web ci
+    - name: Publish to server
+      uses: burnett01/rsync-deployments@v8
+      with:
+        switches: -avzr --delete
+        path: ${{ env.WEB_PUBLISH_DIR }}
+        remote_path: /home/johan/wishlist/${{ github.run_number }}/web
+        remote_host: eris.approach.se
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}

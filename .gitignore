@@ -86,3 +86,5 @@ _[Ss]cripts
 dist/
 node_modules/
 yarn-error.log
+
+/publish/**
