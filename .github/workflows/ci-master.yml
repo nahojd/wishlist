@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 10.0.x
     - name: Restore dependencies
@@ -28,9 +28,9 @@ jobs:
     #  run: dotnet test --no-build --verbosity normal
     # Build and test client scripts and css
     - name: Install node
-      uses: actions/setup-node@v3.5.0
+      uses: actions/setup-node@v6
       with:
-        node-version: 20.x
+        node-version: 24.x
     - name: Install yarn packages
       run: yarn --cwd ./src/web
     - name: Build and check client scripts and css
