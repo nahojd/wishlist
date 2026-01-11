@@ -10,6 +10,7 @@ env:
   NODE_VERSION: 20.x
   API_DIR: "./src/api"
   WEB_DIR: "./src/web"
+  DEPLOY_HOST: eris.approach.se
 
 jobs:
   build-and-deploy:
@@ -44,32 +45,22 @@ jobs:
       with:
         switches: -avzr --delete
         path: ./publish/./
-        remote_path: /home/johan/wishlist/versions/${{ github.run_number }}
-        remote_host: eris.approach.se
+        remote_path: /home/${{ secrets.DEPLOY_USER }}/wishlist/versions/${{ github.run_number }}
+        remote_host: ${{ env.DEPLOY_HOST }}
         remote_user: ${{ secrets.DEPLOY_USER }}
         remote_key: ${{ secrets.DEPLOY_KEY }}
 
-  # build-and-deploy-web:
-  #   runs-on: ubuntu-latest
+  run-deploy-on-server:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
 
-  #   steps:
-  #   - uses: actions/checkout@v6
-  #   - name: Install node
-  #     uses: actions/setup-node@v6
-  #     with:
-  #       node-version: ${{ env.NODE_VERSION }}
-  #   - name: Install yarn packages
-  #     run: yarn --cwd ${{ env.WEB_DIR }}
-  #   - name: Build and check client scripts and css
-  #     run: yarn --cwd ${{ env.WEB_DIR }} ci
-  #   - name: Copy dist files before deployment
-  #     run: mkdir -p 'publish/${{ github.run_number}}/web' && cp ${{ env.WEB_DIR }}/dist/* 'publish/${{ github.run_number}}/web'
-  #   - name: Publish to server
-  #     uses: burnett01/rsync-deployments@v8
-  #     with:
-  #       switches: -avzr --delete
-  #       path: ./publish
-  #       remote_path: /home/johan/wishlist/versions
-  #       remote_host: eris.approach.se
-  #       remote_user: ${{ secrets.DEPLOY_USER }}
-  #       remote_key: ${{ secrets.DEPLOY_KEY }}
+    steps:
+      - name: Run deploy script
+        uses: appleboy/ssh-action@v1.2.4
+        with:
+          host: ${{ env.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 22
+          script:
+            sudo /home/${{ secrets.DEPLOY_USER }}/wishlist/deploy_wishlist.sh "/home/${{ secrets.DEPLOY_USER }}/wishlist/versions/${{ github.run_number }}"
