@@ -18,7 +18,7 @@ export const ShoppingList = () => {
 	}, [loadState]);
 
 	return <>
-		{wishes.length > 0 && <table>
+		{wishes?.length > 0 && <table>
 			<thead>
 				<tr>
 					<th scope="col">Önskning</th>
