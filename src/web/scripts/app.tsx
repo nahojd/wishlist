@@ -50,12 +50,11 @@ export const getDefaultHeaders = () => {
 domready(async () => {
 	const root = createRoot(document.getElementById("approot"));
 
-	if (window.cookieStore)
-	{
-		const themeCookie = await window.cookieStore.get("theme");
-		if (themeCookie?.value === "dark" || themeCookie?.value === "light")
-			store.dispatch(setTheme(themeCookie.value));
-	}
+	const themeCookie = await window?.cookieStore?.get("theme");
+	if (themeCookie?.value === "dark" || themeCookie?.value === "light")
+		store.dispatch(setTheme(themeCookie.value));
+	else if (window?.matchMedia?.("(prefers-color-scheme:dark)").matches)
+		store.dispatch(setTheme("dark"));
 
 	root.render(
 		<React.StrictMode>
