@@ -9,6 +9,7 @@ import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router';
 import { privateRoute, publicRoutes } from './Router';
 import { RefreshLogin } from './Components/RefreshLogin';
+import { setTheme } from './Account/Actions';
 
 
 
@@ -46,8 +47,15 @@ export const getDefaultHeaders = () => {
 	};
 };
 
-domready(() => {
+domready(async () => {
 	const root = createRoot(document.getElementById("approot"));
+
+	if (window.cookieStore)
+	{
+		const themeCookie = await window.cookieStore.get("theme");
+		if (themeCookie?.value === "dark" || themeCookie?.value === "light")
+			store.dispatch(setTheme(themeCookie.value));
+	}
 
 	root.render(
 		<React.StrictMode>

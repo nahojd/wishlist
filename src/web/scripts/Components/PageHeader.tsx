@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
 import { setTheme } from "../Account/Actions";
@@ -11,6 +11,11 @@ export const PageHeader = () => {
 	const dispatch = useDispatch();
 	const state = useStateSelector(state => state.account);
 	const user = state.user;
+
+	useEffect(() => {
+		if (state.theme && window.cookieStore)
+			window.cookieStore.set("theme", state.theme);
+	}, [state.theme]);
 
 	return <header>
 
