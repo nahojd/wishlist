@@ -125,16 +125,19 @@ Om du inte begärt en återställning av lösenordet, bortse från detta mail.";
 
 
 		//TODO: Bryt ut detta till något återanvändbart
-		var message = new MimeMessage();
-		message.From.Add(new MailboxAddress("Önskelistemaskninen", "no-reply@wish.driessen.se"));
-		message.To.Add(new MailboxAddress(dbUser.Name, dbUser.Email));
-		message.Subject = "Begäran om att återställa lösenord";
-		message.Body = new BodyBuilder { TextBody = textBody }.ToMessageBody();
+		if (!string.IsNullOrWhiteSpace(config["Mail:Host"]))
+		{
+			var message = new MimeMessage();
+			message.From.Add(new MailboxAddress("Önskelistemaskninen", "no-reply@wish.driessen.se"));
+			message.To.Add(new MailboxAddress(dbUser.Name, dbUser.Email));
+			message.Subject = "Begäran om att återställa lösenord";
+			message.Body = new BodyBuilder { TextBody = textBody }.ToMessageBody();
 
-		using var client = new SmtpClient();
-		client.Connect(config["Mail:Host"], config.GetValue("Mail:Port", 25), MailKit.Security.SecureSocketOptions.StartTlsWhenAvailable);
-		client.Send(message);
-		client.Disconnect(true);
+			using var client = new SmtpClient();
+			client.Connect(config["Mail:Host"], config.GetValue("Mail:Port", 25), MailKit.Security.SecureSocketOptions.StartTlsWhenAvailable);
+			client.Send(message);
+			client.Disconnect(true);
+		}
 
 		logger.LogInformation("User {userId} ({email}) requested a password reset from IP {ipAdress}", dbUser.Id, dbUser.Email, Request.HttpContext.Connection.RemoteIpAddress);
 

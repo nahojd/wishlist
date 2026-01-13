@@ -139,6 +139,9 @@ export const deleteWish = (id: number, userId: number) => {
 };
 
 export const tjinga = (id: number) => {
+
+	const meta = { id };
+
 	return {
 		type: "tjinga",
 		[RSAA]: {
@@ -146,15 +149,17 @@ export const tjinga = (id: number) => {
 			headers: getDefaultHeaders(),
 			method: "POST",
 			types: [
-				"tjingaStarted",
-				"tjingaComplete",
-				"tjingaFailed"
+				{ meta, type: "tjingaStarted" },
+				{ meta, type: "tjingaComplete" },
+				{ meta, type: "tjingaFailed" }
 			]
 		}
 	};
 };
 
 export const avtjinga = (id: number) => {
+	const meta = { id };
+
 	return {
 		type: "avtjinga",
 		[RSAA]: {
@@ -162,9 +167,9 @@ export const avtjinga = (id: number) => {
 			headers: getDefaultHeaders(),
 			method: "POST",
 			types: [
-				"avtjingaStarted",
-				"avtjingaComplete",
-				"avtjingaFailed"
+				{ meta, type: "avtjingaStarted" },
+				{ meta, type: "avtjingaComplete" },
+				{ meta, type: "avtjingaFailed" }
 			]
 		}
 	};

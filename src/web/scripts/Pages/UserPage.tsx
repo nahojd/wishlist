@@ -4,6 +4,9 @@ import { Navigate, useNavigate, useParams, NavLink } from "react-router";
 import { getApiCallState, IUser, IUserWish, useStateSelector } from "../Model";
 import { useDispatch } from "react-redux";
 import { avtjinga, deleteWish, getUserWishes, tjinga } from "../Actions";
+import Icon from "@mdi/react";
+import { mdiGift, mdiGiftOffOutline, mdiGiftOutline, mdiLinkVariant, mdiPencil, mdiPlus, mdiTrashCanOutline } from "@mdi/js";
+import { getDomain } from "../Utils/Utils";
 
 export const UserPage = () => {
 	const dispatch = useDispatch();
@@ -29,9 +32,9 @@ export const UserPage = () => {
 	return <>
 		<Friendslist selectedUser={parseInt(id)} />
 		<section>
-			<h1>{user.name} {isMyPage ? "(jag själv)" : ""}</h1>
+			<h1>{isMyPage ? "Min önskelista" : user.name}</h1>
 
-			{ isMyPage && <button onClick={() => navigate("/wish/add")}>Ny önskning</button>}
+			{ isMyPage && <p><small><button onClick={() => navigate("/wish/add")}><Icon path={mdiPlus} /> Ny önskning</button></small></p>}
 
 			{ (!user.wishes || user.wishes.length === 0) && getWishesState === "started" && <span aria-busy="true">Hämtar önskningar...</span> }
 
@@ -68,26 +71,35 @@ const WishList = (props: { user: IUser, isOwnWish?: boolean }) => {
 	if (props.user.wishes.length === 0)
 		return <article className="alert info">Det finns inga önskningar!</article>
 
-	return <>
-		<ul className="plain">
-			{ props.user.wishes.map(x => <li key={x.id}>
-				<article>
-					<header>{props.isOwnWish ? <NavLink to={`/wish/${x.id}`} title="Ändra önskning">{x.name}</NavLink> : x.name}</header>
-					{x.description && <p>{x.description}</p>}
-					{x.linkUrl && <a href={x.linkUrl} target="_blank">{x.linkUrl}</a>}
+	return <div className="wishlist">
+		{ props.user.wishes.map(x => <article key={x.id}>
+			<header>
+				{ !x.tjingadBy && <Icon path={mdiGiftOutline} size={.75} /> }
+				{ x.tjingadBy?.id === currentUser.id && <Icon path={mdiGift} size={.75} className="primary" /> }
+				{ x.tjingadBy && x.tjingadBy?.id !== currentUser.id && <Icon path={mdiGiftOffOutline} size={.75} className="secondary" /> }
+				{x.name}
 
-					<footer>
-						{ props.isOwnWish && <button className="secondary" onClick={() => deleteClicked(x)}>Ta bort</button> }
-						{ !props.isOwnWish && <>
-							{ !x.tjingadBy && <button onClick={() => tjingaClicked(x)}>Tjinga</button> }
-							{ x.tjingadBy?.id === currentUser.id && <button className="outline" onClick={() => avtjingaClicked(x)}>Ta bort tjingning</button> }
-							{ x.tjingadBy && x.tjingadBy.id !== currentUser.id && <>Tjingad av {x.tjingadBy.name}</>}
-						</> }
-					</footer>
+				{/* { !props.isOwnWish && <>
+					{ !x.tjingadBy && <button className="icon" aria-busy={x.pending} onClick={() => tjingaClicked(x)} title="Tjinga"><Icon path={mdiGift} /></button> }
+					{ x.tjingadBy?.id === currentUser.id && <button className="icon" aria-busy={x.pending} onClick={() => avtjingaClicked(x)} title="Ta bort tjingning"><Icon path={mdiGiftOffOutline} /></button> }
+				</>} */}
+			</header>
+			{x.description && <p>{x.description}</p>}
+			{x.linkUrl && <><Icon path={mdiLinkVariant} size={.75} /> <a href={x.linkUrl} target="_blank">{getDomain(x.linkUrl)}</a></>}
 
-				</article>
+			<footer>
+				{ props.isOwnWish && <>
+					<small><NavLink to={`/wish/${x.id}`} title="Ändra önskning" role="button" className="primary mr-1"><Icon path={mdiPencil} /> Ändra</NavLink></small>
+					<small><button className="outline secondary" onClick={() => deleteClicked(x)}><Icon path={mdiTrashCanOutline} /> Ta bort</button></small>
 
-			</li>)}
-		</ul>
-	</>;
+				</> }
+				{ !props.isOwnWish && <>
+					{ !x.tjingadBy && <small><button onClick={() => tjingaClicked(x)} aria-busy={x.pending}>Tjinga</button></small> }
+					{ x.tjingadBy?.id === currentUser.id && <small><button className="outline" onClick={() => avtjingaClicked(x)} aria-busy={x.pending}>Ta bort tjingning</button></small> }
+					{ x.tjingadBy && x.tjingadBy.id !== currentUser.id && <>Tjingad av {x.tjingadBy.name}</>}
+				</> }
+			</footer>
+
+		</article>)}
+	</div>;
 }

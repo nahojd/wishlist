@@ -41,6 +41,11 @@ export const LoginPage = () => {
 		<PageHeader />
 
 		<article>
+			<h1>Välkommen till nya Önskelistemaskinen!</h1>
+			<p>Av tekniska skäl är alla lösenord nollställda. För att logga in behöver du först använda <NavLink to="/forgotpassword">glömt lösenord</NavLink> för att sätta ett nytt lösenord.</p>
+		</article>
+
+		<article>
 			<header>Logga in</header>
 				<form onSubmit={submit}>
 					<fieldset>

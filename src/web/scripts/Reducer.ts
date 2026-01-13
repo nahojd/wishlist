@@ -15,6 +15,9 @@ export const createWishlistReducer = () => {
 			case "addWishComplete":
 				return wishAdded(state, action as any);
 			case "updateWishComplete":
+			case "tjingaStarted":
+			case "avtjingaStarted":
+				return wishPending(state, action as any);
 			case "tjingaComplete":
 			case "avtjingaComplete":
 				return wishUpdated(state, action as any);
@@ -98,6 +101,27 @@ function wishUpdated(state: IWishlistState, action: { payload: IWish }) : IWishl
 		linkUrl: action.payload.linkUrl,
 		tjingadBy: action.payload.tjingadBy
 	};
+
+	user.wishes = wishes;
+	users[index] = user;
+
+	return { ...state, ...{ users } };
+}
+
+function wishPending(state: IWishlistState, action: { meta: { id: number} }) : IWishlistState {
+	const users = [...state.users];
+	const index = users.findIndex(x => x.wishes?.some(y => y.id === action.meta.id ));
+	if (index === -1)
+		return state;
+
+	const user = {...users[index]};
+
+	const wishes = [...user.wishes];
+	const wishIndex = wishes.findIndex(x => x.id === action.meta.id);
+	if (wishIndex < 0)
+		return state;
+
+	wishes[wishIndex] = {...wishes[wishIndex], ...{ pending: true } };
 
 	user.wishes = wishes;
 	users[index] = user;

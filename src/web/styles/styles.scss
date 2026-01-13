@@ -96,6 +96,10 @@ ul.plain {
 .alert {
     margin-top: 1rem;
 
+    h1 {
+        font-size: 110%;
+    }
+
     &.danger {
         background-color: $red-450;
         color: white;
@@ -114,6 +118,20 @@ ul.plain {
     }
 }
 
+article {
+    > header:has(> svg:first-child) {
+        display: grid;
+        grid-template-columns: 1.75rem 1fr;
+        align-items: center;
+    }
+}
+
+// minska lite på den vertikala paddingen i buttons och input-fält (75% av tidigare)
+button, input:not([type="checkbox"], [type="radio"], [type="range"], [type="file"]), select, textarea, [role=button]
+{
+    padding: calc(var(--pico-form-element-spacing-vertical) * .75) var(--pico-form-element-spacing-horizontal);
+}
+
 button.link {
     padding: 0;
     border: none;
@@ -121,6 +139,7 @@ button.link {
     color: var(--pico-primary);
 }
 
+//Knappar som bara är ikoner
 button.icon {
     padding: 0;
     border: none;
@@ -130,9 +149,57 @@ button.icon {
     &:focus, &:focus-visible {
         box-shadow: none;
     }
+
+    &[aria-busy] {
+        position: relative;
+
+        &::before {
+            position: absolute;
+            top: 3px;
+            left: 4px;
+            color: var(--pico-primary);
+            filter: none !important;
+        }
+
+        > svg {
+            visibility: hidden;
+        }
+    }
 }
 
-small > button {
-    font-size: .875em;
-    padding: calc(var(--pico-form-element-spacing-vertical) / 2) calc(var(--pico-form-element-spacing-horizontal) / 2);
+//Ikoner i knappar
+button svg, [role=button] svg {
+    height: 24px;
+    margin-top: -6px;
 }
+
+small > button, small > *[role=button] {
+    font-size: 1em;
+    padding: calc(var(--pico-form-element-spacing-vertical) / 3) calc(var(--pico-form-element-spacing-horizontal) * .67);
+
+    svg {
+        height: 16px;
+        margin-top: -4px;
+    }
+}
+
+svg {
+    &.primary {
+        color: var(--pico-primary);
+    }
+    &.secondary {
+        color: var(--pico-secondary);
+    }
+}
+
+// margin utilities
+.ml-1 { margin-left: .5rem; }
+.mt-1 { margin-top: .5rem; }
+.mr-1 { margin-right: .5rem; }
+.mb-1 { margin-bottom: .5rem; }
+.m-1 { margin: .5rem };
+.ml-2 { margin-left: 1rem; }
+.mt-2 { margin-top: 1rem; }
+.mr-2 { margin-right: 1rem; }
+.mb-2 { margin-bottom: 1rem; }
+.m-2 { margin: 1rem };

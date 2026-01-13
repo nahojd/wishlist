@@ -56,6 +56,7 @@ export interface IUserWish {
 	description?: string;
 	linkUrl?: string;
 	tjingadBy?: IUser;
+	pending?: boolean
 }
 
 export interface IWish extends IUserWish {

@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import React from "react";
 import { getShoppingList } from "../Actions";
 import Icon from "@mdi/react";
-import { mdiOpenInNew } from "@mdi/js";
+import { mdiLinkVariant } from "@mdi/js";
+import { getDomain } from "../Utils/Utils";
 
 export const ShoppingList = () => {
 	const dispatch = useDispatch();
@@ -30,16 +31,11 @@ export const ShoppingList = () => {
 					<td scope="row">
 						<strong role="heading">{x.name}</strong><br />
 						{x.description}
-						{x.linkUrl && <><br /><a href={x.linkUrl} target="_blank">{getDomain(x.linkUrl)} <Icon path={mdiOpenInNew} size={1} /></a></>}
+						{x.linkUrl && <><br /><Icon path={mdiLinkVariant} size={.75} /> <a href={x.linkUrl} target="_blank">{getDomain(x.linkUrl)}</a></>}
 					</td>
 					<td style={{verticalAlign: "top"}}>{x.owner.name}</td>
 				</tr>)}
 			</tbody>
 		</table>}
 	</>
-}
-
-const getDomain = (linkUrl: string) => {
-	const url = new URL(linkUrl);
-	return url.hostname;
 }
