@@ -31,7 +31,8 @@ export const UserPage = () => {
 
 	return <>
 		<Friendslist selectedUser={parseInt(id)} />
-		<section>
+
+		<section className="wishlist">
 			<h1>{isMyPage ? "Min önskelista" : user.name}</h1>
 
 			{ isMyPage && <p><small><button onClick={() => navigate("/wish/add")}><Icon path={mdiPlus} /> Ny önskning</button></small></p>}
@@ -71,7 +72,7 @@ const WishList = (props: { user: IUser, isOwnWish?: boolean }) => {
 	if (props.user.wishes.length === 0)
 		return <article className="alert info">Det finns inga önskningar!</article>
 
-	return <div className="wishlist">
+	return <div>
 		{ props.user.wishes.map(x => <article key={x.id}>
 			<header>
 				{ !x.tjingadBy && <Icon path={mdiGiftOutline} size={.75} /> }
@@ -96,7 +97,7 @@ const WishList = (props: { user: IUser, isOwnWish?: boolean }) => {
 				{ !props.isOwnWish && <>
 					{ !x.tjingadBy && <small><button onClick={() => tjingaClicked(x)} aria-busy={x.pending}>Tjinga</button></small> }
 					{ x.tjingadBy?.id === currentUser.id && <small><button className="outline" onClick={() => avtjingaClicked(x)} aria-busy={x.pending}>Ta bort tjingning</button></small> }
-					{ x.tjingadBy && x.tjingadBy.id !== currentUser.id && <>Tjingad av {x.tjingadBy.name}</>}
+					{ x.tjingadBy && x.tjingadBy.id !== currentUser.id && <em>Tjingad av {x.tjingadBy.name}</em>}
 				</> }
 			</footer>
 

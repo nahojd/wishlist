@@ -7,6 +7,7 @@
 
 html[data-theme=light] img.logo {
     filter: invert(1) hue-rotate(78deg) saturate(4);
+    $enable-transitions: true;
 }
 
 #approot {
@@ -29,14 +30,14 @@ html[data-theme=light] img.logo {
                 "nav  main"
                 "foot foot";
             grid-template-columns: 1fr 2fr;
-            column-gap: 1rem;
+            column-gap: var(--pico-spacing);
         }
 
         > header {
             grid-area: head;
 
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
+            padding-bottom: var(--pico-spacing);
+            margin-bottom: var(--pico-spacing);
             border-bottom: 1px solid $green-800;
 
             > nav {
@@ -71,8 +72,8 @@ html[data-theme=light] img.logo {
         > footer {
             grid-area: foot;
 
-            padding-top: 1rem;
-            margin-top: 1rem;
+            padding-top: var(--pico-spacing);
+            margin-top: var(--pico-spacing);
             border-top: 1px solid $green-800;
         }
     }
@@ -94,7 +95,7 @@ ul.plain {
 }
 
 .alert {
-    margin-top: 1rem;
+    margin-top: var(--pico-spacing);
 
     h1 {
         font-size: 110%;
@@ -118,11 +119,42 @@ ul.plain {
     }
 }
 
+//Ikon i kort-header
 article {
     > header:has(> svg:first-child) {
         display: grid;
         grid-template-columns: 1.75rem 1fr;
         align-items: center;
+    }
+}
+
+.friendlist {
+    details.dropdown {
+        display: block;
+        margin: var(--pico-spacing) 0;
+
+        > ul > li > a {
+            color: var(--pico-primary);
+        }
+    }
+
+    > ul {
+        display: none;
+    }
+
+    @media screen and (min-width: map.get(map.get($breakpoints, "lg"), "breakpoint")) {
+        details.dropdown {
+            display: none;
+        }
+
+        > ul {
+            display: block;
+        }
+    }
+}
+@media screen and (max-width: map.get(map.get($breakpoints, "lg"), "breakpoint")) {
+    .wishlist > h1 {
+        display: none;
     }
 }
 
@@ -193,13 +225,13 @@ svg {
 }
 
 // margin utilities
-.ml-1 { margin-left: .5rem; }
-.mt-1 { margin-top: .5rem; }
-.mr-1 { margin-right: .5rem; }
-.mb-1 { margin-bottom: .5rem; }
-.m-1 { margin: .5rem };
-.ml-2 { margin-left: 1rem; }
-.mt-2 { margin-top: 1rem; }
-.mr-2 { margin-right: 1rem; }
-.mb-2 { margin-bottom: 1rem; }
-.m-2 { margin: 1rem };
+.ml-1 { margin-left: calc(var(--pico-spacing) / 2) !important; }
+.mt-1 { margin-top: calc(var(--pico-spacing) / 2) !important; }
+.mr-1 { margin-right: calc(var(--pico-spacing) / 2) !important; }
+.mb-1 { margin-bottom: calc(var(--pico-spacing) / 2) !important; }
+.m-1 { margin: calc(var(--pico-spacing) / 2) !important; };
+.ml-2 { margin-left: var(--pico-spacing) !important; }
+.mt-2 { margin-top: var(--pico-spacing) !important; }
+.mr-2 { margin-right: var(--pico-spacing) !important; }
+.mb-2 { margin-bottom: var(--pico-spacing) !important; }
+.m-2 { margin: var(--pico-spacing) !important; };
