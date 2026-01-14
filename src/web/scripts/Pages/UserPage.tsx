@@ -79,11 +79,6 @@ const WishList = (props: { user: IUser, isOwnWish?: boolean }) => {
 				{ x.tjingadBy?.id === currentUser.id && <Icon path={mdiGift} size={.75} className="primary" /> }
 				{ x.tjingadBy && x.tjingadBy?.id !== currentUser.id && <Icon path={mdiGiftOffOutline} size={.75} className="secondary" /> }
 				{x.name}
-
-				{/* { !props.isOwnWish && <>
-					{ !x.tjingadBy && <button className="icon" aria-busy={x.pending} onClick={() => tjingaClicked(x)} title="Tjinga"><Icon path={mdiGift} /></button> }
-					{ x.tjingadBy?.id === currentUser.id && <button className="icon" aria-busy={x.pending} onClick={() => avtjingaClicked(x)} title="Ta bort tjingning"><Icon path={mdiGiftOffOutline} /></button> }
-				</>} */}
 			</header>
 			{x.description && <p>{x.description}</p>}
 			{x.linkUrl && <><Icon path={mdiLinkVariant} size={.75} /> <a href={x.linkUrl} target="_blank">{getDomain(x.linkUrl)}</a></>}

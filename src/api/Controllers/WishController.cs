@@ -7,6 +7,7 @@ using System.Net;
 using WishList.Api.DataAccess;
 using WishList.Api.Model;
 using WishList.Api.Model.Extensions;
+using WishList.Api.Services;
 
 namespace WishList.Api.Controllers;
 
@@ -14,7 +15,7 @@ namespace WishList.Api.Controllers;
 [Route("wish")]
 [Produces("application/json")]
 [Authorize]
-public class WishController(IConfiguration config) : Controller
+public class WishController(IConfiguration config, IMessageService messageService) : Controller
 {
 	private readonly IConfiguration config = config;
 
@@ -77,8 +78,10 @@ public class WishController(IConfiguration config) : Controller
 		if (wish.Owner?.Id != userId)
 			return StatusCode((int)HttpStatusCode.Forbidden, new ProblemDetails { Detail = "Du kan inte uppdatera någon annans önskning!"});
 
-
 		await conn.UpdateWish(wishId, updatedWish.Name, updatedWish.Description, updatedWish.LinkUrl);
+
+		if (wish.TjingadBy is not null)
+			await messageService.NotifyWishChanged(wish);
 
 		return Json(await conn.GetWish(wishId));
 	}
@@ -97,6 +100,10 @@ public class WishController(IConfiguration config) : Controller
 			return StatusCode((int)HttpStatusCode.Forbidden, new ProblemDetails { Detail = "Du kan inte radera någon annans önskning!"});
 
 		await conn.DeleteWish(wishId);
+
+		if (wish.TjingadBy is not null)
+			await messageService.NotifyWishDeleted(wish);
+
 		return NoContent();
 
 	}

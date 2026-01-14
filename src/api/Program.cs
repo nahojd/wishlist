@@ -5,6 +5,7 @@ using Microsoft.OpenApi;
 using WishList.Api.Security;
 using CommandLine;
 using WishList.Api;
+using WishList.Api.Services;
 
 if (args.Any(x => x == "--generatetoken")) {
 	JwtHelper.GenerateApiToken(args);
@@ -60,6 +61,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.SetupAuthentication(configuration);
 builder.Services.AddAuthorization();
+
+//Lägg till dependencies här
+builder.Services.AddSingleton<IMessageService, MessageService>();
 
 builder.Services.AddControllers()
 	.AddJsonOptions(options => {

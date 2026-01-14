@@ -103,6 +103,8 @@ export const addWish = (data: { name: string, description?: string, linkUrl?: st
 
 export const updateWish = (id: number, data: { name: string, description?: string, linkUrl?: string }) => {
 
+	const meta = { id };
+
 	return {
 		type: "updateWish",
 		[RSAA]: {
@@ -111,9 +113,9 @@ export const updateWish = (id: number, data: { name: string, description?: strin
 			method: "PATCH",
 			body: JSON.stringify(data),
 			types: [
-				"updateWishStarted",
-				"updateWishComplete",
-				"updateWishFailed"
+				{ meta, type: "updateWishStarted" },
+				{ meta, type: "updateWishComplete" },
+				{ meta, type: "updateWishFailed" }
 			]
 		}
 	};

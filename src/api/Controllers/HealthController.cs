@@ -2,7 +2,6 @@ using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WishList.Api.DataAccess;
-using WishList.Api.Model.Extensions;
 
 namespace WishList.Api.Controllers;
 

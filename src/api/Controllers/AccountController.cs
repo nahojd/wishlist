@@ -12,6 +12,7 @@ using WishList.Api.DataAccess;
 using WishList.Api.Model;
 using WishList.Api.Model.Extensions;
 using WishList.Api.Security;
+using WishList.Api.Services;
 
 namespace WishList.Api.Controllers;
 
@@ -28,7 +29,7 @@ namespace WishList.Api.Controllers;
 [ApiController]
 [Route("account")]
 [Produces("application/json")]
-public class AccountController(IConfiguration config, ILogger<AccountController> logger) : Controller
+public class AccountController(IConfiguration config, IMessageService messageService, ILogger<AccountController> logger) : Controller
 {
 	private readonly IConfiguration config = config;
 	private readonly ILogger<AccountController> logger = logger;
@@ -52,6 +53,8 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 		using var conn = DbHelper.OpenConnection(config);
 		await conn.ExecuteAsync("insert into User (Name, Email, Password) values (@Name, @Email, @hash)", new { parameters.Name, parameters.Email, hash });
 		logger.LogInformation("Registered user {Name} with email {Email}", parameters.Name, parameters.Email);
+
+		await messageService.SendNewRegistrationMessage(parameters.Name!, parameters.Email!, parameters.Message);
 
 		return Ok();
 	}
@@ -112,32 +115,7 @@ public class AccountController(IConfiguration config, ILogger<AccountController>
 		await conn.ExecuteAsync("update User set PwdResetToken = @token, PwdResetExpires = @expires where Id = @Id",
 								new { token, expires = DateTime.Now.AddHours(24), dbUser.Id });
 
-		var resetUrl = $"{config["WebUrl"]}/resetpassword?token={token}";
-		var textBody = @$"Hej!
-
-En begäran om att återställa ditt lösenord på Önskelistemaskinen har gjorts.
-
-För att återställa lösenordet, gå till {resetUrl}
-
-Om du inte begärt en återställning av lösenordet, bortse från detta mail.";
-
-		Console.WriteLine(textBody);
-
-
-		//TODO: Bryt ut detta till något återanvändbart
-		if (!string.IsNullOrWhiteSpace(config["Mail:Host"]))
-		{
-			var message = new MimeMessage();
-			message.From.Add(new MailboxAddress("Önskelistemaskninen", "no-reply@wish.driessen.se"));
-			message.To.Add(new MailboxAddress(dbUser.Name, dbUser.Email));
-			message.Subject = "Begäran om att återställa lösenord";
-			message.Body = new BodyBuilder { TextBody = textBody }.ToMessageBody();
-
-			using var client = new SmtpClient();
-			client.Connect(config["Mail:Host"], config.GetValue("Mail:Port", 25), MailKit.Security.SecureSocketOptions.StartTlsWhenAvailable);
-			client.Send(message);
-			client.Disconnect(true);
-		}
+		await messageService.SendForgotPasswordMessage(dbUser.Name!, dbUser.Email!, token);
 
 		logger.LogInformation("User {userId} ({email}) requested a password reset from IP {ipAdress}", dbUser.Id, dbUser.Email, Request.HttpContext.Connection.RemoteIpAddress);
 
@@ -181,7 +159,7 @@ Om du inte begärt en återställning av lösenordet, bortse från detta mail.";
 	}
 
 	[HttpPost("settings")]
-	public async Task<ActionResult<Model.User>> UpdateUserSettings([FromBody] UpdateSettingsParameters parameters)
+	public async Task<ActionResult<User>> UpdateUserSettings([FromBody] UpdateSettingsParameters parameters)
 	{
 		var userId = User.GetUserId();
 		using var conn = DbHelper.OpenConnection(config);
@@ -255,6 +233,7 @@ public class RegisterUserParameters
 	public string? Email { get; set; }
 	[Required, MinLength(8, ErrorMessage = "The password must be at least 8 characters")]
 	public string? Password { get; set; }
+	public string? Message { get; set; }
 }
 
 public class ResetPasswordParameters
