@@ -80,7 +80,7 @@ const WishList = (props: { user: IUser, isOwnWish?: boolean }) => {
 				{ x.tjingadBy && x.tjingadBy?.id !== currentUser.id && <Icon path={mdiGiftOffOutline} size={.75} className="secondary" /> }
 				{x.name}
 			</header>
-			{x.description && <p>{x.description}</p>}
+			{x.description && x.description != "." && <p>{x.description}</p>}
 			{x.linkUrl && <><Icon path={mdiLinkVariant} size={.75} /> <a href={x.linkUrl} target="_blank">{getDomain(x.linkUrl)}</a></>}
 
 			<footer>

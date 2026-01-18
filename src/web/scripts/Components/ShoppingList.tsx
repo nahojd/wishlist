@@ -6,6 +6,7 @@ import { getShoppingList } from "../Actions";
 import Icon from "@mdi/react";
 import { mdiLinkVariant } from "@mdi/js";
 import { getDomain } from "../Utils/Utils";
+import { Alert } from "./Alert";
 
 export const ShoppingList = () => {
 	const dispatch = useDispatch();
@@ -37,5 +38,7 @@ export const ShoppingList = () => {
 				</tr>)}
 			</tbody>
 		</table>}
+
+		{wishes && wishes.length === 0 && <Alert type="info">Du har inte tjingat några önskningar. Klicka på ett namn i listan för att börja tjinga!</Alert>}
 	</>
 }
