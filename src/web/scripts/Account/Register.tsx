@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { PageHeader } from "../Components/PageHeader";
 import { NavLink } from "react-router";
 import { useForm } from "react-hook-form";
@@ -7,7 +7,9 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "./Actions";
 import { Alert } from "../Components/Alert";
 import { clearApiCallState } from "../ApiCalls/Actions";
-import { isValidEmail } from "../Utils/Validation";
+import { isInvalidField, isValidEmail, isValidPassword } from "../Utils/Validation";
+import Icon from "@mdi/react";
+import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 
 interface IRegisterFields {
 	name: string;
@@ -23,6 +25,8 @@ export const RegisterPage = () => {
 
 	const apicalls = getApiCallState();
 	const submitState = apicalls.getLoadingState("register");
+
+	const [showPassword, setShowPassword] = useState(true);
 
 	const submit = (data: IRegisterFields) => {
 		console.debug("submit", data);
@@ -51,13 +55,20 @@ export const RegisterPage = () => {
 
 					<fieldset>
 						<label htmlFor="namn">Namn</label>
-						<input type="text" id="namn" {...register("name", { required: true })} aria-invalid={formState.errors["name"] ? true : undefined } />
+						<input type="text" id="namn" {...register("name", { required: true })} aria-invalid={isInvalidField(formState, "name")} />
 
 						<label htmlFor="email">E-post</label>
-						<input type="email" id="email" {...register("email", { required: true, validate: x => isValidEmail(x) })} aria-invalid={formState.errors["email"] ? true : undefined } />
+						<input type="email" id="email" {...register("email", { required: true, validate: isValidEmail })} aria-invalid={isInvalidField(formState, "email")} />
 
 						<label htmlFor="password">Lösenord</label>
-						<input type="password" id="password" {...register("password", { required: true })} aria-invalid={formState.errors["password"] ? true : undefined } />
+						<input type={showPassword ? "text" : "password"} id="password" {...register("password", { required: true, validate: isValidPassword })}
+							placeholder="Lösenordet måste vara minst 8 tecken långt." aria-invalid={isInvalidField(formState, "password")} />
+						<small>
+							{showPassword ?
+								<button className="link" type="button" onClick={() => setShowPassword(false)}><Icon path={mdiEyeOffOutline} /> Dölj lösenord</button> :
+								<button className="link" type="button" onClick={() => setShowPassword(true)}><Icon path={mdiEyeOutline} /> Visa lösenord</button>
+							}
+						</small>
 
 						<label htmlFor="message">Meddelande (frivilligt)</label>
 						<textarea id="message" rows={3} {...register("message")} />

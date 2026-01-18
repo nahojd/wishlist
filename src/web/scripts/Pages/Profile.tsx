@@ -7,6 +7,8 @@ import { clearApiCallState } from "../ApiCalls/Actions";
 import { updatePassword, updateUserSettings } from "../Account/Actions";
 import { isInvalidField, isValidEmail, isValidPassword, MinPwdLength } from "../Utils/Validation";
 import { getUsers, toggleFriendStatus } from "../Actions";
+import Icon from "@mdi/react";
+import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 
 
 export const ProfilePage = () => {
@@ -85,8 +87,8 @@ const ChangePassword = () => {
 			</fieldset>
 			<small>
 				{showPassword ?
-					<button className="link" type="button" onClick={() => setShowPassword(false)}>Dölj lösenord</button> :
-					<button className="link" type="button" onClick={() => setShowPassword(true)}>Visa lösenord</button>
+					<button className="link" type="button" onClick={() => setShowPassword(false)}><Icon path={mdiEyeOffOutline} /> Dölj lösenord</button> :
+					<button className="link" type="button" onClick={() => setShowPassword(true)}><Icon path={mdiEyeOutline} /> Visa lösenord</button>
 				}
 			</small>
 			{ formState.errors["password"] && <p>Lösenordet måste vara minst {MinPwdLength} tecken långt.</p>}

@@ -13,16 +13,6 @@ using WishList.Api.Services;
 
 namespace WishList.Api.Controllers;
 
-
-
-//Account (unauthorized)
-//Register account
-//Forgot password
-//Login
-
-//Account (authorized)
-//Update password
-//Update profile
 [ApiController]
 [Route("account")]
 [Produces("application/json")]
@@ -163,6 +153,7 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 	}
 
 	[HttpPost("settings")]
+	[Authorize]
 	public async Task<ActionResult<User>> UpdateUserSettings([FromBody] UpdateSettingsParameters parameters)
 	{
 		var userId = User.GetUserId();
@@ -172,15 +163,18 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 		if (dbUser is null)
 			return Unauthorized();
 
-		//Kolla att användarnamnet inte redan är upptaget av någon annan
-		var users = await conn.GetUserList();
+		//Kolla att användarnamnet eller epostadressen inte redan är upptaget av någon annan
+		var users = await conn.GetAllDbUsers();
+		var errors = new Dictionary<string, string>();
 		if (users.Any(x => x.Id != userId && x.Name?.Equals(parameters.Name, StringComparison.InvariantCultureIgnoreCase) == true))
-		{
-			return new ValidationErrorResult(errors: new() { { "Name", "Det finns redan en användare med det namnet." } });
-		}
+			errors["Name"] = "Det finns redan en användare med det namnet.";
+		if (users.Any(x => x.Id != userId && x.Email?.Equals(parameters.Email, StringComparison.InvariantCultureIgnoreCase) == true))
+			errors["Email"] = "Det finns redan en användare med den epostadressen.";
+		if (errors.Count > 0)
+			return new ValidationErrorResult(errors: errors);
 
 		await conn.ExecuteAsync("update User set Name = @Name, Email = @Email, Notify = @Notify where Id = @userId",
-			new { userId, parameters.Name, parameters.Email, parameters.Notify });
+			new { userId, parameters.Name, Email = parameters.Email?.ToLowerInvariant(), parameters.Notify });
 
 		dbUser = await conn.GetDbUserById(userId);
 
@@ -188,6 +182,7 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 	}
 
 	[HttpPost("password")]
+	[Authorize]
 	public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordParameters parameters)
 	{
 

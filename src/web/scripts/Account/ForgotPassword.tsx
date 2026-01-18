@@ -7,6 +7,8 @@ import { getApiCallState, useStateSelector } from "../Model";
 import { Alert } from "../Components/Alert";
 import { clearApiCallState } from "../ApiCalls/Actions";
 import { isValidEmail, isValidPassword, MinPwdLength } from "../Utils/Validation";
+import Icon from "@mdi/react";
+import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 
 export const ForgotPasswordPage = () => {
 
@@ -87,6 +89,8 @@ export const ResetPasswordPage = () => {
 	const [token, setToken] = useState<string>();
 	const [password, setPassword] = useState("");
 	const [invalidToken, setInvalidToken] = useState(false);
+	const [showPassword, setShowPassword] = useState(true);
+
 
 	const validPassword = isValidPassword(password);
 
@@ -130,11 +134,15 @@ export const ResetPasswordPage = () => {
 			<Alert type="info" show><>Ange nytt lösenord. Lösenordet måste vara minst {MinPwdLength} tecken långt.</></Alert>
 
 			<form onSubmit={submit}>
-				<fieldset>
-					<label htmlFor="password">Lösenord</label>
-					<input type="password" id="password" required onChange={e => setPassword(e.target.value)} value={password}
-						aria-invalid={validPassword ? "false" : null} />
-				</fieldset>
+				<label htmlFor="password">Lösenord</label>
+				<input type={showPassword ? "text" : "password"} id="password" required onChange={e => setPassword(e.target.value)} value={password}
+					placeholder="Lösenordet måste vara minst 8 tecken långt." aria-invalid={validPassword ? "false" : null} />
+				<small>
+					{showPassword ?
+						<button className="link" type="button" onClick={() => setShowPassword(false)}><Icon path={mdiEyeOffOutline} /> Dölj lösenord</button> :
+						<button className="link" type="button" onClick={() => setShowPassword(true)}><Icon path={mdiEyeOutline} /> Visa lösenord</button>
+					}
+				</small>
 
 
 				<Alert type="success" show={submitState === "complete"}>
