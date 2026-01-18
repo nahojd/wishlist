@@ -2,12 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
 using Dapper;
-using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using MimeKit;
 using WishList.Api.DataAccess;
 using WishList.Api.Model;
 using WishList.Api.Model.Extensions;
@@ -38,7 +35,14 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 	[AllowAnonymous]
 	public async Task<ActionResult> Register([FromBody] RegisterUserParameters parameters)
 	{
-		//TODO: Kolla att användaren inte redan är registrerad
+		using var conn = DbHelper.OpenConnection(config);
+
+		//Kolla att användaren inte redan är registrerad
+		var users = await conn.GetAllDbUsers();
+		if (users.Any(x => x.Email?.Equals(parameters.Email, StringComparison.InvariantCultureIgnoreCase) == true))
+			return Conflict(new ProblemDetails { Detail = "En användare med den epostadressen finns redan." });
+		if (users.Any(x => x.Name?.Equals(parameters.Name, StringComparison.InvariantCultureIgnoreCase) == true))
+			return Conflict(new ProblemDetails { Detail = "En användare med det namnet finns redan." });
 
 		var passwordHasher = new PasswordHasher<string>();
 		var hash = passwordHasher.HashPassword(parameters.Email!, parameters.Password!);
@@ -50,8 +54,8 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 
 
 		//Spara till databas
-		using var conn = DbHelper.OpenConnection(config);
-		await conn.ExecuteAsync("insert into User (Name, Email, Password) values (@Name, @Email, @hash)", new { parameters.Name, parameters.Email, hash });
+		await conn.ExecuteAsync("insert into User (Name, Email, Password) values (@Name, @Email, @hash)",
+			new { parameters.Name, Email = parameters.Email!.ToLowerInvariant(), hash });
 		logger.LogInformation("Registered user {Name} with email {Email}", parameters.Name, parameters.Email);
 
 		await messageService.SendNewRegistrationMessage(parameters.Name!, parameters.Email!, parameters.Message);
@@ -67,13 +71,13 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 		using var conn = DbHelper.OpenConnection(config);
 		var dbUser = await conn.GetDbUserByEmail(parameters.Email);
 		if (dbUser is null || !dbUser.Verified)
-			return BadRequest(new ProblemDetails { Detail = "Invalid email or password" });
+			return BadRequest(new ProblemDetails { Detail = "Felaktig e-postadress eller lösenord" });
 
 		//Validera lösenordet
 		var passwordHasher = new PasswordHasher<string>();
 		var verifyResult = passwordHasher.VerifyHashedPassword(parameters.Email!, dbUser.Password!, parameters.Password!);
 		if (verifyResult != PasswordVerificationResult.Success)
-			return BadRequest(new ProblemDetails { Detail = "Invalid email or password" });
+			return BadRequest(new ProblemDetails { Detail = "Felaktig e-postadress eller lösenord" });
 
 		//Generera och returnera JWT-token
 		var expires = DateTime.Now.AddSeconds(1800); //Bra att den bara är giltig i 30 sek!
@@ -106,7 +110,7 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 		using var conn = DbHelper.OpenConnection(config);
 		var dbUser = await conn.GetDbUserByEmail(email);
 		if (dbUser is null || !dbUser.Verified)
-			return BadRequest(new ProblemDetails { Detail = "No such user" });
+			return BadRequest(new ProblemDetails { Detail = "Ingen användare med denna epostadress finns registrerad." });
 
 		//Create token by hashing a guid and onverting to base64 string
 		var guid = Guid.NewGuid();
@@ -143,10 +147,10 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 		using var conn = DbHelper.OpenConnection(config);
 		var dbUser = await conn.GetDbUserByResetPwdToken(parameters.Token);
 		if (dbUser is null || dbUser.PwdResetExpires is null || dbUser.PwdResetExpires < DateTime.Now)
-			return BadRequest(new ProblemDetails { Detail = "Invalid token" });
+			return BadRequest(new ProblemDetails { Detail = "Felaktig token" });
 
 		if (!parameters.Password.IsValidPassword())
-			return BadRequest(new ProblemDetails { Detail = "Invalid password" });
+			return BadRequest(new ProblemDetails { Detail = "Ogiltigt lösenord. Lösenordet måste vara minst 8 tecken." });
 
 		//Uppdatera lösenord
 		var passwordHasher = new PasswordHasher<string>();
@@ -172,7 +176,7 @@ public class AccountController(IConfiguration config, IMessageService messageSer
 		var users = await conn.GetUserList();
 		if (users.Any(x => x.Id != userId && x.Name?.Equals(parameters.Name, StringComparison.InvariantCultureIgnoreCase) == true))
 		{
-			return new ValidationErrorResult(errors: new() { { "Name", "There is already a user with that name." } });
+			return new ValidationErrorResult(errors: new() { { "Name", "Det finns redan en användare med det namnet." } });
 		}
 
 		await conn.ExecuteAsync("update User set Name = @Name, Email = @Email, Notify = @Notify where Id = @userId",
@@ -221,7 +225,7 @@ public class LoginParameters
 {
 	[Required, EmailAddress]
 	public string? Email { get; set; }
-	[Required, MinLength(8, ErrorMessage = "The password must be at least 8 characters")]
+	[Required, MinLength(8, ErrorMessage = "Lösenordet måste vara minst 8 tecken långt")]
 	public string? Password { get; set; }
 }
 
@@ -231,7 +235,7 @@ public class RegisterUserParameters
 	public string? Name { get; set; }
 	[Required, EmailAddress]
 	public string? Email { get; set; }
-	[Required, MinLength(8, ErrorMessage = "The password must be at least 8 characters")]
+	[Required, MinLength(8, ErrorMessage = "Lösenordet måste vara minst 8 tecken långt")]
 	public string? Password { get; set; }
 	public string? Message { get; set; }
 }
@@ -240,7 +244,7 @@ public class ResetPasswordParameters
 {
 	[Required]
 	public string? Token { get; set; }
-	[Required, MinLength(8, ErrorMessage = "The password must be at least 8 characters")]
+	[Required, MinLength(8, ErrorMessage = "Lösenordet måste vara minst 8 tecken långt.")]
 	public string? Password { get; set; }
 }
 
@@ -255,7 +259,8 @@ public class UpdateSettingsParameters
 
 public class UpdatePasswordParameters
 {
-	[Required, MinLength(8, ErrorMessage = "The password must be at least 8 characters")]	public string? Password { get; set; }
+	[Required, MinLength(8, ErrorMessage = "Lösenordet måste vara minst 8 tecken långt.")]
+	public string? Password { get; set; }
 }
 
 #nullable disable

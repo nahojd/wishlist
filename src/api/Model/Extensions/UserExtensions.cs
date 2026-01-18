@@ -20,6 +20,9 @@ public static class UserExtensions
 		return [.. users];
 	}
 
+	public static async Task<IReadOnlyList<Db.User>> GetAllDbUsers(this IDbConnection conn)
+		=> [.. await conn.QueryAsync<Db.User>("select * from User") ];
+
 	public static Task<Db.User?> GetDbUserByEmail(this IDbConnection conn, string? email)
 		=> conn.QuerySingleOrDefaultAsync<Db.User>("select * from User where Email = @email", new { email });
 
