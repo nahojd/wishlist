@@ -110,9 +110,7 @@ const UserSettings = () => {
 	const submitErrors = useMemo(() => {
 		if (submitState === "failed")
 		{
-			const errors = apicalls.getError("updateUserSettings");
-			if (typeof(errors) === "string")
-				return [errors];
+			const errors = apicalls.getErrors("updateUserSettings");
 			return Object.getOwnPropertyNames(errors).map(key => errors[key].join(", "));
 		}
 		return [];

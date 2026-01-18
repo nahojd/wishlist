@@ -4,7 +4,8 @@ export type LoadingState = "started"|"complete"|"failed";
 
 export interface IHydratedApiCallState extends IApiCallState {
 	getLoadingState: (actionType: string) => LoadingState|undefined;
-	getError: (actionType: string) => string|IErrorDictionary|undefined;
+	getError: (actionType: string) => string;
+	getErrors: (actionType: string) => IErrorDictionary;
 	getStatus: (actionType: string) => number|undefined;
 }
 

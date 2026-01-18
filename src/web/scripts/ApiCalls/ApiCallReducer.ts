@@ -30,7 +30,7 @@ export const createApiCallReducer = () => {
 				break;
 			case "Failed":
 				loadingState = "failed";
-				errors = (action.payload?.response?.errors && Object.getOwnPropertyNames(action.payload.response.errors).length > 0) ? action.payload?.response?.errors : action.payload?.response?.error;
+				errors = (action.payload?.response?.errors && Object.getOwnPropertyNames(action.payload.response.errors).length > 0) ? action.payload?.response?.errors : action.payload?.response?.detail;
 				status = action.payload?.status;
 				break;
 		}

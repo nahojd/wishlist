@@ -7,13 +7,32 @@ export const hydrateApiCallState = (state: IApiCallState) : IHydratedApiCallStat
 		...{
 			getLoadingState: GetLoadingState,
 			getError: GetError,
+			getErrors: GetErrors,
 			getStatus: GetStatus
 		}
 	}
 }
 
 const GetLoadingState = (actionType: string) => GetCallState(actionType)?.state;
-const GetError = (actionType: string) => GetCallState(actionType)?.errors;
+
+const GetError = (actionType: string) => {
+	const errors = GetCallState(actionType)?.errors;
+	if (!errors)
+		return null;
+	if (typeof(errors) === "string")
+		return errors;
+	return Object.getOwnPropertyNames(errors).map(key => errors[key].join(", ")).join(", ");
+};
+
+const GetErrors = (actionType: string) => {
+	const errors = GetCallState(actionType)?.errors;
+	if (!errors)
+		return {};
+	if (typeof(errors) === "string")
+		return { "error": [errors] };
+	return errors;
+};
+
 const GetStatus = (actionType: string) => GetCallState(actionType)?.status;
 
 const GetCallState = (actionType: string) => {

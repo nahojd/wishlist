@@ -61,7 +61,7 @@ export const ForgotPasswordPage = () => {
 					<>Ett mail med instruktioner har skickats till <strong>{email}</strong>.</>
 				</Alert>
 				<Alert type="danger" show={submitState === "failed"}><>
-					<strong>Fel!</strong> Är du säker på att du angivit rätt e-postadress?
+					{apicalls.getError("resetPasswordForEmail")}
 				</></Alert>
 
 				{ submitState !== "complete" &&

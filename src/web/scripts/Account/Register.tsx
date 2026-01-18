@@ -62,13 +62,18 @@ export const RegisterPage = () => {
 						<label htmlFor="message">Meddelande (frivilligt)</label>
 						<textarea id="message" rows={3} {...register("message")} />
 
+						<Alert type="danger" show={submitState === "failed"}><>
+							Det gick inte att registrera ditt konto.<br />
+							{apicalls.getError("register")}
+						</></Alert>
+
 						<button aria-busy={submitState === "started"} type="submit">Skapa konto</button>
 					</fieldset>
 				</form>
 			</>}
 
 			<Alert type="success" show={submitState === "complete"}>Ditt konto är registrerat, men ännu inte verifierat. Du kan inte logga in förrän kontot blivit verifierat.</Alert>
-			<Alert type="danger" show={submitState === "failed"}>Det gick inte att registrera ditt konto.</Alert>
+
 
 			<footer>
 				<NavLink to="/login">Har du redan konto? Logga in</NavLink>
