@@ -16,6 +16,11 @@ export const ProfilePage = () => {
 
 
 	return <>
+		<nav className="mobile-links">
+			<ul>
+				<li><a href="#settings">Ändra uppgifter</a></li>
+			</ul>
+		</nav>
 		<aside>
 			<UserList />
 		</aside>
@@ -45,7 +50,9 @@ const UserList = () => {
 		dispatch(toggleFriendStatus(user.id));
 	};
 
-	return <article>
+	return <article className="settings-userlist">
+		<a id="friends"></a>
+		<header>Vänner</header>
 		{ users?.length > 0 && <fieldset>
 			{users.filter(x => x.id != currentUser.id).map(x => <label key={x.id}>
 				<input type="checkbox" name={`cbUser${x.id}`} checked={x.isFriend} onChange={() => toggleFriend(x)} disabled={submitState === "started"} aria-busy={submitState === "started"} />
@@ -78,6 +85,7 @@ const ChangePassword = () => {
 	}
 
 	return <article>
+		<a id="password"></a>
 		<header>Ändra lösenord</header>
 		<form onSubmit={handleSubmit(submit)}>
 			<fieldset role="group">
@@ -130,6 +138,7 @@ const UserSettings = () => {
 	}
 
 	return <article>
+		<a id="settings"></a>
 		<header>Ändra uppgifter</header>
 
 		<form onSubmit={handleSubmit(submit)}>

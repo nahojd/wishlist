@@ -5,6 +5,15 @@
 @use "@picocss/pico/scss/colors/index" as *;
 @import "@picocss/pico/scss/_settings.scss";
 
+:root {
+    --pico-font-size: 100%;
+
+    @media screen and (min-width: map.get(map.get($breakpoints, "lg"), "breakpoint")) {
+        --pico-font-size: 110%;
+    }
+}
+
+
 html[data-theme=light] img.logo {
     filter: invert(1) hue-rotate(78deg) saturate(4);
     $enable-transitions: true;
@@ -19,6 +28,7 @@ html[data-theme=light] img.logo {
 
         grid-template-areas:
             "head"
+            "links"
             "nav"
             "main"
             "foot";
@@ -31,6 +41,10 @@ html[data-theme=light] img.logo {
                 "foot foot";
             grid-template-columns: 1fr 2fr;
             column-gap: var(--pico-spacing);
+
+            .mobile-links {
+                display: none;
+            }
         }
 
         > header {
@@ -41,7 +55,7 @@ html[data-theme=light] img.logo {
             border-bottom: 1px solid $green-800;
 
             > nav {
-                @media screen and (max-width: map.get(map.get($breakpoints, "md"), "breakpoint")) {
+                @media screen and (max-width: map.get(map.get($breakpoints, "lg"), "breakpoint")) {
                     display: grid;
                     grid-template-areas:
                         "logo"
@@ -75,6 +89,10 @@ html[data-theme=light] img.logo {
             padding-top: var(--pico-spacing);
             margin-top: var(--pico-spacing);
             border-top: 1px solid $green-800;
+        }
+
+        .mobile-links {
+            grid-area: links;
         }
     }
 

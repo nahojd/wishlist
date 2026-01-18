@@ -33,9 +33,11 @@ export const UserPage = () => {
 		<Friendslist selectedUser={parseInt(id)} />
 
 		<section className="wishlist">
-			<h1>{isMyPage ? "Min önskelista" : user.name}</h1>
+			<article>
+				<h1>{isMyPage ? "Min önskelista" : user.name}</h1>
 
-			{ isMyPage && <p><small><button onClick={() => navigate("/wish/add")}><Icon path={mdiPlus} /> Ny önskning</button></small></p>}
+				{ isMyPage && <p><small><button onClick={() => navigate("/wish/add")}><Icon path={mdiPlus} /> Ny önskning</button></small></p>}
+			</article>
 
 			{ (!user.wishes || user.wishes.length === 0) && getWishesState === "started" && <span aria-busy="true">Hämtar önskningar...</span> }
 

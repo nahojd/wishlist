@@ -23,6 +23,7 @@ export const PageHeader = () => {
 			<Link to="/"><img className="logo" src={logoImage} alt="Önskelistemaskinen v3" /></Link>
 			<ul>
 				{ user && <>
+					<li><Link to={`/user/${user.id}`}>Min önskelista</Link></li>
 					<li><Link to="/profile">Mitt konto</Link></li>
 				</>}
 				<li>

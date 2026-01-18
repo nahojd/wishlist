@@ -25,28 +25,30 @@ export const Friendslist = (props: { selectedUser?: number }) => {
 	};
 
 	return <aside>
-		<nav className="friendlist">
-		{friends && <>
-			<details className="dropdown" ref={x => { detailsElement.current = x; }}>
-				<summary role="button" className="primary outline">{selectedUser?.name || "Välj önskelista"}</summary>
+		<article>
+			<nav className="friendlist">
+			{friends && <>
+				<details className="dropdown" ref={x => { detailsElement.current = x; }}>
+					<summary role="button" className="primary outline">{selectedUser?.name || "Välj önskelista"}</summary>
+					<ul>
+						{props.selectedUser === me.id ?
+							<li className="selected">{me.name}</li> :
+							<li><NavLink to={`/user/${me.id}`} onClick={closeDetails}>{me.name}</NavLink></li>}
+						{friends.map(x => x.id === props.selectedUser ?
+							<li key={x.id} className="selected">{x.name}</li> :
+							<li key={x.id}><NavLink to={`/user/${x.id}`} onClick={closeDetails}>{x.name}</NavLink></li>)}
+					</ul>
+				</details>
 				<ul>
 					{props.selectedUser === me.id ?
 						<li className="selected">{me.name}</li> :
-						<li><NavLink to={`/user/${me.id}`} onClick={closeDetails}>{me.name}</NavLink></li>}
+						<li><NavLink to={`/user/${me.id}`}>{me.name}</NavLink></li>}
 					{friends.map(x => x.id === props.selectedUser ?
 						<li key={x.id} className="selected">{x.name}</li> :
-						<li key={x.id}><NavLink to={`/user/${x.id}`} onClick={closeDetails}>{x.name}</NavLink></li>)}
+						<li key={x.id}><NavLink to={`/user/${x.id}`}>{x.name}</NavLink></li>)}
 				</ul>
-			</details>
-			<ul>
-				{props.selectedUser === me.id ?
-					<li className="selected">{me.name}</li> :
-					<li><NavLink to={`/user/${me.id}`}>{me.name}</NavLink></li>}
-				{friends.map(x => x.id === props.selectedUser ?
-					<li key={x.id} className="selected">{x.name}</li> :
-					<li key={x.id}><NavLink to={`/user/${x.id}`}>{x.name}</NavLink></li>)}
-			</ul>
-		</>}
-		</nav>
+			</>}
+			</nav>
+		</article>
 	</aside>;
 };
