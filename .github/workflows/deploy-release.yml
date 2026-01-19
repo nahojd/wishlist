@@ -6,7 +6,7 @@ on:
       - '*-release'
 
 env:
-  DOTNET_VERSION: 10.0.x
+  DOTNET_VERSION: 10.0.102
   NODE_VERSION: 20.x
   API_DIR: "./src/api"
   WEB_DIR: "./src/web"

@@ -13,7 +13,8 @@
     <PackageReference Include="commandlineparser" Version="2.9.1" />
     <PackageReference Include="dapper" Version="2.1.66" />
     <PackageReference Include="MailKit" Version="4.14.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.2" />
     <PackageReference Include="MySqlConnector" Version="2.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
   </ItemGroup>
