@@ -3,6 +3,7 @@
     $theme-color: "lime"
 );
 @use "@picocss/pico/scss/colors/index" as *;
+@use "@picocss/pico/scss/colors/utilities";
 @import "@picocss/pico/scss/_settings.scss";
 
 :root {
@@ -128,12 +129,20 @@ ul.plain {
         color: white;
     }
     &.info {
-        background-color: $cyan-400;
-        color: white;
+        --pico-card-background-color: var(--pico-color-cyan-400);
+        color: $white;
+        a {
+            --pico-color: var(--pico-color-fuchsia-100);
+            --pico-underline: var(--pico-color-fuchsia-100);
+        }
     }
     &.success {
-        background-color: $green-350;
-        color: white;
+        --pico-card-background-color: var(--pico-color-green-350);
+        color: $white;
+        a {
+            --pico-color: var(--pico-color-cyan-50);
+            --pico-underline: var(--pico-color-cyan-50);
+        }
     }
 }
 

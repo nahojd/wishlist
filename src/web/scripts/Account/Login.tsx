@@ -42,8 +42,9 @@ export const LoginPage = () => {
 
 		<article>
 			<h1>Välkommen till nya Önskelistemaskinen!</h1>
-			<p>Av tekniska skäl är alla lösenord nollställda. För att logga in behöver du först använda <NavLink to="/forgotpassword">glömt lösenord</NavLink> för att sätta ett nytt lösenord.</p>
 		</article>
+
+		<Alert type="info"><>Av tekniska skäl är alla lösenord nollställda. För att logga in behöver du först använda <NavLink to="/forgotpassword">glömt lösenord</NavLink> för att sätta ett nytt lösenord.</></Alert>
 
 		<article>
 			<header>Logga in</header>
